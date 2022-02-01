@@ -1,4 +1,4 @@
-package com.bookxchange.Model;
+package com.bookxchange.model;
 
 import lombok.Data;
 
@@ -15,9 +15,7 @@ public class Book {
     private long isbn;
     private String title;
     private String description;
-    private Boolean sellAvailability;
-    private Boolean rentAvailability;
     private Integer quantity;
-    private List<Author> author;
+    private List<Author> authors;
 
 }

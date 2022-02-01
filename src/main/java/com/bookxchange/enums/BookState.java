@@ -1,4 +1,4 @@
-package com.bookxchange.Enums;
+package com.bookxchange.enums;
 
 public enum BookState {
 

@@ -1,7 +1,6 @@
-package Utils;
+package utils;
 
 import java.sql.*;
-import java.time.LocalDate;
 
 public class JdbcConnection {
 
