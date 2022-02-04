@@ -1,8 +1,7 @@
-package Utils;
+package utils;
 
-import com.bookxchange.Model.Author;
+
 import org.flywaydb.core.Flyway;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
