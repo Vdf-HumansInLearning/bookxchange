@@ -12,7 +12,7 @@ public class Book {
     @NotNull(message = "ISBN cannot be null")
     @Size(min=13,max=13, message
         = "must be 13 chars")
-    private long isbn;
+    private String isbn;
     private String title;
     private String description;
     private Integer quantity;
