@@ -1,16 +1,17 @@
-package com.bookxchange.Model;
+package com.bookxchange.model;
 
 import lombok.Data;
 
+import java.sql.Date;
 import java.util.List;
 
 @Data
 public class Author {
 
-    private Integer id;
+    private long id;
     private String name;
     private String surname;
-    private long birthDate;
+    private Date birthDate;
     private List<Book> books;
 
 }
