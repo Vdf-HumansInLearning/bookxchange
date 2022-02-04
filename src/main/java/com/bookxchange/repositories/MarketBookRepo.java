@@ -1,0 +1,119 @@
+package com.bookxchange.repositories;
+
+import com.bookxchange.dto.MarketBookDto;
+import com.bookxchange.enums.BookState;
+import com.bookxchange.enums.BookStatus;
+
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
+
+public class MarketBookRepo {
+
+
+    static final String DB_URL = "jdbc:mysql://localhost:3306/bookOLX";
+    static final String USER = "root";
+    static final String PASS = "root";
+
+
+    public  List<MarketBookDto> getAllMarketBook() throws SQLException, IOException {
+
+
+        String sql = "SELECT books.title, Authors.name, Authors.surname, BookMarket.forSell, BookMarket.sellPrice, BookMarket.forRent, BookMarket.rentPrice, BookMarket.bookState, BookMarket.bookStatus, Members.username FROM BookMarket JOIN Members ON Members.userID = BookMarket.userID JOIN books ON books.isbn = BookMarket.bookID JOIN  Authors ON Authors.id = books.author";
+        List<MarketBookDto> marketBooks = new ArrayList<>();
+        try (Connection  con= DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    marketBooks.add(new MarketBookDto(rs.getString("books.title"),
+                        rs.getString("Authors.name"),
+                        rs.getString("Authors.surname"),
+                       rs.getBoolean("BookMarket.forSell"),
+                        rs.getDouble("BookMarket.sellPrice"),
+                        rs.getBoolean("BookMarket.forRent"),
+                        rs.getDouble("BookMarket.rentPrice"),
+                        BookState.valueOf(rs.getString("BookMarket.bookState")),
+                        BookStatus.valueOf(rs.getString("BookMarket.bookStatus")),
+                        rs.getString("Members.username")));
+
+                }
+            }
+        }
+        return marketBooks;
+    }
+
+    public  List<MarketBookDto> getAllMarketBookByBookStatus(BookStatus bookStatus) throws SQLException {
+        String sql = "SELECT books.title, Authors.name, Authors.surname, BookMarket.forSell, BookMarket.sellPrice, BookMarket.forRent, BookMarket.rentPrice, BookMarket.bookState, BookMarket.bookStatus, Members.username FROM\n" +
+            "    BookMarket\n" +
+            "        JOIN\n" +
+            "    Members ON Members.userID = BookMarket.userID\n" +
+            "        JOIN\n" +
+            "    books ON books.isbn = BookMarket.bookID\n" +
+            "        JOIN\n" +
+            "    Authors ON Authors.id = books.author\n" +
+            "WHERE\n" +
+            "\tBookMarket.bookStatus ='" + bookStatus +"'";
+        List<MarketBookDto> marketBooks = new ArrayList<>();
+        try (Connection  con= DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    marketBooks.add(new MarketBookDto(rs.getString("books.title"),
+                        rs.getString("Authors.name"),
+                        rs.getString("Authors.surname"),
+                        rs.getBoolean("BookMarket.forSell"),
+                        rs.getDouble("BookMarket.sellPrice"),
+                        rs.getBoolean("BookMarket.forRent"),
+                        rs.getDouble("BookMarket.rentPrice"),
+                        BookState.valueOf(rs.getString("BookMarket.bookState")),
+                        BookStatus.valueOf(rs.getString("BookMarket.bookStatus")),
+                        rs.getString("Members.username")));
+
+                }
+            }
+        }
+        return marketBooks;
+    }
+
+
+    public  MarketBookDto getAllMarketBookById(UUID id) throws SQLException {
+        String sql = "SELECT books.title, Authors.name, Authors.surname, BookMarket.forSell, BookMarket.sellPrice, BookMarket.forRent, BookMarket.rentPrice, BookMarket.bookState, BookMarket.bookStatus, Members.username FROM\n" +
+            "    BookMarket\n" +
+            "        JOIN\n" +
+            "    Members ON Members.userID = BookMarket.userID\n" +
+            "        JOIN\n" +
+            "    books ON books.isbn = BookMarket.bookID\n" +
+            "        JOIN\n" +
+            "    Authors ON Authors.id = books.author\n" +
+            "WHERE\n" +
+            "\tBookMarket.id ='" + id +"'";
+        MarketBookDto marketBookDto=null;
+        try (Connection  con= DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                     marketBookDto=   new MarketBookDto(rs.getString("books.title"),
+                        rs.getString("Authors.name"),
+                        rs.getString("Authors.surname"),
+                        rs.getBoolean("BookMarket.forSell"),
+                        rs.getDouble("BookMarket.sellPrice"),
+                        rs.getBoolean("BookMarket.forRent"),
+                        rs.getDouble("BookMarket.rentPrice"),
+                        BookState.valueOf(rs.getString("BookMarket.bookState")),
+                        BookStatus.valueOf(rs.getString("BookMarket.bookStatus")),
+                        rs.getString("Members.username"));
+
+                }
+            }
+        }
+        return marketBookDto;
+    }
+
+}

@@ -3,9 +3,6 @@ package utils;
 
 import org.flywaydb.core.Flyway;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 
 
 public class JdbcConnection {
@@ -28,4 +25,8 @@ public class JdbcConnection {
         fdb.clean();
         fdb.migrate();
     }
+
+
+
+
 }

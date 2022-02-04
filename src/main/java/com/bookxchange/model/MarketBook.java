@@ -31,4 +31,5 @@ public class MarketBook {
         this.rentPrice = rentPrice;
         this.bookStatus = bookStatus;
     }
+
 }
