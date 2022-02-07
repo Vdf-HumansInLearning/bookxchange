@@ -1,6 +1,7 @@
 package com.bookxchange.isbnservice;
 
 
+import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.isbnpojo.Isbn;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
@@ -9,15 +10,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import utils.PropertyLoader;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class IsbnService {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     private String getInfoFromApi(String isbn) {
-        String targetURL = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+        String targetURL;
+        Properties properties = PropertyLoader.loadProperties();
+        targetURL = properties.getProperty("ISBN_API_URL") + isbn;
+
+
         String result = "";
         HttpGet request = new HttpGet(targetURL);
 
@@ -40,11 +47,11 @@ public class IsbnService {
         Gson gson = new Gson();
         Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
         HashMap<String, String> hashMap = new HashMap<>();
-        if (isbnDTO.getTotalItems() != 0 && isbnDTO.getTotalItems() > 0) {
-            String author = isbnDTO.getItems().get(0).getVolumeInfo().getTitle();
-            hashMap.put(isbn, author);
+        if (isbnDTO.getTotalItems() > 0) {
+            String title = isbnDTO.getItems().get(0).getVolumeInfo().getTitle();
+            hashMap.put(isbn, title);
         } else {
-            hashMap.put(isbn, "Invalid isbn");
+            throw new InvalidISBNException(isbn + " is invalid");
         }
         return hashMap;
     }

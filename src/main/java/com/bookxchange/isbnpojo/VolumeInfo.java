@@ -2,9 +2,11 @@ package com.bookxchange.isbnpojo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class VolumeInfo {
     String title;
     String subtitle;
-    String [] authors;
+    List<String> authors;
 }
