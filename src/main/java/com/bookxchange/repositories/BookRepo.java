@@ -1,17 +1,16 @@
 package com.bookxchange.repositories;
 
 import com.bookxchange.dto.BookDto;
+import utils.JdbcConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookRepo {
-
-    static final String DB_URL = "jdbc:mysql://localhost:3306/bookOLX";
-    static final String USER = "root";
-    static final String PASS = "root";
-
 
     public List<BookDto> getAllBooksEver() throws SQLException {
         String sql = "SELECT\n" +
@@ -24,7 +23,7 @@ public class BookRepo {
             "    JOIN\n" +
             "    Authors ON Authors.id = books.author";
         List<BookDto> books = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

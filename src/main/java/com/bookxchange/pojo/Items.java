@@ -1,4 +1,4 @@
-package com.bookxchange.isbnpojo;
+package com.bookxchange.pojo;
 
 import lombok.Data;
 
