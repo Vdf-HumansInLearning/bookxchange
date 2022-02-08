@@ -1,8 +1,8 @@
-package com.bookxchange.isbnservice;
+package com.bookxchange.service;
 
 
 import com.bookxchange.customExceptions.InvalidISBNException;
-import com.bookxchange.isbnpojo.Isbn;
+import com.bookxchange.pojo.Isbn;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,7 +24,6 @@ public class IsbnService {
         Properties properties = PropertyLoader.loadProperties();
         targetURL = properties.getProperty("ISBN_API_URL") + isbn;
 
-
         String result = "";
         HttpGet request = new HttpGet(targetURL);
 
@@ -33,9 +32,7 @@ public class IsbnService {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 result = EntityUtils.toString(entity);
-
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

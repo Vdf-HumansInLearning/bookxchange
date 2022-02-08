@@ -11,6 +11,4 @@ public class BookDto {
     String authorsName;
     String authorSurname;
     int bookQuantity;
-
-
 }

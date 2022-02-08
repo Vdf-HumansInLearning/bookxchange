@@ -1,15 +1,7 @@
 package utils;
 
 
-import com.bookxchange.isbnservice.IsbnService;
-import org.flywaydb.core.Flyway;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.Properties;
 
 
