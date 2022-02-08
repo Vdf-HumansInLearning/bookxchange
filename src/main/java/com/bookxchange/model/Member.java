@@ -8,6 +8,7 @@ public class Member {
     private UUID id;
     private String username;
     private List<Book> bookList;
+    private short points;
 
     public Member( String username, List<Book> bookList) {
         this.id = UUID.randomUUID();

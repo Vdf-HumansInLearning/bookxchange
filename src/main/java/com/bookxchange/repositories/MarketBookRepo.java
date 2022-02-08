@@ -19,7 +19,6 @@ public class MarketBookRepo {
 
     public List<MarketBookDto> getAllMarketBook() throws SQLException, IOException {
 
-
         String sql = "SELECT books.title, Authors.name, Authors.surname, BookMarket.forSell, BookMarket.sellPrice, BookMarket.forRent, BookMarket.rentPrice, BookMarket.bookState, BookMarket.bookStatus, Members.username FROM BookMarket JOIN Members ON Members.userID = BookMarket.userID JOIN books ON books.isbn = BookMarket.bookID JOIN  Authors ON Authors.id = books.author";
         List<MarketBookDto> marketBooks = new ArrayList<>();
         try (Connection con = JdbcConnection.getConnection();
