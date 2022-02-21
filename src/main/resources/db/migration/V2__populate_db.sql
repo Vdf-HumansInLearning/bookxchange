@@ -20,11 +20,11 @@ values
     ('978-0-230-75700-4', "The Air War ", "350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011", "Something something War, kitty ipsom atack", 1)
 ;
 
-INSERT INTO Members (userID, username)
+INSERT INTO Members (userID, username, points)
 values
-    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde"),
-    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin"),
-    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina")
+    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde",0),
+    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin",0),
+    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina",0)
 ;
 
 INSERT INTO BookMarket (id, userID, bookID, bookState, forSell, sellPrice, forRent, rentPrice, bookStatus)
