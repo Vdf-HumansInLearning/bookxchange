@@ -28,6 +28,7 @@ CREATE TABLE books (
 CREATE TABLE Members (
                          userID varchar(36) NOT NULL,
                          username TEXT,
+                         points INT,
                          primary key (userID)
 );
 
@@ -45,5 +46,18 @@ CREATE TABLE BookMarket (
                             primary key(id),
                             foreign key (userID) references Members(userID),
                             foreign key (bookID) references books(isbn)
+);
+
+CREATE TABLE Transaction (
+                            id bigint not null unique auto_increment,
+                            marketBookId VARCHAR(36) not null unique,
+                            memberIdFrom VARCHAR(36) not null,
+                            memberIdTo VARCHAR(36) not null,
+                            transactionType VARCHAR(10),
+                            transactionDate date,
+                            expectedReturnDate date,
+                            primary key(id),
+                            foreign key (memberIdFrom) references Members(userID),
+                            foreign key (marketBookId) references BookMarket(id)
 );
 
