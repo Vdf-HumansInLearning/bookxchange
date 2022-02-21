@@ -75,7 +75,7 @@ CREATE TABLE Rating (
 );
 
 CREATE TABLE Emails (
-                        ID int auto_increment,
+                        ID int AUTO_INCREMENT,
                         emailAddress varchar(50),
                         content varchar(150),
                         whensent DATE,
@@ -85,19 +85,21 @@ CREATE TABLE Emails (
                         foreign key (memberID) references Members(userID)
 );
 CREATE TABLE Notifications (
-                               ID int auto_increment,
+                               ID int AUTO_INCREMENT,
                                emailID int,
                                bookID varchar(36) not null,
-                               type varchar(20),    primary key (ID),
+                               type varchar(20),
+                               primary key (ID),
                                foreign key (bookID) references BookMarket(id),
                                foreign key (emailID) references Emails(ID)
 );
 
 CREATE TABLE EmailTemplates (
-                                ID int auto_increment,
+                                ID int not null AUTO_INCREMENT,
                                 templateName varchar (50),
                                 subject varchar (100),
-                                contentBody varchar (300)
+                                contentBody varchar (300),
+                                primary key(ID)
 );
 
 
