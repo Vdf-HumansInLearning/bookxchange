@@ -60,4 +60,30 @@ CREATE TABLE Rating (
                         foreign key (bookID) references books(isbn)
 );
 
+CREATE TABLE Emails (
+                        ID int auto_increment,
+                        emailAddress varchar(50),
+                        content varchar(150),
+                        whensent DATE,
+                        status varchar(20),
+                        memberID varchar(36) NOT NULL,
+                        primary key(ID),
+                        foreign key (memberID) references Members(userID)
+);
+CREATE TABLE Notifications (
+                               ID int auto_increment,
+                               emailID int,
+                               bookID varchar(36) not null,
+                               type varchar(20),    primary key (ID),
+                               foreign key (bookID) references BookMarket(id),
+                               foreign key (emailID) references Emails(ID)
+);
+
+CREATE TABLE EmailTemplates (
+                                ID int auto_increment,
+                                templateName varchar (50),
+                                subject varchar (100),
+                                contentBody varchar (300)
+);
+
 
