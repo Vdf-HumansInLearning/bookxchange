@@ -68,10 +68,9 @@ CREATE TABLE Rating (
                         description VARCHAR(200),
                         leftBy VARCHAR(36),
                         userID VARCHAR(36),
-                        bookID varchar(20),
+                        bookID varchar(36),
                         primary key (ratingId),
-                        foreign key (userID) references Members(userID),
-                        foreign key (bookID) references books(isbn)
+                        foreign key (userID) references Members(userID)
 );
 
 CREATE TABLE Emails (
