@@ -1,11 +1,12 @@
 package com.bookxchange.model;
 
 import com.bookxchange.enums.TransactionType;
-import lombok.Getter;
+import lombok.Data;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
-@Getter
+@Data
 public class Transaction {
 
   private long id;
