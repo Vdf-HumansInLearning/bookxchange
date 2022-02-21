@@ -1,6 +1,5 @@
 package utils;
 
-
 import org.flywaydb.core.Flyway;
 
 import java.io.File;
@@ -15,10 +14,8 @@ public class JdbcConnection {
     private static String password;
     private static Connection con;
 
-
-    public static void main(String[] args) {
-
-        getConnection();
+  public static void main(String[] args) {
+      getConnection();
 
         File resourcesDirectory = new File("src/main/resources");
         String absolutePath = resourcesDirectory.getAbsolutePath();
@@ -34,7 +31,7 @@ public class JdbcConnection {
         fdb.migrate();
 
 
-    }
+  }
 
     public static Connection getConnection() {
         Properties properties = PropertyLoader.loadProperties();

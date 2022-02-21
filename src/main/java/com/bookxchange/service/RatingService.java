@@ -17,11 +17,11 @@ public class RatingService {
 
         //TODO
         //aici fa get la tranzactie pe baza leftby si userid
-        Transaction transaction = new Transaction();
-
-        if(transaction==null){
-            throw new InvalidRatingException("These two users never interact");
-        }
+       // Transaction transaction = new Transaction();
+//
+//        if(transaction==null){
+//            throw new InvalidRatingException("These two users never interact");
+//        }
 
         RatingRepo rp = new RatingRepo();
         rp.addRating(1, "carte membru", "eu am lasat", userID, null);
@@ -35,11 +35,11 @@ public class RatingService {
 
         //TODO
         //aici fa get la tranzactie pe baza leftby si userid
-        Transaction transaction = new Transaction();
-
-        if(transaction==null){
-            throw new InvalidRatingException("This user" + leftBy + "doesn't interact with this book");
-        }
+//        Transaction transaction = new Transaction();
+//
+//        if(transaction==null){
+//            throw new InvalidRatingException("This user" + leftBy + "doesn't interact with this book");
+//        }
 
         RatingRepo rp = new RatingRepo();
         rp.addRating(1, "carte membru", "eu am lasat", null, bookID);

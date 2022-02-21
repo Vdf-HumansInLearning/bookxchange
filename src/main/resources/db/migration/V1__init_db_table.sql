@@ -28,6 +28,7 @@ CREATE TABLE books (
 CREATE TABLE Members (
                          userID varchar(36) NOT NULL,
                          username TEXT,
+                         points INT,
                          primary key (userID)
 );
 
@@ -47,6 +48,19 @@ CREATE TABLE BookMarket (
                             foreign key (bookID) references books(isbn)
 );
 
+CREATE TABLE Transaction (
+                            id bigint not null unique auto_increment,
+                            marketBookId VARCHAR(36) not null unique,
+                            memberIdFrom VARCHAR(36) not null,
+                            memberIdTo VARCHAR(36) not null,
+                            transactionType VARCHAR(10),
+                            transactionDate date,
+                            expectedReturnDate date,
+                            primary key(id),
+                            foreign key (memberIdFrom) references Members(userID),
+                            foreign key (marketBookId) references BookMarket(id)
+);
+
 
 CREATE TABLE Rating (
                         ratingId INT not null unique AUTO_INCREMENT,
@@ -61,7 +75,7 @@ CREATE TABLE Rating (
 );
 
 CREATE TABLE Emails (
-                        ID int auto_increment,
+                        ID int AUTO_INCREMENT,
                         emailAddress varchar(50),
                         content varchar(150),
                         whensent DATE,
@@ -71,19 +85,21 @@ CREATE TABLE Emails (
                         foreign key (memberID) references Members(userID)
 );
 CREATE TABLE Notifications (
-                               ID int auto_increment,
+                               ID int AUTO_INCREMENT,
                                emailID int,
                                bookID varchar(36) not null,
-                               type varchar(20),    primary key (ID),
+                               type varchar(20),
+                               primary key (ID),
                                foreign key (bookID) references BookMarket(id),
                                foreign key (emailID) references Emails(ID)
 );
 
 CREATE TABLE EmailTemplates (
-                                ID int auto_increment,
+                                ID int not null AUTO_INCREMENT,
                                 templateName varchar (50),
                                 subject varchar (100),
-                                contentBody varchar (300)
+                                contentBody varchar (300),
+                                primary key(ID)
 );
 
 
