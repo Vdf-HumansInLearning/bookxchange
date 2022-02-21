@@ -3,11 +3,9 @@ package com.bookxchange.repositories;
 import com.bookxchange.model.Transaction;
 import utils.JdbcConnection;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.time.ZoneId;
+import java.io.IOException;
+import java.sql.*;
+import java.util.UUID;
 
 public class TransactionRepo {
 
@@ -30,6 +28,49 @@ public class TransactionRepo {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
+  }
+
+  public Transaction getTransactionByBookIdAndLeftBy(UUID marketBookId , UUID memberIdTo) throws SQLException, IOException {
+
+    String sql = "SELECT * FROM Transaction WHERE\n" +
+            "\tTransaction.marketBookId ='" + marketBookId + "' AND Transaction.memberIdTo ='" +memberIdTo+"';";
+    Transaction transaction = new Transaction();
+    try (Connection con = JdbcConnection.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+      try (ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+
+          transaction.setId(rs.getLong("id"));
+          transaction.setMarketBookId(UUID. fromString(rs.getString("marketBookId")));
+          transaction.setMemberIdFrom(UUID. fromString(rs.getString("memberIdFrom")));
+          transaction.setMemberIdTo(UUID. fromString(rs.getString("memberIdTo")));
+
+        }
+      }
+    }
+    return transaction;
+  }
+
+  public Transaction getTransactionByWhoSelleddAndWhoBuys(UUID memberIdFrom , UUID memberIdTo) throws SQLException, IOException {
+
+    String sql = "SELECT * FROM Transaction WHERE\n" +
+            "\tTransaction.memberIdFrom ='" + memberIdFrom + "' AND Transaction.memberIdTo ='" +memberIdTo+"';";
+    Transaction transaction = new Transaction();
+    try (Connection con = JdbcConnection.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+      try (ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+
+          transaction.setId(rs.getLong("id"));
+          transaction.setMarketBookId(UUID. fromString(rs.getString("marketBookId")));
+          transaction.setMemberIdFrom(UUID. fromString(rs.getString("memberIdFrom")));
+          transaction.setMemberIdTo(UUID. fromString(rs.getString("memberIdTo")));
+
+        }
+      }
+    }
+    return transaction;
   }
 
 
