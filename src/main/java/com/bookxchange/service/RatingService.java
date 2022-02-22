@@ -23,7 +23,7 @@ public class RatingService {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
-        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(leftBy), UUID.fromString(userID));
+        Transaction transaction = transactionRepo.getTransactionByWhoSelleddAndWhoBuys(UUID.fromString(leftBy), UUID.fromString(userID));
 
         if (transaction == null || transaction.getId() == 0) {
             throw new InvalidRatingException("These two users never interact");
