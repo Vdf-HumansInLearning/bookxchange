@@ -1,7 +1,6 @@
 package com.bookxchange.repositories;
 
 import com.bookxchange.dto.BookDto;
-import org.springframework.stereotype.Component;
 import utils.JdbcConnection;
 
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class BookRepo {
 
     public List<BookDto> getAllBooksEver() throws SQLException {

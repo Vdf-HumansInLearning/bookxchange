@@ -9,13 +9,12 @@ import com.bookxchange.model.Transaction;
 import com.bookxchange.repositories.MarketBookRepo;
 import com.bookxchange.repositories.MemberRepo;
 import com.bookxchange.repositories.TransactionRepo;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.UUID;
 
-@Service
+
 public class TransactionService {
     TransactionRepo transactionRepo = new TransactionRepo();
     MarketBookRepo marketBookRepo = new MarketBookRepo();
