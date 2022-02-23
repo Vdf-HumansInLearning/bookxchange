@@ -27,7 +27,7 @@ public class JdbcConnection {
                 .schemas("bookOLX")
                 .load();
 
-        fdb.clean();
+//        fdb.clean();
         fdb.migrate();
 
 

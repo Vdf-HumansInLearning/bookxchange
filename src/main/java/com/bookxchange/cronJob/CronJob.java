@@ -20,14 +20,16 @@ public class CronJob extends TimerTask {
     @Override
     public void run() {
         em.sendEmail();
-        System.out.println(Thread.currentThread().getName() + " " + name + " the task has executed successfully " + new Date());
-
+        System.out.println(
+                Thread.currentThread().getName()
+                        + " "
+                        + name
+                        + " the task has executed successfully "
+                        + new Date());
     }
 
     public void scheduleJob() {
         Timer t = new Timer();
         t.scheduleAtFixedRate(this, 0, secondsTimer);
     }
-
-
 }

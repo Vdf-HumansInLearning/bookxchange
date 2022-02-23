@@ -2,10 +2,12 @@ package com.bookxchange.model;
 
 import com.bookxchange.enums.TransactionType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
+
+@NoArgsConstructor
 @Data
 public class Transaction {
 
@@ -33,7 +35,4 @@ public class Transaction {
 
   }
 
-  public Transaction() {
-
-  }
 }

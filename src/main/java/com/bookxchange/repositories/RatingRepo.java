@@ -8,11 +8,9 @@ import java.sql.SQLException;
 
 public class RatingRepo {
 
-
     public void addRating(int grade, String description, String leftBy, String userID, String bookID) throws SQLException {
 
-        String sql = "INSERT INTO Rating(grade,description,leftBy,userID,bookID) "
-                + "VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Rating(grade,description,leftBy,userID,bookID) " + "VALUES(?,?,?,?,?)";
 
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -25,5 +23,4 @@ public class RatingRepo {
             ps.executeUpdate();
         }
     }
-
 }
