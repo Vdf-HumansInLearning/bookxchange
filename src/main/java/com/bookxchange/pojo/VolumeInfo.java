@@ -8,5 +8,6 @@ import java.util.List;
 public class VolumeInfo {
     String title;
     String subtitle;
+    String description;
     List<String> authors;
 }
