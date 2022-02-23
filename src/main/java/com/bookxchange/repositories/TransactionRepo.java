@@ -4,12 +4,14 @@ import com.bookxchange.enums.TransactionType;
 import com.bookxchange.model.Book;
 import com.bookxchange.model.MarketBook;
 import com.bookxchange.model.Transaction;
+import org.springframework.stereotype.Component;
 import utils.JdbcConnection;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
+@Component
 public class TransactionRepo {
 
 

@@ -1,6 +1,7 @@
 package com.bookxchange.repositories;
 
 import com.bookxchange.model.MarketBook;
+import org.springframework.stereotype.Component;
 import utils.JdbcConnection;
 
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@Component
 public class MemberRepo {
 
     public void updatePointsToMember(MarketBook marketBook) {

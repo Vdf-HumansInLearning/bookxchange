@@ -4,6 +4,7 @@ import com.bookxchange.dto.MarketBookDto;
 import com.bookxchange.enums.BookState;
 import com.bookxchange.enums.BookStatus;
 import com.bookxchange.model.MarketBook;
+import org.springframework.stereotype.Component;
 import utils.JdbcConnection;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class MarketBookRepo {
 
     public List<MarketBookDto> getAllMarketBook() throws SQLException, IOException {

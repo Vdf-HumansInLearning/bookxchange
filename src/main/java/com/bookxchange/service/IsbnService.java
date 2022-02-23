@@ -9,12 +9,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 import utils.PropertyLoader;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
+@Service
 public class IsbnService {
   private final CloseableHttpClient httpClient = HttpClients.createDefault();
 

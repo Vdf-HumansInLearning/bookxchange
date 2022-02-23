@@ -1,11 +1,13 @@
 package com.bookxchange.repositories;
 
+import org.springframework.stereotype.Component;
 import utils.JdbcConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
 public class RatingRepo {
 
     public void addRating(int grade, String description, String leftBy, String userID, String bookID) throws SQLException {
