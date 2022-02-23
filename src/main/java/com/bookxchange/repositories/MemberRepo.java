@@ -25,13 +25,13 @@ public class MemberRepo {
 
     public int convertMoneyToPoints(MarketBook marketBook){
         //        1 RON =  10 points ;
-       return (int) (marketBook.getSellPrice()/10);
+       return  (int) (marketBook.getSellPrice()/10);
     }
 
 
-    public void updatePointsAfterBuy(MarketBook marketBook) {
+    public void updatePointsAfterBuy(MarketBook marketBook, UUID userIdWhoBuys) {
 
-        String sql = String.format("UPDATE Members SET points = points-%s  WHERE userID = '%s' ",convertMoneyToPoints(marketBook) , marketBook.getUserId().toString());
+        String sql = String.format("UPDATE Members SET points = points-%s  WHERE userID = '%s' ",convertMoneyToPoints(marketBook) , userIdWhoBuys.toString());
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.executeUpdate(sql);
@@ -45,8 +45,13 @@ public class MemberRepo {
         int points = 0;
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery(sql);
-           points = rs.getInt("points");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    points = rs.getInt("points");
+                }
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

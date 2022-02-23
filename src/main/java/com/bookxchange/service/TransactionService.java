@@ -26,12 +26,16 @@ public class TransactionService {
         MarketBook marketBook1 =
                 marketBookRepo.getMarketBook(UUID.fromString("1c821fb0-1024-4cd0-8f23-2d763fb2c13b"));
         MarketBook marketBook2 =
-                marketBookRepo.getMarketBook(UUID.fromString("102126b8-49a9-4eb3-bc4f-424d89a56f8b"));
+                marketBookRepo.getMarketBook(UUID.fromString("eb1ab8b2-a2a4-4057-bba2-2d2caf65ce47"));
 
-        transactionService.rentBook(
-                marketBook1, UUID.fromString("13177e99-14b5-43c5-a446-e0dc751c3153"));
-        transactionService.buyBook(
-                marketBook2, UUID.fromString("13177e99-14b5-43c5-a446-e0dc751c3153"));
+//        transactionService.rentBook(
+//                marketBook1, UUID.fromString("13177e99-14b5-43c5-a446-e0dc751c3153"));
+//        transactionService.buyBook(
+//                marketBook2, UUID.fromString("13177e99-14b5-43c5-a446-e0dc751c3153"));
+
+        transactionService.buyBookWithPoints(marketBook2, UUID.fromString("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"));
+
+        System.out.println("merge");
     }
 
     public boolean rentBook(MarketBook marketBook, UUID memberWhoRents) throws SQLException {
@@ -59,11 +63,13 @@ public class TransactionService {
         }
         return false;
     }
+
+    //TODO check points <0, or number of points if the transacation can be made
     public boolean buyBookWithPoints(MarketBook marketBook, UUID memberWhoBuys) throws SQLException {
         if (marketBook.getBookStatus().equals(BookStatus.AVAILABLE) && marketBook.isForSell()) {
             if(memberRepo.getPointsForMember(memberWhoBuys) >= memberRepo.convertMoneyToPoints(marketBook)){
                 buyBook(marketBook, memberWhoBuys);
-                memberRepo.updatePointsAfterBuy(marketBook);
+                memberRepo.updatePointsAfterBuy(marketBook,memberWhoBuys);
                 return true;
             }else {
                 throw new NotEnoughPointsException("You don't have enough points to buy this book");
