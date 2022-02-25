@@ -134,7 +134,6 @@ public class BookService {
                 if (rs.isBeforeFirst()) {
                     checkedAuthor.setId(UUID.fromString(rs.getString("Authors.id")));
                 } else {
-                    checkedAuthor.setId(UUID.randomUUID());
                     addAuthor(checkedAuthor);
                 }
             }
