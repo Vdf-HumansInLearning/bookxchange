@@ -7,8 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class BookDto {
 
-    String bookTitle;
-    String authorsName;
-    String authorSurname;
-    int bookQuantity;
+  String bookTitle;
+  String authorsName;
+  String authorSurname;
+  int bookQuantity;
 }

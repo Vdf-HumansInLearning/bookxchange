@@ -2,8 +2,6 @@ package com.bookxchange.service;
 
 
 import com.bookxchange.customExceptions.InvalidISBNException;
-import com.bookxchange.model.Author;
-import com.bookxchange.model.Book;
 import com.bookxchange.pojo.Isbn;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
