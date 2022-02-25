@@ -30,6 +30,9 @@ public class BookService {
         for (BookDto book : allBooksEver) {
             System.out.println(book);
         }
+
+        BookService bookService = new BookService();
+        bookService.addingBookToDataBase("0-7475-3269-9");
     }
 
 
@@ -47,8 +50,11 @@ public class BookService {
 //            Contacts the ISBN service to retrieve book details
             IsbnService retrivedBook = new IsbnService();
 
+
+
 //            Checks and adds Authors from the retrievedBook, if they exist in DB updates them with existing UUID to creat the m2m entry between Book and Author(s)
             Book retrivedBookDetailsFromExternal = retrivedBook.hitIsbnBookRequest(isbn);
+            System.out.println(retrivedBook + "ceva");
             Iterator<Author> authorList = retrivedBookDetailsFromExternal.getAuthors().listIterator();
             while (authorList.hasNext()) {
                 checkAuthorUpdateOrAddDB(authorList.next());
@@ -104,7 +110,7 @@ public class BookService {
 
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sqlUpdateQuantity)) {
-            ps.executeQuery();
+            ps.executeUpdate(sqlUpdateQuantity);
         }
     }
 

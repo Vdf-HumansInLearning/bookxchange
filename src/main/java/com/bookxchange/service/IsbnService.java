@@ -2,6 +2,8 @@ package com.bookxchange.service;
 
 
 import com.bookxchange.customExceptions.InvalidISBNException;
+import com.bookxchange.model.Author;
+import com.bookxchange.model.Book;
 import com.bookxchange.pojo.Isbn;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
@@ -73,7 +75,7 @@ public class IsbnService {
             List<Author> authorsToAdd= new ArrayList<>();
             for(int i=0; i<author.size(); i++) {
                 Author selectedAuthor=new Author();
-                Pattern patternAuthorName= Pattern.compile("^(.*)\s([A-Z][a-z]*)$");
+                Pattern patternAuthorName= Pattern.compile("^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
                 if (matcher.find()) {
                     selectedAuthor.setName(matcher.group(2));
