@@ -13,6 +13,7 @@ CREATE TABLE Authors (
 );
 
 
+
 CREATE TABLE books (
                        isbn varchar(20) NOT NULL UNIQUE,
                        title VARCHAR(100),
@@ -21,6 +22,15 @@ CREATE TABLE books (
                        quantity INT,
                        PRIMARY KEY (isbn),
                        FOREIGN KEY (author) REFERENCES Authors(id)
+);
+
+CREATE TABLE author_book_mtm (
+                             id varchar(36) NOT NULL unique ,
+                             book_isbn varchar(13) NOT NULL,
+                             author_id varchar (36) NOT NULL,
+                             PRIMARY KEY (id),
+                             FOREIGN KEY (author_id) REFERENCES Authors(id),
+                             FOREIGN KEY (book_isbn) REFERENCES books(isbn)
 );
 
 
