@@ -25,14 +25,14 @@ public class BookService {
 
 
         BookRepo bookRepo = new BookRepo();
-        List<BookDto> allBooksEver = bookRepo.getAllBooksEver();
-
-        for (BookDto book : allBooksEver) {
-            System.out.println(book);
-        }
+//        List<BookDto> allBooksEver = bookRepo.getAllBooksEver();
+//
+//        for (BookDto book : allBooksEver) {
+//            System.out.println(book);
+//        }
 
         BookService bookService = new BookService();
-        bookService.addingBookToDataBase("0-7475-3269-9");
+        bookService.addingBookToDataBase("9781387207770");
     }
 
 
@@ -45,7 +45,11 @@ public class BookService {
     private void addingBookToDataBase(String isbn) throws SQLException {
 
 //    If a book is present in the DB then this service will not do any process
-        if (!checkIfBookIsInDataBase(isbn)) {
+
+        System.out.println("sunt aici " + checkIfBookIsInDataBase(isbn));
+
+
+        if (checkIfBookIsInDataBase(isbn)) {
 
 //            Contacts the ISBN service to retrieve book details
             IsbnService retrivedBook = new IsbnService();
@@ -88,9 +92,12 @@ public class BookService {
 //            if present will execute method to update quantity by 1
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.isBeforeFirst()) {
+
+                    System.out.println("aici ");
                     updateQuantityForExistingBook(isbn);
                     return true;
                 } else {
+                    System.out.println("sau aici ");
                     return false;
                 }
             }
@@ -120,13 +127,21 @@ public class BookService {
 //    If not found sets a UUID and adds given author to the database
     private void checkAuthorUpdateOrAddDB(Author checkedAuthor) throws SQLException {
 
+        System.out.println(checkedAuthor.getSurname() + " checkedAuthor");
+        System.out.println(checkedAuthor.getName() + " checkedAuthor");
+
+         String x = checkedAuthor.getSurname();
+        String y = checkedAuthor.getName();
+
+
+
         String sqlCheckAuthorExistsUpdateUUID = "SELECT\n" +
                 "Authors.id\n" +
                 "FROM\n" +
                 "Authors\n" +
                 "WHERE\n" +
-                "Authors.name = chececkedAuthor.getName() \n" +
-                "Authors.surname = checkedAuthor.getSurname()";
+                "Authors.name ="+ "'"+y +"' AND " +
+                "Authors.surname =" +"\'"+x +"\';";
 
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sqlCheckAuthorExistsUpdateUUID)) {
@@ -145,10 +160,15 @@ public class BookService {
     //    Method adds provided author to the database
     private void addAuthor(Author authorToAdd) throws SQLException {
 
-        String sqlForInsertingNewAuthor = "INSERT INTO" +
-                "Authors" +
+
+        String sqlForInsertingNewAuthor = "INSERT INTO " +
+                "Authors " +
                 "(id, name, surname)" +
-                "VALUES(authorToAdd.getId(), authorToAdd.getName(), authorToAdd.getSurname())";
+                " VALUES (" +"\'"  +
+                authorToAdd.getId() + "\', \'"
+                + authorToAdd.getName() + "\' , \'"+ authorToAdd.getSurname() + "\');";
+
+        System.out.println(sqlForInsertingNewAuthor + " string final");
 
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sqlForInsertingNewAuthor)) {

@@ -75,7 +75,7 @@ public class IsbnService {
             List<Author> authorsToAdd= new ArrayList<>();
             for(int i=0; i<author.size(); i++) {
                 Author selectedAuthor=new Author();
-                Pattern patternAuthorName= Pattern.compile("^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)");
+                Pattern patternAuthorName= Pattern.compile("^(.*)\\s([a-zA-Z]{1,})$");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
                 if (matcher.find()) {
                     selectedAuthor.setName(matcher.group(2));

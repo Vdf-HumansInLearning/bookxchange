@@ -4,10 +4,7 @@ package com.bookxchange.service;
 
 import java.net.*;
 //import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.Builder;
-import java.net.http.HttpResponse;
+
 
 public class BookVerificationService {
 
