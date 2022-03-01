@@ -4,24 +4,23 @@ CREATE DATABASE IF NOT EXISTS bookOLX ;
 USE bookOLX;
 
 
-CREATE TABLE Authors (
+CREATE TABLE authors (
                          id varchar(36) NOT NULL unique,
                          name VARCHAR(25),
                          surname VARCHAR (25),
-                         birthDate DATE,
                          PRIMARY KEY (id)
 );
 
 
 
 CREATE TABLE books (
-                       isbn varchar(20) NOT NULL UNIQUE,
-                       title VARCHAR(100),
+                       isbn varchar(20) not null unique,
+                       title varchar(100),
                        author varchar(36),
-                       description TEXT,
-                       quantity INT,
-                       PRIMARY KEY (isbn),
-                       FOREIGN KEY (author) REFERENCES Authors(id)
+                       description text,
+                       quantity int,
+                       primary key (isbn),
+                       foreign key (author) references authors(id)
 );
 
 CREATE TABLE author_book_mtm (
@@ -29,87 +28,87 @@ CREATE TABLE author_book_mtm (
                              book_isbn varchar(13) NOT NULL,
                              author_id varchar (36) NOT NULL,
                              PRIMARY KEY (id),
-                             FOREIGN KEY (author_id) REFERENCES Authors(id),
+                             FOREIGN KEY (author_id) REFERENCES authors(id),
                              FOREIGN KEY (book_isbn) REFERENCES books(isbn)
 );
 
 
 
-CREATE TABLE Members (
-                         userID varchar(36) NOT NULL,
+CREATE TABLE members (
+                         member_user_id varchar(36) NOT NULL,
                          username TEXT,
                          points INT,
-                         emailAddress varchar(100),
-                         primary key (userID)
+                         email_address varchar(100),
+                         primary key (member_user_id)
 );
 
 
-CREATE TABLE BookMarket (
-                            id VARCHAR(36) not null unique,
-                            userID VARCHAR(36) not null,
-                            bookID VARCHAR(36) not null,
-                            bookState TEXT,
-                            forSell boolean,
-                            sellPrice double,
-                            forRent boolean,
-                            rentPrice double,
-                            bookStatus text,
-                            primary key(id),
-                            foreign key (userID) references Members(userID),
-                            foreign key (bookID) references books(isbn)
+CREATE TABLE book_market (
+                            book_market_id VARCHAR(36) not null unique,
+                            user_id VARCHAR(36) not null,
+                            book_id VARCHAR(36) not null,
+                            book_state TEXT,
+                            for_sell boolean,
+                            sell_price double,
+                            for_rent boolean,
+                            rent_price double,
+                            book_status text,
+                            primary key(book_market_id),
+                            foreign key (user_id) references members(member_user_id),
+                            foreign key (book_id) references books(isbn)
 );
 
-CREATE TABLE Transaction (
+CREATE TABLE transaction (
                             id bigint not null unique auto_increment,
-                            marketBookId VARCHAR(36) not null unique,
-                            memberIdFrom VARCHAR(36) not null,
-                            memberIdTo VARCHAR(36) not null,
-                            transactionType VARCHAR(10),
-                            transactionDate date,
-                            expectedReturnDate date,
+                            market_book_id VARCHAR(36) not null unique,
+                            member_id_from VARCHAR(36) not null,
+                            member_id_to VARCHAR(36) not null,
+                            transaction_type VARCHAR(10),
+                            transaction_date date,
+                            expected_return_date date,
                             primary key(id),
-                            foreign key (memberIdFrom) references Members(userID),
-                            foreign key (marketBookId) references BookMarket(id)
+                            foreign key (member_id_from) references members(member_user_id),
+                            foreign key (market_book_id) references book_market(book_market_id)
 );
 
 
-CREATE TABLE Rating (
-                        ratingId INT not null unique AUTO_INCREMENT,
+CREATE TABLE rating (
+                        rating_id INT not null unique AUTO_INCREMENT,
                         grade INT,
                         description VARCHAR(200),
-                        leftBy VARCHAR(36),
-                        userID VARCHAR(36),
-                        bookID varchar(36),
-                        primary key (ratingId),
-                        foreign key (userID) references Members(userID)
+                        left_by VARCHAR(36),
+                        user_id VARCHAR(36),
+                        book_id varchar(36),
+                        primary key (rating_id),
+                        foreign key (user_id) references members(member_user_id)
 );
 
-CREATE TABLE Emails (
-                        ID int AUTO_INCREMENT,
+CREATE TABLE emails (
+                        id int AUTO_INCREMENT,
                         content varchar(150),
-                        whensent DATE,
+                        sent_date DATE,
                         status varchar(20),
-                        memberID varchar(36) NOT NULL,
-                        primary key(ID),
-                        foreign key (memberID) references Members(userID)
+                        member_id varchar(36) NOT NULL,
+                        primary key(id),
+                        foreign key (member_id) references members(member_user_id)
 );
-CREATE TABLE Notifications (
-                               ID int AUTO_INCREMENT,
-                               MARKETBOOKID varchar(36) not null,
-                               TYPE varchar(20),
-                               SENT tinyint default 0,
-                               MEMBERID varchar(36) NOT NULL,
-                               primary key (ID),
-                               foreign key (MARKETBOOKID) references BookMarket(id),
-                               foreign key (MEMBERID) references Members(MEMBERUSERID)
+CREATE TABLE notifications (
+                               id int auto_increment,
+                               market_book_id varchar(36) not null,
+                               type varchar(20),
+                               sent tinyint default 0,
+                               member_id varchar(36) not null,
+                               primary key (id),
+                               foreign key (market_book_id) references book_market(book_market_id),
+                               foreign key (member_id) references members(member_user_id)
 );
 
-CREATE TABLE EmailTemplates (
-                                ID int not null AUTO_INCREMENT,
-                                templateName varchar (50),
+CREATE TABLE email_templates (
+                                id int not null AUTO_INCREMENT,
+                                template_name varchar (50),
                                 subject varchar (100),
-                                contentBody varchar (300),
-                                primary key(ID)
+                                content_body varchar (300),
+                                primary key(id)
 );
 
 

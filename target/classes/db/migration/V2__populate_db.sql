@@ -1,10 +1,10 @@
-INSERT INTO Authors (id, name, surname, birthDate)
+INSERT INTO authors (id, name, surname)
 values
-    ("d41f41f6-c469-495d-9fd1-4b4ddd37957e", "Rowling", "Joanne K", '1965-07-31'),
-    ("635c4c57-abc0-476e-a941-4265cf164f73", "Tolkien", "John Ronald Reuel", '1892-01-03'),
-    ("9f017f2a-4330-4a8c-9b3e-311bf638ddf1", "Kahneman", "Daniel", '1934-03-05'),
-    ("d713c2d0-baee-4383-9207-7851cc4651e3", "Mitchell", "Erika", '1963-03-07'),
-    ("350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011", "Tchaikovsky", "Adrian", '1972-06-14')
+    ("d41f41f6-c469-495d-9fd1-4b4ddd37957e", "Rowling", "Joanne K"),
+    ("635c4c57-abc0-476e-a941-4265cf164f73", "Tolkien", "John Ronald Reuel"),
+    ("9f017f2a-4330-4a8c-9b3e-311bf638ddf1", "Kahneman", "Daniel"),
+    ("d713c2d0-baee-4383-9207-7851cc4651e3", "Mitchell", "Erika"),
+    ("350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011", "Tchaikovsky", "Adrian")
 ;
 
 
@@ -20,14 +20,14 @@ values
     ('978-0-230-75700-4', "The Air War ", "350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011", "Something something War, kitty ipsom atack", 1)
 ;
 
-INSERT INTO Members (userID, username, points)
+INSERT INTO members (member_user_id, username, points, email_address)
 values
     ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde",0,"dani@gmail.com"),
     ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin",0,"robot@gmail.com"),
     ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina",0,"rozza@gmail.com")
 ;
 
-INSERT INTO BookMarket (id, userID, bookID, bookState, forSell, sellPrice, forRent, rentPrice, bookStatus)
+INSERT INTO book_market (book_market_id, user_id, book_id, book_state, for_sell, sell_price, for_rent, rent_price, book_status)
 values
     ("42a48524-20fd-4708-9311-55bf1a247eaf", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0-7475-3269-9', "ASNEW", false, 0, true, 50, "AVAILABLE"),
     ("495c9b8d-5a71-4215-abe0-71a46e79a02c", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0-7475-3849-2', "ASNEW", true, 200, false, 0, "AVAILABLE"),
@@ -41,5 +41,5 @@ values
     ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '978-0-230-75700-4', "USED", true, 20 , true, 3, "AVAILABLE")
 ;
 
-INSERT INTO bookOLX.Notifications (ID, MARKETBOOKID, TYPE, SENT, MEMBERID) VALUES (1, '1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb', 'AVAILABILITY', 0, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
-INSERT INTO bookOLX.Notifications (ID, MARKETBOOKID, TYPE, SENT, MEMBERID) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 'AVAILABILITY', 0, '6eca21ce-861b-4dd7-975d-20a969e3183a');
+INSERT INTO notifications (id, market_book_id, type, sent, member_id) VALUES (1, '1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb', 'AVAILABILITY', 0, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
+INSERT INTO notifications (id, market_book_id, type, sent, member_id) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 'AVAILABILITY', 0, '6eca21ce-861b-4dd7-975d-20a969e3183a');

@@ -1,7 +1,7 @@
 package com.bookxchange.service;
 
 import com.bookxchange.model.BookMarketEntity;
-import com.bookxchange.model.NotificationEntity;
+import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
 import com.bookxchange.repositories.BookMarketRepository;
 import com.bookxchange.repositories.NotificationRepository;
@@ -46,9 +46,9 @@ public class NotificationService {
             // TODO: create custom exception instead of sout, check if member passed in param exists, check so it doesn't notify itself, check if duplicate notification
             System.out.println("Book is already available or has been SOLD " + status);
         } else {
-            NotificationEntity notification = new NotificationEntity();
+            NotificationsEntity notification = new NotificationsEntity();
             notification.setMemberId(memberId);
-            notification.setBookId(marketBookId);
+            notification.setMarketBookId(marketBookId);
             notification.setType("AVAILABILITY"); //TODO: set as enum
             notificationRepository.save(notification);
 
