@@ -28,9 +28,13 @@ public class NotificationService {
 
 
     public void checkForNotifications() {
-        List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
-        emailToNotify.forEach(customer -> emailService.sendMail(customer.getEmailAddress(), "subj", "hi," + customer.getTitle() + " is avaialable"));
-        // TODO: get template instead of hardcoded email content, update sent = 1 if mail sent successfully
+        try {
+            List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
+            emailToNotify.forEach(customer -> emailService.sendMail(customer.getEmailAddress(), "subj", "hi," + customer.getTitle() + " is avaialable"));
+            // TODO: get template instead of hardcoded email content, update sent = 1 if mail sent successfully
+        } catch (Exception e) {
+            System.out.println("tre facut mailu sa mearga");
+        }
     }
 
     public void addNotification (String marketBookId, String memberId){
