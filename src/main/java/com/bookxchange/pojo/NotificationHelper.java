@@ -2,6 +2,6 @@ package com.bookxchange.pojo;
 
 
 public interface NotificationHelper {
-    String getEmailAddress();
+    String getEmail_Address();
     String getTitle();
 }

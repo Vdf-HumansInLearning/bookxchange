@@ -30,9 +30,10 @@ public class NotificationService {
     public void checkForNotifications() {
         try {
             List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
-            emailToNotify.forEach(customer -> emailService.sendMail(customer.getEmailAddress(), "subj", "hi," + customer.getTitle() + " is avaialable"));
+            emailToNotify.forEach(customer -> emailService.sendMail(customer.getEmail_Address(), "subj", "hi," + customer.getTitle() + " is avaialable"));
             // TODO: get template instead of hardcoded email content, update sent = 1 if mail sent successfully
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("tre facut mailu sa mearga");
         }
     }
