@@ -1,6 +1,6 @@
 package utils;
 
-import org.flywaydb.core.Flyway;
+
 
 import java.io.File;
 import java.sql.*;
@@ -15,7 +15,7 @@ public class JdbcConnection {
     private static Connection con;
 
   public static void main(String[] args) {
-      getConnection();
+      /*getConnection();
 
         File resourcesDirectory = new File("src/main/resources");
         String absolutePath = resourcesDirectory.getAbsolutePath();
@@ -27,8 +27,8 @@ public class JdbcConnection {
                 .schemas("bookOLX")
                 .load();
 
-//        fdb.clean();
-        fdb.migrate();
+        fdb.clean();
+        fdb.migrate();*/
 
 
   }

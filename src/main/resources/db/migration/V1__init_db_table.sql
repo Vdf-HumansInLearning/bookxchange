@@ -39,6 +39,7 @@ CREATE TABLE Members (
                          userID varchar(36) NOT NULL,
                          username TEXT,
                          points INT,
+                         emailAddress varchar(100),
                          primary key (userID)
 );
 
@@ -85,7 +86,6 @@ CREATE TABLE Rating (
 
 CREATE TABLE Emails (
                         ID int AUTO_INCREMENT,
-                        emailAddress varchar(50),
                         content varchar(150),
                         whensent DATE,
                         status varchar(20),
@@ -95,12 +95,13 @@ CREATE TABLE Emails (
 );
 CREATE TABLE Notifications (
                                ID int AUTO_INCREMENT,
-                               emailID int,
-                               bookID varchar(36) not null,
-                               type varchar(20),
+                               MARKETBOOKID varchar(36) not null,
+                               TYPE varchar(20),
+                               SENT tinyint default 0,
+                               MEMBERID varchar(36) NOT NULL,
                                primary key (ID),
-                               foreign key (bookID) references BookMarket(id),
-                               foreign key (emailID) references Emails(ID)
+                               foreign key (MARKETBOOKID) references BookMarket(id),
+                               foreign key (MEMBERID) references Members(MEMBERUSERID)
 );
 
 CREATE TABLE EmailTemplates (
