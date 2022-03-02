@@ -2,60 +2,77 @@ package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.InvalidRatingException;
 import com.bookxchange.model.MarketBook;
+import com.bookxchange.model.Rating;
+import com.bookxchange.model.RatingEntity;
 import com.bookxchange.model.Transaction;
-import com.bookxchange.repositories.MarketBookRepo;
-import com.bookxchange.repositories.RatingRepo;
-import com.bookxchange.repositories.TransactionRepo;
+import com.bookxchange.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-
+@Service
 public class RatingService {
 
     static TransactionRepo transactionRepo = new TransactionRepo();
-    static RatingRepo ratingRepo = new RatingRepo();
     static MarketBookRepo marketBookRepo = new MarketBookRepo();
 
-    public static void ratingAMember(int grade, String description, String leftBy, String userID) throws SQLException, IOException {
+    @Autowired
+    RatingRepository ratingRepository;
 
-        if (userID == null) {
+    public  void ratingAMember(RatingEntity ratingEntity) throws SQLException, IOException {
+
+        if (ratingEntity.getUserId() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
-        Transaction transaction = transactionRepo.getTransactionByWhoSelleddAndWhoBuys(UUID.fromString(leftBy), UUID.fromString(userID));
+        Transaction transaction = transactionRepo.getTransactionByWhoSelleddAndWhoBuys(UUID.fromString(ratingEntity.getLeftBy()), UUID.fromString(ratingEntity.getUserId()));
 
-        if (transaction == null || transaction.getId() == 0) {
+        if (transaction == null ) {
             throw new InvalidRatingException("These two users never interact");
-        } else {
-
-            ratingRepo.addRating(grade, description, leftBy, userID, null);
         }
+        ratingRepository.save(ratingEntity);
+
     }
 
-    public static void ratingABook(int grade, String description, String leftBy, String bookID) throws SQLException, IOException {
+    public  void ratingABook(RatingEntity ratingEntity) throws SQLException, IOException {
 
-        MarketBook marketBook = marketBookRepo.getMarketBook(UUID.fromString(bookID));
+        MarketBook marketBook = marketBookRepo.getMarketBook(UUID.fromString(ratingEntity.getBookId() ));
 
-        if (bookID == null) {
+        if (ratingEntity.getBookId() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");
         }
-        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(bookID), UUID.fromString(leftBy));
-        if (transaction == null || transaction.getId() == 0) {
-            throw new InvalidRatingException("This user" + leftBy + "doesn't interact with this book");
+
+        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(ratingEntity.getBookId() ), UUID.fromString(ratingEntity.getLeftBy()));
+
+        if (transaction == null ) {
+            throw new InvalidRatingException("This user" + ratingEntity.getLeftBy() + "doesn't interact with this book");
+        }
+
+        ratingRepository.save(ratingEntity);
+
+
+    }
+
+    public List<RatingEntity> getAllRatings(Integer pageNo, Integer pageSize, String sortBy)
+    {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<RatingEntity> pagedResult = ratingRepository.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
         } else {
-            ratingRepo.addRating(grade, description, leftBy, null, marketBook.getBookId());
+            return new ArrayList<RatingEntity>();
         }
     }
-
-
-    public static void main(String[] args) throws SQLException, IOException {
-        ratingABook(2, "ceva", "13177e99-14b5-43c5-a446-e0dc751c3153", "1c821fb0-1024-4cd0-8f23-2d763fb2c13b");
-        // ratingAMember(3,"carte buna", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9","13177e99-14b5-43c5-a446-e0dc751c3153");
-        // ratingAMember(3,"carte buna", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9","13177e99-14b5-43c5-a446-e0dc751c3153");
-
-    }
-
 
 }
