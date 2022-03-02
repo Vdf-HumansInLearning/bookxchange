@@ -1,5 +1,6 @@
 package com.bookxchange.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "rating", schema = "bookOLX")
 @Data
+@AllArgsConstructor
 public class RatingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -29,4 +31,10 @@ public class RatingEntity {
     private String bookId;
 
 
+    public RatingEntity() {
+
+    }
+
+    public RatingEntity(int grade, String description, String leftBy, String userID, Object o) {
+    }
 }

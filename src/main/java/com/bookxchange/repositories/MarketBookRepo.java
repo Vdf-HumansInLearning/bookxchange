@@ -76,22 +76,22 @@ public class MarketBookRepo {
 
     public MarketBook getMarketBook(UUID id) throws SQLException, IOException {
 
-        String sql = "SELECT * FROM BookMarket WHERE\n" + "\tBookMarket.id ='" + id + "'";
+        String sql = "SELECT * FROM book_market WHERE\n" + "\tbook_market_id ='" + id + "'";
 
         MarketBook marketBook = new MarketBook();
 
         try (Connection con = JdbcConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    marketBook.setId(UUID.fromString(rs.getString("id")));
-                    marketBook.setUserId(UUID.fromString(rs.getString("userId")));
-                    marketBook.setBookId(rs.getString("bookId"));
-                    marketBook.setBookState(BookState.valueOf(rs.getString("bookState")));
-                    marketBook.setForSell(rs.getBoolean("BookMarket.forSell"));
-                    marketBook.setSellPrice(rs.getDouble("BookMarket.sellPrice"));
-                    marketBook.setForRent(rs.getBoolean("BookMarket.forRent"));
-                    marketBook.setRentPrice(rs.getDouble("BookMarket.rentPrice"));
-                    marketBook.setBookStatus(BookStatus.valueOf(rs.getString("BookMarket.bookStatus")));
+                    marketBook.setId(UUID.fromString(rs.getString("book_market_id")));
+                    marketBook.setUserId(UUID.fromString(rs.getString("user_id")));
+                    marketBook.setBookId(rs.getString("book_id"));
+                    marketBook.setBookState(BookState.valueOf(rs.getString("book_state")));
+                    marketBook.setForSell(rs.getBoolean("for_sell"));
+                    marketBook.setSellPrice(rs.getDouble("sell_price"));
+                    marketBook.setForRent(rs.getBoolean("for_rent"));
+                    marketBook.setRentPrice(rs.getDouble("rent_price"));
+                    marketBook.setBookStatus(BookStatus.valueOf(rs.getString("book_status")));
                 }
             }
         }

@@ -29,18 +29,18 @@ public class BookExchangeApplication extends SpringBootServletInitializer {
         SpringApplication.run(BookExchangeApplication.class,args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
-        return builder.sources(BookExchangeApplication.class);
-    }
-
-    @Scheduled(fixedRateString = "${notification.check.every}")
-    void notificationCronJob(){
-
-        ns.checkForNotifications();
-
-        System.out.println("Notification Cron Running... " + new Date());
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
+//        return builder.sources(BookExchangeApplication.class);
+//    }
+//
+//    @Scheduled(fixedRateString = "${notification.check.every}")
+//    void notificationCronJob(){
+//
+//        ns.checkForNotifications();
+//
+//        System.out.println("Notification Cron Running... " + new Date());
+//    }
 
 
 }
