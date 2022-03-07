@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "rating", schema = "bookOLX")
@@ -16,9 +17,11 @@ public class RatingEntity {
     private int ratingId;
     @Basic
     @Column(name = "grade")
+    @NotBlank(message = "grade is mandatory")
     private Integer grade;
     @Basic
     @Column(name = "description")
+    @NotBlank(message = "description is mandatory")
     private String description;
     @Basic
     @Column(name = "left_by")
@@ -35,6 +38,11 @@ public class RatingEntity {
 
     }
 
-    public RatingEntity(int grade, String description, String leftBy, String userID, Object o) {
+    public RatingEntity(Integer grade, String description, String leftBy, String userId, String bookId) {
+        this.grade = grade;
+        this.description = description;
+        this.leftBy = leftBy;
+        this.userId = userId;
+        this.bookId = bookId;
     }
 }
