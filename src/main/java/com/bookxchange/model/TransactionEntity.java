@@ -1,9 +1,10 @@
 package com.bookxchange.model;
 
+import com.bookxchange.enums.TransactionType;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "transaction", schema = "bookOLX")
@@ -27,9 +28,24 @@ public class TransactionEntity {
     private String transactionType;
     @Basic
     @Column(name = "transaction_date")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     @Basic
     @Column(name = "expected_return_date")
-    private Date expectedReturnDate;
+    private LocalDate expectedReturnDate;
 
+    public TransactionEntity(String marketBookId, String memberIdFrom, String memberIdTo, String transactionType, LocalDate transactionDate) {
+        this.marketBookId = marketBookId;
+        this.memberIdFrom = memberIdFrom;
+        this.memberIdTo = memberIdTo;
+        this.transactionType = transactionType;
+        this.transactionDate = transactionDate;
+        if(transactionType.equalsIgnoreCase(TransactionType.RENT.toString())){
+            this.expectedReturnDate = LocalDate.now().plusDays(30);
+        }
+    }
+
+
+    public TransactionEntity() {
+
+    }
 }
