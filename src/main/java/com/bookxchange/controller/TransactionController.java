@@ -29,13 +29,13 @@ public class TransactionController {
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 
-    @GetMapping("/transaction")
-    public ResponseEntity<TransactionEntity> getTransactionById(@RequestParam(value="id") Long id) {
+    @GetMapping("/transactions/{id}")
+    public ResponseEntity<TransactionEntity> getTransactionById(@PathVariable Long id) {
         return new ResponseEntity<>(transactionService.getTransactionById(id), HttpStatus.OK);
     }
-    @GetMapping("/")
-    public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@RequestParam(value = "type") String transactionType) {
-        return new ResponseEntity<>(transactionService.getTransactionByType(transactionType), HttpStatus.OK);
+    @GetMapping("/transactions/{type}")
+    public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@PathVariable String type) {
+        return new ResponseEntity<>(transactionService.getTransactionByType(type), HttpStatus.OK);
     }
 
 }

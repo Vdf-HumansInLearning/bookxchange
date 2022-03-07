@@ -22,7 +22,7 @@ public class RatingController {
     @Autowired
     RatingService ratingService;
 
-     Mapper mapper = new Mapper();
+    Mapper mapper = new Mapper();
     Logger logger = LoggerFactory.getLogger(RatingController.class);
 
     @PostMapping("/createBookRating")
@@ -31,7 +31,7 @@ public class RatingController {
         logger.debug("createBookRating start ");
 
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
-        logger.debug("ratingEntity : " ,ratingEntity );
+        logger.debug("ratingEntity : ", ratingEntity);
         try {
             ratingService.ratingABook(ratingEntity);
 
@@ -47,7 +47,7 @@ public class RatingController {
 
         logger.debug("createMemberRating start ");
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
-        logger.debug("ratingEntity : " ,ratingEntity );
+        logger.debug("ratingEntity : ", ratingEntity);
         try {
             ratingService.ratingAMember(ratingEntity);
             return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
@@ -59,8 +59,8 @@ public class RatingController {
 
     @GetMapping("/")
     public ResponseEntity<List<RatingEntity>> getAllRatings(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                     @RequestParam(defaultValue = "10") Integer pageSize,
-                                                     @RequestParam(defaultValue = "ratingId") String sortBy) {
+                                                            @RequestParam(defaultValue = "10") Integer pageSize,
+                                                            @RequestParam(defaultValue = "ratingId") String sortBy) {
 
         logger.debug("getAllRatings start ");
 
