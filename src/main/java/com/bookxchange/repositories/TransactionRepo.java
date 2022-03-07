@@ -16,10 +16,10 @@ public class TransactionRepo {
         String sql = null;
 
         if(transaction.getTransactionType().equals(TransactionType.SOLD)){
-            sql= "INSERT INTO Transaction ( marketBookId, memberIdFrom, memberIdTo, transactionType, transactionDate)"
+            sql= "INSERT INTO transaction ( market_book_id, member_id_from, member_id_to, transaction_type, transaction_date)"
                     + "values(?,?,?,?,?)";
         }else {
-            sql= "INSERT INTO Transaction ( marketBookId, memberIdFrom, memberIdTo, transactionType, transactionDate, expectedReturnDate)"
+            sql= "INSERT INTO transaction ( market_book_id, member_id_from, member_id_to, transaction_type, transaction_date, expected_return_date)"
                     + "values(?,?,?,?,?,?)";
         }
 
@@ -45,15 +45,15 @@ public class TransactionRepo {
 
     public Transaction getTransactionByBookIdAndLeftBy(UUID marketBookId, UUID memberIdTo) throws SQLException, IOException {
 
-        String sql = "SELECT * FROM Transaction WHERE\n" +
-                "\tTransaction.marketBookId ='" + marketBookId + "' AND Transaction.memberIdTo ='" + memberIdTo + "';";
+        String sql = "SELECT * FROM transaction WHERE\n" +
+                "\ttransaction.market_book_id ='" + marketBookId + "' AND transaction.member_id_to ='" + memberIdTo + "';";
         return getTransaction(sql);
     }
 
     public Transaction getTransactionByWhoSelleddAndWhoBuys(UUID memberIdFrom, UUID memberIdTo) throws SQLException, IOException {
 
-        String sql = "SELECT * FROM Transaction WHERE\n" +
-                "\tTransaction.memberIdFrom ='" + memberIdFrom + "' AND Transaction.memberIdTo ='" + memberIdTo + "';";
+        String sql = "SELECT * FROM transaction WHERE\n" +
+                "\ttransaction.member_id_from ='" + memberIdFrom + "' AND transaction.member_id_to ='" + memberIdTo + "';";
         return getTransaction(sql);
     }
 
@@ -65,9 +65,9 @@ public class TransactionRepo {
                 while (rs.next()) {
 
                     transaction.setId(rs.getLong("id"));
-                    transaction.setMarketBookId(UUID.fromString(rs.getString("marketBookId")));
-                    transaction.setMemberIdFrom(UUID.fromString(rs.getString("memberIdFrom")));
-                    transaction.setMemberIdTo(UUID.fromString(rs.getString("memberIdTo")));
+                    transaction.setMarketBookId(UUID.fromString(rs.getString("market_book_id")));
+                    transaction.setMemberIdFrom(UUID.fromString(rs.getString("member_id_from")));
+                    transaction.setMemberIdTo(UUID.fromString(rs.getString("member_id_to")));
 
                 }
             }

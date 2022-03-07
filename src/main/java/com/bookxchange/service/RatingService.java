@@ -30,13 +30,18 @@ public class RatingService {
 
     public  void ratingAMember(RatingEntity ratingEntity) throws SQLException, IOException {
 
+
         if (ratingEntity.getUserId() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
+        if(ratingEntity.getUserId().equals(ratingEntity.getLeftBy())){
+            throw new InvalidRatingException("Users can not let reviews to themselfs");
+        }
+
         Transaction transaction = transactionRepo.getTransactionByWhoSelleddAndWhoBuys(UUID.fromString(ratingEntity.getLeftBy()), UUID.fromString(ratingEntity.getUserId()));
 
-        if (transaction == null ) {
+        if (transaction == null || transaction.getId()==0) {
             throw new InvalidRatingException("These two users never interact");
         }
         ratingRepository.save(ratingEntity);
@@ -45,16 +50,16 @@ public class RatingService {
 
     public  void ratingABook(RatingEntity ratingEntity) throws SQLException, IOException {
 
-        MarketBook marketBook = marketBookRepo.getMarketBook(UUID.fromString(ratingEntity.getBookId() ));
-
         if (ratingEntity.getBookId() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");
         }
+        MarketBook marketBook = marketBookRepo.getMarketBook(UUID.fromString(ratingEntity.getBookId() ));
 
-        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(ratingEntity.getBookId() ), UUID.fromString(ratingEntity.getLeftBy()));
+        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(ratingEntity.getBookId()), UUID.fromString(ratingEntity.getLeftBy()));
 
-        if (transaction == null ) {
-            throw new InvalidRatingException("This user" + ratingEntity.getLeftBy() + "doesn't interact with this book");
+
+        if (transaction == null || transaction.getId()==0) {
+            throw new InvalidRatingException("This user " + ratingEntity.getLeftBy() + " doesn't interact with this book");
         }
 
         ratingRepository.save(ratingEntity);
