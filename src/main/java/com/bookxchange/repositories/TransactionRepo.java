@@ -50,12 +50,12 @@ public class TransactionRepo {
 //        return getTransaction(sql);
 //    }
 
-    public Transaction getTransactionByWhoSelleddAndWhoBuys(UUID memberIdFrom, UUID memberIdTo) throws SQLException, IOException {
-
-        String sql = "SELECT * FROM transaction WHERE\n" +
-                "\ttransaction.member_id_from ='" + memberIdFrom + "' AND transaction.member_id_to ='" + memberIdTo + "';";
-        return getTransaction(sql);
-    }
+//    public Transaction getTransactionByWhoSelleddAndWhoBuys(UUID memberIdFrom, UUID memberIdTo) throws SQLException, IOException {
+//
+//        String sql = "SELECT * FROM transaction WHERE\n" +
+//                "\ttransaction.member_id_from ='" + memberIdFrom + "' AND transaction.member_id_to ='" + memberIdTo + "';";
+//        return getTransaction(sql);
+//    }
 
     private Transaction getTransaction(String sql) throws SQLException {
         Transaction transaction = new Transaction();
