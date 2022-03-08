@@ -25,6 +25,7 @@ public class RatingController {
     Mapper mapper = new Mapper();
     Logger logger = LoggerFactory.getLogger(RatingController.class);
 
+//    books/{bookId}/rating
     @PostMapping("/createBookRating")
     public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDto ratingDto) {
 
@@ -41,7 +42,7 @@ public class RatingController {
                     HttpStatus.BAD_REQUEST, invalidRatingException.getMessage());
         }
     }
-
+//  members/{memberID}/rating
     @PostMapping("/createMemberRating")
     public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDto ratingDto) {
 
@@ -57,6 +58,7 @@ public class RatingController {
         }
     }
 
+//    la fel ca sus dar cu GET
     @GetMapping("/")
     public ResponseEntity<List<RatingEntity>> getAllRatings(@RequestParam(defaultValue = "0") Integer pageNo,
                                                             @RequestParam(defaultValue = "10") Integer pageSize,

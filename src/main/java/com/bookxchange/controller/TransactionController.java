@@ -42,13 +42,13 @@ public class TransactionController {
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 
-    @GetMapping("/transactions/byUserID")
+    @GetMapping("/transactions/")
     public ResponseEntity<List<TransactionEntity>> getTransactionById(@RequestParam String userID) {
         return new ResponseEntity<>(transactionService.getTransactionByUserID(userID), HttpStatus.OK);
     }
 
 
-    @GetMapping("/transactions/byType")
+    @GetMapping("/transactions/a")
     public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@RequestParam String type) {
         return new ResponseEntity<>(transactionService.getTransactionByType(type), HttpStatus.OK);
     }
