@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "rating", schema = "bookOLX")
@@ -17,7 +18,7 @@ public class RatingEntity {
     private int ratingId;
     @Basic
     @Column(name = "grade")
-    @NotBlank(message = "grade is mandatory")
+    @NotNull(message = "grade is mandatory")
     private Integer grade;
     @Basic
     @Column(name = "description")
@@ -25,6 +26,7 @@ public class RatingEntity {
     private String description;
     @Basic
     @Column(name = "left_by")
+    @NotBlank(message = "the user who left the rating is mandatory")
     private String leftBy;
     @Basic
     @Column(name = "user_id")
