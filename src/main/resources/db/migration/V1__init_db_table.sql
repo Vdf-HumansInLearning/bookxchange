@@ -92,23 +92,36 @@ CREATE TABLE emails (
                         primary key(id),
                         foreign key (member_id) references members(member_user_id)
 );
+
+CREATE TABLE email_templates (
+                                 id int not null AUTO_INCREMENT,
+                                 template_name varchar (50),
+                                 subject varchar (100),
+                                 content_body varchar (300),
+                                 primary key(id)
+);
+
 CREATE TABLE notifications (
                                id int auto_increment,
                                market_book_id varchar(36) not null,
-                               type varchar(20),
+                               email_template_id int,
                                sent tinyint default 0,
                                member_id varchar(36) not null,
                                primary key (id),
+                               foreign key (email_template_id) references email_templates(id),
                                foreign key (market_book_id) references book_market(book_market_id),
                                foreign key (member_id) references members(member_user_id)
 );
 
-CREATE TABLE email_templates (
-                                id int not null AUTO_INCREMENT,
-                                template_name varchar (50),
-                                subject varchar (100),
-                                content_body varchar (300),
-                                primary key(id)
-);
+
+
+ALTER TABLE notifications ADD CONSTRAINT
+    UNIQUE_Table UNIQUE
+    (
+     market_book_id,
+     member_id
+        );
+
+
 
 

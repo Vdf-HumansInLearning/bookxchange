@@ -40,6 +40,6 @@ values
     ("103cfb11-e1be-4486-ac18-3d0722017da7", "13177e99-14b5-43c5-a446-e0dc751c3153", '978-0-230-75700-4', "USED", false, 0 , false, 0, "RENTED"),
     ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '978-0-230-75700-4', "USED", true, 20 , true, 3, "AVAILABLE")
 ;
-
-INSERT INTO notifications (id, market_book_id, type, sent, member_id) VALUES (1, '1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb', 'AVAILABILITY', 0, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
-INSERT INTO notifications (id, market_book_id, type, sent, member_id) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 'AVAILABILITY', 0, '6eca21ce-861b-4dd7-975d-20a969e3183a');
+INSERT INTO email_templates values (default, 'AVAILABILITY', 'Book availability notification', 'Hey %s , your book entitled %s is available');
+INSERT INTO notifications (id, market_book_id, email_template_id, sent, member_id) VALUES (1, '1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb', 1, 0, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
+INSERT INTO notifications (id, market_book_id, email_template_id, sent, member_id) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 1, 0, '6eca21ce-861b-4dd7-975d-20a969e3183a');
