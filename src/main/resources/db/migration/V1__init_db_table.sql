@@ -115,4 +115,13 @@ CREATE TABLE notifications (
 
 
 
+ALTER TABLE notifications ADD CONSTRAINT
+    UNIQUE_Table UNIQUE
+    (
+     market_book_id,
+     member_id
+        );
+
+
+
 

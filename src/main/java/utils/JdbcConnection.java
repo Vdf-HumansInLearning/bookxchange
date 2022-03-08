@@ -2,8 +2,6 @@ package utils;
 
 
 
-import org.flywaydb.core.Flyway;
-
 import java.io.File;
 import java.sql.*;
 import java.util.Properties;
