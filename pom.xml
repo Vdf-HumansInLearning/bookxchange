@@ -127,7 +127,7 @@
                     <defaultSchema>bookOLX</defaultSchema>
                     <url>jdbc:mysql://localhost:3306</url>
                     <user>root</user>
-                    <password>root</password>
+                    <password></password>
                     <schemas>
                         <schema>bookOLX</schema>
                     </schemas>

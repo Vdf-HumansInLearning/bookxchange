@@ -1,10 +1,7 @@
 package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.InvalidRatingException;
-import com.bookxchange.model.MarketBook;
-import com.bookxchange.model.Rating;
-import com.bookxchange.model.RatingEntity;
-import com.bookxchange.model.Transaction;
+import com.bookxchange.model.*;
 import com.bookxchange.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,10 +24,14 @@ public class RatingService {
 
     @Autowired
     RatingRepository ratingRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
+    @Autowired
+    BookMarketRepository bookMarketRepository;
 
     public  void ratingAMember(RatingEntity ratingEntity) throws SQLException, IOException {
 
-
+        System.out.println(ratingEntity.toString());
         if (ratingEntity.getUserId() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
@@ -39,9 +40,9 @@ public class RatingService {
             throw new InvalidRatingException("Users can not let reviews to themselfs");
         }
 
-        Transaction transaction = transactionRepo.getTransactionByWhoSelleddAndWhoBuys(UUID.fromString(ratingEntity.getLeftBy()), UUID.fromString(ratingEntity.getUserId()));
-
-        if (transaction == null || transaction.getId()==0) {
+        List<TransactionEntity> transaction = transactionRepository.getTransactionByWhoSelleddAndWhoBuys(ratingEntity.getLeftBy(), ratingEntity.getUserId());
+        System.out.println(transaction.toString());
+        if (transaction.isEmpty()) {
             throw new InvalidRatingException("These two users never interact");
         }
         ratingRepository.save(ratingEntity);
@@ -53,12 +54,12 @@ public class RatingService {
         if (ratingEntity.getBookId() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");
         }
-        MarketBook marketBook = marketBookRepo.getMarketBook(UUID.fromString(ratingEntity.getBookId() ));
+        BookMarketEntity marketBook = bookMarketRepository.getBookMarketEntityByBookId(ratingEntity.getBookId());
 
-        Transaction transaction = transactionRepo.getTransactionByBookIdAndLeftBy(UUID.fromString(ratingEntity.getBookId()), UUID.fromString(ratingEntity.getLeftBy()));
+        List<TransactionEntity> transaction = transactionRepository.getTransactionsByBookIdAndLeftBy(marketBook.getBookMarketId(), ratingEntity.getLeftBy());
 
 
-        if (transaction == null || transaction.getId()==0) {
+        if (transaction.isEmpty()) {
             throw new InvalidRatingException("This user " + ratingEntity.getLeftBy() + " doesn't interact with this book");
         }
 

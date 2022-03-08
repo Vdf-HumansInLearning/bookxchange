@@ -16,13 +16,13 @@ public class TransactionService {
     public TransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
-
+//todo update la quantity in books verify if Rented, do not rent anymore
     public TransactionEntity createTransaction(TransactionEntity transactionEntity){
         return transactionRepository.save(transactionEntity);
 
     }
-    public TransactionEntity getTransactionById(Long id){
-        return transactionRepository.findById(id).orElse(null);
+    public List<TransactionEntity> getTransactionByUserID(String id){
+        return transactionRepository.findAllByMemberIdFrom(id);
     }
     public List<TransactionEntity> getTransactionByType(String transactionType){
         return transactionRepository.findByTransactionType(transactionType);

@@ -3,6 +3,8 @@ package com.bookxchange.controller;
 import com.bookxchange.dto.Mapper;
 import com.bookxchange.dto.TransactionDto;
 import com.bookxchange.model.TransactionEntity;
+import com.bookxchange.service.BookMarketService;
+import com.bookxchange.service.MemberService;
 import com.bookxchange.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,26 +17,39 @@ import java.util.List;
 public class TransactionController {
 
     private final Mapper mapper = new Mapper();
-    TransactionService transactionService;
+    private final MemberService memberService;
+    private final BookMarketService bookMarketService;
+    private final TransactionService transactionService;
 
     @Autowired
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(MemberService memberService, BookMarketService bookMarketService, TransactionService transactionService) {
+        this.memberService = memberService;
+        this.bookMarketService = bookMarketService;
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/create-transaction")
+    @PostMapping("/transactions")
     public ResponseEntity<TransactionEntity> createTransaction(@RequestBody TransactionDto transactionDto) {
         TransactionEntity transactionEntity = mapper.toTransaction(transactionDto);
         transactionService.createTransaction(transactionEntity);
+        if(transactionDto.getTransactionType().equalsIgnoreCase("RENT")){
+           memberService.updatePointsToMemberByID(transactionDto.getMemberIdFrom());
+           bookMarketService.updateBookMarketStatus("RENTED", transactionDto.getMarketBookId());
+        }else {
+            bookMarketService.updateBookMarketStatus("SOLD", transactionDto.getMarketBookId());
+        }
+
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 
-    @GetMapping("/transactions/id")
-    public ResponseEntity<TransactionEntity> getTransactionById(@RequestParam(value="id") Long id) {
-        return new ResponseEntity<>(transactionService.getTransactionById(id), HttpStatus.OK);
+    @GetMapping("/transactions/byUserID")
+    public ResponseEntity<List<TransactionEntity>> getTransactionById(@RequestParam String userID) {
+        return new ResponseEntity<>(transactionService.getTransactionByUserID(userID), HttpStatus.OK);
     }
-    @GetMapping("/transactions/type")
-    public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@RequestParam("type") String type) {
+
+
+    @GetMapping("/transactions/byType")
+    public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@RequestParam String type) {
         return new ResponseEntity<>(transactionService.getTransactionByType(type), HttpStatus.OK);
     }
 

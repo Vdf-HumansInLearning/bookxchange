@@ -20,4 +20,7 @@ public class Mapper {
     public  RatingDto toRatingDto(RatingEntity ratingEntity ){
         return  new RatingDto(ratingEntity.getGrade(), ratingEntity.getDescription(), ratingEntity.getLeftBy(), ratingEntity.getUserId(), ratingEntity.getBookId());
     }
+
+
+
 }
