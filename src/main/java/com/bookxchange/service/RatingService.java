@@ -1,7 +1,9 @@
 package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.InvalidRatingException;
-import com.bookxchange.model.*;
+import com.bookxchange.model.BookMarketEntity;
+import com.bookxchange.model.RatingEntity;
+import com.bookxchange.model.TransactionEntity;
 import com.bookxchange.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Service
 public class RatingService {
@@ -29,19 +31,19 @@ public class RatingService {
     @Autowired
     BookMarketRepository bookMarketRepository;
 
-    public  void ratingAMember(RatingEntity ratingEntity) throws SQLException, IOException {
+    public void ratingAMember(RatingEntity ratingEntity)  {
 
         System.out.println(ratingEntity.toString());
         if (ratingEntity.getUserId() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
-        if(ratingEntity.getUserId().equals(ratingEntity.getLeftBy())){
+        if (ratingEntity.getUserId().equals(ratingEntity.getLeftBy())) {
             throw new InvalidRatingException("Users can not let reviews to themselfs");
         }
 
         List<TransactionEntity> transaction = transactionRepository.getTransactionByWhoSelleddAndWhoBuys(ratingEntity.getLeftBy(), ratingEntity.getUserId());
-        System.out.println(transaction.toString());
+
         if (transaction.isEmpty()) {
             throw new InvalidRatingException("These two users never interact");
         }
@@ -49,15 +51,19 @@ public class RatingService {
 
     }
 
-    public  void ratingABook(RatingEntity ratingEntity) throws SQLException, IOException {
+    public void ratingABook(RatingEntity ratingEntity)  {
 
         if (ratingEntity.getBookId() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");
         }
+
         BookMarketEntity marketBook = bookMarketRepository.getBookMarketEntityByBookId(ratingEntity.getBookId());
 
-        List<TransactionEntity> transaction = transactionRepository.getTransactionsByBookIdAndLeftBy(marketBook.getBookMarketId(), ratingEntity.getLeftBy());
+        if (marketBook == null) {
+            throw new InvalidRatingException("This user " + ratingEntity.getLeftBy() + " doesn't interact with this book");
+        }
 
+        List<TransactionEntity> transaction = transactionRepository.getTransactionsByBookIdAndLeftBy(marketBook.getBookMarketId(), ratingEntity.getLeftBy());
 
         if (transaction.isEmpty()) {
             throw new InvalidRatingException("This user " + ratingEntity.getLeftBy() + " doesn't interact with this book");
@@ -65,16 +71,14 @@ public class RatingService {
 
         ratingRepository.save(ratingEntity);
 
-
     }
 
-    public List<RatingEntity> getAllRatings(Integer pageNo, Integer pageSize, String sortBy)
-    {
+    public List<RatingEntity> getAllRatings(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<RatingEntity> pagedResult = ratingRepository.findAll(paging);
 
-        if(pagedResult.hasContent()) {
+        if (pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {
             return new ArrayList<RatingEntity>();

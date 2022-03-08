@@ -13,10 +13,8 @@ public interface BookMarketRepository extends JpaRepository<BookMarketEntity, St
     @Query(value ="UPDATE book_market SET book_status = ?1 WHERE book_market_id =?2" ,nativeQuery = true)
     void updateBookMarketStatusForId( String status, String bookMarketID);
 
-//    @Query(value = "SELECT * FROM book_market WHERE book_market_id =?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM book_market WHERE book_id =?1", nativeQuery = true)
     BookMarketEntity getBookMarketEntityByBookId(String bookID);
-
-
     }
 
 
