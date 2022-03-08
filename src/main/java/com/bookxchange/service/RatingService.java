@@ -12,17 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 public class RatingService {
 
-    static TransactionRepo transactionRepo = new TransactionRepo();
-    static MarketBookRepo marketBookRepo = new MarketBookRepo();
 
     @Autowired
     RatingRepository ratingRepository;
@@ -73,13 +70,18 @@ public class RatingService {
 
     }
 
-    public List<RatingEntity> getAllRatings(Integer pageNo, Integer pageSize, String sortBy) {
+    public List<RatingEntity> getAllRatings(Integer pageNo, Integer pageSize, String sortBy, boolean booksRating) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<RatingEntity> pagedResult = ratingRepository.findAll(paging);
 
         if (pagedResult.hasContent()) {
-            return pagedResult.getContent();
+            if(booksRating == true){
+                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookId()!=null).collect(Collectors.toList());
+            }
+            else {
+                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookId()==null).collect(Collectors.toList());
+            }
         } else {
             return new ArrayList<RatingEntity>();
         }
