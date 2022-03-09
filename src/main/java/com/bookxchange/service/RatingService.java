@@ -31,7 +31,7 @@ public class RatingService {
     public void ratingAMember(RatingEntity ratingEntity)  {
 
         System.out.println(ratingEntity.toString());
-        if (ratingEntity.getUserId() == null) {
+        if (ratingEntity.getUserId() == null || ratingEntity.getLeftBy()==null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
