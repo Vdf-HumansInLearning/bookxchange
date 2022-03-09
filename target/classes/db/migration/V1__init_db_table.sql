@@ -60,7 +60,7 @@ CREATE TABLE book_market (
 
 CREATE TABLE transaction (
                             id bigint not null unique auto_increment,
-                            market_book_id VARCHAR(36) not null unique,
+                            market_book_id VARCHAR(36) not null,
                             member_id_from VARCHAR(36) not null,
                             member_id_to VARCHAR(36) not null,
                             transaction_type VARCHAR(10),

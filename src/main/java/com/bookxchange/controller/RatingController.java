@@ -1,5 +1,6 @@
 package com.bookxchange.controller;
 
+import com.bookxchange.customExceptions.InvalidRatingException;
 import com.bookxchange.dto.Mapper;
 import com.bookxchange.dto.RatingDto;
 import com.bookxchange.model.RatingEntity;
@@ -22,49 +23,47 @@ public class RatingController {
     @Autowired
     RatingService ratingService;
 
-     Mapper mapper = new Mapper();
+    Mapper mapper = new Mapper();
     Logger logger = LoggerFactory.getLogger(RatingController.class);
 
+//    books/{bookId}/rating
     @PostMapping("/createBookRating")
     public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDto ratingDto) {
 
         logger.debug("createBookRating start ");
 
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
-        logger.debug("ratingEntity : " ,ratingEntity );
-        try {
+        logger.debug("ratingEntity : ", ratingEntity);
+
             ratingService.ratingABook(ratingEntity);
 
             return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
-        } catch (Exception invalidRatingException) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, invalidRatingException.getMessage());
-        }
-    }
 
+    }
+//  members/{memberID}/rating
     @PostMapping("/createMemberRating")
     public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDto ratingDto) {
 
         logger.debug("createMemberRating start ");
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
-        logger.debug("ratingEntity : " ,ratingEntity );
-        try {
+        logger.debug("ratingEntity : ", ratingEntity);
+
             ratingService.ratingAMember(ratingEntity);
             return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
-        } catch (Exception invalidRatingException) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, invalidRatingException.getMessage());
-        }
+
     }
 
+//    la fel ca sus dar cu GET
     @GetMapping("/")
     public ResponseEntity<List<RatingEntity>> getAllRatings(@RequestParam(defaultValue = "0") Integer pageNo,
-                                                     @RequestParam(defaultValue = "10") Integer pageSize,
-                                                     @RequestParam(defaultValue = "ratingId") String sortBy) {
+                                                            @RequestParam(defaultValue = "10") Integer pageSize,
+                                                            @RequestParam(defaultValue = "ratingId") String sortBy,
+                                                            @RequestParam(defaultValue = "true") boolean booksRating) {
 
         logger.debug("getAllRatings start ");
 
-        List<RatingEntity> list = ratingService.getAllRatings(pageNo, pageSize, sortBy);
+        List<RatingEntity> list = ratingService.getAllRatings(pageNo, pageSize, sortBy, booksRating);
+
         return new ResponseEntity<List<RatingEntity>>(list, HttpStatus.OK);
     }
 
