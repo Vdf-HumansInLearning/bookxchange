@@ -2,7 +2,7 @@ package utils;
 
 
 
-import org.flywaydb.core.Flyway;
+//import org.flywaydb.core.Flyway;
 
 import java.io.File;
 import java.sql.*;
@@ -21,7 +21,7 @@ public class JdbcConnection {
   public static void main(String[] args) {
       getConnection();
 
-        File resourcesDirectory = new File("src/main/resources");
+      /*  File resourcesDirectory = new File("src/main/resources");
         String absolutePath = resourcesDirectory.getAbsolutePath();
 
 
@@ -31,9 +31,9 @@ public class JdbcConnection {
                 .locations("filesystem:"+absolutePath+"/db/migration")
                 .schemas("bookOLX")
                 .load();
-
-        fdb.clean();
-        fdb.migrate();
+*/
+    //    fdb.clean();
+     //   fdb.migrate();
 
 
   }

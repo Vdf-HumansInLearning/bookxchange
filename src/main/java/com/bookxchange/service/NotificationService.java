@@ -7,9 +7,9 @@ import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
 import com.bookxchange.repositories.BookMarketRepository;
 import com.bookxchange.repositories.NotificationRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.plugin.core.PluginRegistry;
 import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,13 @@ import java.util.Optional;
 
 @Service
 @EnablePluginRegistries(NotificationProcessingPlugin.class)
+@RequiredArgsConstructor
 public class NotificationService {
 
     private static final Log LOG = LogFactory.getLog(NotificationService.class);
     private final NotificationRepository notificationRepository;
     private final BookMarketRepository bmr;
     private final PluginRegistry<NotificationProcessingPlugin, EmailTemplateType> pluginRegistry;
-
-    @Autowired
-    public NotificationService(NotificationRepository notificationRepository, BookMarketRepository bmr, PluginRegistry<NotificationProcessingPlugin, EmailTemplateType> pluginRegistry) {
-        this.notificationRepository = notificationRepository;
-        this.bmr = bmr;
-        this.pluginRegistry = pluginRegistry;
-    }
 
 
     public void checkForNotifications() {

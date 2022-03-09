@@ -10,39 +10,39 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Date;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableSwagger2
+//@EnableSwagger2
 public class BookExchangeApplication extends SpringBootServletInitializer {
 
-//
-//    NotificationService ns;
-//
-//    @Autowired
-//    public BookExchangeApplication(NotificationService ns) {
-//        this.ns = ns;
-//    }
+
+    NotificationService ns;
+
+    @Autowired
+    public BookExchangeApplication(NotificationService ns) {
+        this.ns = ns;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(BookExchangeApplication.class,args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
-//        return builder.sources(BookExchangeApplication.class);
-//    }
-//
-//    @Scheduled(fixedRateString = "${notification.check.every}")
-//    void notificationCronJob(){
-//
-//        ns.checkForNotifications();
-//
-//        System.out.println("Notification Cron Running... " + new Date());
-//    }
+    @Override
+    protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
+        return builder.sources(BookExchangeApplication.class);
+    }
+
+    @Scheduled(fixedRateString = "${notification.check.every}")
+    void notificationCronJob(){
+
+        ns.checkForNotifications();
+
+        System.out.println("Notification Cron Running... " + new Date());
+    }
 
 
 }
