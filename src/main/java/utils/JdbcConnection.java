@@ -19,21 +19,11 @@ public class JdbcConnection {
     private static String password = "root";
 
   public static void main(String[] args) {
-      getConnection();
+    //  getConnection();
 
-      /*  File resourcesDirectory = new File("src/main/resources");
+        File resourcesDirectory = new File("src/main/resources");
         String absolutePath = resourcesDirectory.getAbsolutePath();
-
-
-        Flyway fdb = Flyway.configure()
-                .createSchemas(true)
-                .dataSource(url,username,password)
-                .locations("filesystem:"+absolutePath+"/db/migration")
-                .schemas("bookOLX")
-                .load();
-*/
-    //    fdb.clean();
-     //   fdb.migrate();
+      System.out.println(absolutePath);
 
 
   }

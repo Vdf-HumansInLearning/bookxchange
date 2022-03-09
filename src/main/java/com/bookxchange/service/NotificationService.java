@@ -1,7 +1,6 @@
 package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.NotificationException;
-import com.bookxchange.enums.EmailTemplateType;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
@@ -10,30 +9,27 @@ import com.bookxchange.repositories.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.plugin.core.PluginRegistry;
-import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@EnablePluginRegistries(NotificationProcessingPlugin.class)
 @RequiredArgsConstructor
 public class NotificationService {
 
     private static final Log LOG = LogFactory.getLog(NotificationService.class);
     private final NotificationRepository notificationRepository;
     private final BookMarketRepository bmr;
-    private final PluginRegistry<NotificationProcessingPlugin, EmailTemplateType> pluginRegistry;
 
+    PluginService pluginService;
 
     public void checkForNotifications() {
         try {
             List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
             if(!emailToNotify.isEmpty()){
                 emailToNotify.forEach(customer -> {
-                    NotificationProcessingPlugin notificationPlugin = pluginRegistry.getPluginFor(customer.getTemplate_Name());
+                    NotificationProcessingPlugin notificationPlugin = pluginService.getPlugin(customer.getTemplate_Name());
                     notificationPlugin.sendMail(customer);
                     LOG.info(String.format("E-mail sent to %s", customer.getEmail_Address()));
                 });
