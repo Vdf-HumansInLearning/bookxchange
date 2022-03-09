@@ -2,7 +2,9 @@ package RatingsController;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.model.RatingEntity;
+import com.bookxchange.repositories.TransactionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,6 +29,9 @@ public class RatingsControllerTests {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    TransactionRepository transactionRepository;
+
     //todo create transactions before creating ratings
 
     @Before
@@ -36,7 +43,7 @@ public class RatingsControllerTests {
                                 "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
                                 "  \"memberIdFrom\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
                                 "  \"memberIdTo\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "  \"transactionDate\": \"2013-12-12\",\n" +
+                                "  \"transactionDate\": \"1999-12-12\",\n" +
                                 "  \"transactionType\": \"RENT\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON));
@@ -157,6 +164,11 @@ public class RatingsControllerTests {
     public void contextLoads() {
     }
 
+
+   @After
+    public void cleanUp() {
+       transactionRepository.deleteAll(transactionRepository.findAllByTransactionDate(LocalDate.of(1999, 12, 12)));
+    }
 
     public static String asJsonString(final Object obj) {
         try {
