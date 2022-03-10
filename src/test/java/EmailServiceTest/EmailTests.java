@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppEmailConfig.class)
-public class EmailTest {
+public class EmailTests {
 
     @Resource
     private EmailService emailSender;
