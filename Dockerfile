@@ -1,5 +1,4 @@
-FROM maven:3.8.1-jdk-8
-WORKDIR /bookxchange
-COPY . .
-RUN mvn clean install
-CMD mvn spring-boot:run
+FROM openjdk:17-jdk-alpine
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
