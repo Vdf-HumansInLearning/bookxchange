@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   mysqldb:
-    image: library/mysql:5.7
+    image: library/mysql:8
     networks:
       - bookexchange_net
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
   app:
     depends_on:
       - mysqldb
-    image: bookexchange
+    image: bookxchange
     networks:
       - bookexchange_net
     restart: on-failure
