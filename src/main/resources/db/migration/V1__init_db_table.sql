@@ -1,6 +1,7 @@
 BEGIN;
 CREATE DATABASE IF NOT EXISTS bookOLX ;
 
+
 USE bookOLX;
 
 
@@ -16,16 +17,14 @@ CREATE TABLE authors (
 CREATE TABLE books (
                        isbn varchar(20) not null unique,
                        title varchar(100),
-                       author varchar(36),
                        description text,
                        quantity int,
-                       primary key (isbn),
-                       foreign key (author) references authors(id)
+                       primary key (isbn)
 );
 
 CREATE TABLE author_book_mtm (
                              id varchar(36) NOT NULL unique ,
-                             book_isbn varchar(13) NOT NULL,
+                             book_isbn varchar(20) NOT NULL,
                              author_id varchar (36) NOT NULL,
                              PRIMARY KEY (id),
                              FOREIGN KEY (author_id) REFERENCES authors(id),
