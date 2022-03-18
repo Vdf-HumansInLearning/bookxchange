@@ -17,13 +17,15 @@ public class BookRepo {
         String sql =
                 "SELECT\n"
                         + "    books.title,\n"
-                        + "    Authors.name,\n"
-                        + "    Authors.surname,\n"
+                        + "    authors.name,\n"
+                        + "    authors.surname,\n"
                         + "    books.quantity\n"
                         + "    FROM\n"
                         + "    books\n"
                         + "    JOIN\n"
-                        + "    Authors ON Authors.id = books.author";
+                        + "    author_book_mtm ON author_book_mtm.book_isbn = books.isbn\n "
+                        + "    JOIN\n"
+                        + "    authors ON author_book_mtm.author_id = authors.id";
         List<BookDto> books = new ArrayList<>();
         try (Connection con = JdbcConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -32,8 +34,8 @@ public class BookRepo {
                     books.add(
                             new BookDto(
                                     rs.getString("books.title"),
-                                    rs.getString("Authors.name"),
-                                    rs.getString("Authors.surname"),
+                                    rs.getString("authors.name"),
+                                    rs.getString("authors.surname"),
                                     rs.getInt("books.quantity")));
                 }
             }

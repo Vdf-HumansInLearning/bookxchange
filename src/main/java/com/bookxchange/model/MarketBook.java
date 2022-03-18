@@ -30,8 +30,8 @@ public class MarketBook {
       boolean forSell,
       Double sellPrice,
       boolean forRent,
-      Double rentPrice,
-      BookStatus bookStatus) {
+      Double rentPrice
+      ) {
     this.id = UUID.randomUUID();
     this.userId = userId;
     this.bookId = bookId;
@@ -40,6 +40,7 @@ public class MarketBook {
     this.sellPrice = sellPrice;
     this.forRent = forRent;
     this.rentPrice = rentPrice;
-    this.bookStatus = bookStatus;
+    this.bookStatus = BookStatus.AVAILABLE;
   }
+
 }

@@ -3,6 +3,7 @@ package com.bookxchange.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,11 @@ public class AuthorsEntity {
     @Column(name = "surname")
     private String surname;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
-    private Set<BooksEntity> books;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "books",
+            joinColumns = @JoinColumn(name = "isbn"),
+            inverseJoinColumns = @JoinColumn(name = "id")
+    )
+    private Collection<AuthorsEntity> categories;
 }

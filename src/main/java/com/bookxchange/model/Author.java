@@ -12,7 +12,5 @@ public class Author {
     private UUID id;
     private String name;
     private String surname;
-    private Date birthDate;
-    private List<Book> books;
 
 }

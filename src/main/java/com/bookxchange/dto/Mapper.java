@@ -1,8 +1,11 @@
 package com.bookxchange.dto;
 
+import com.bookxchange.model.MarketBook;
 import com.bookxchange.model.RatingEntity;
 import com.bookxchange.model.TransactionEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 public class Mapper {
@@ -19,6 +22,10 @@ public class Mapper {
 
     public  RatingDto toRatingDto(RatingEntity ratingEntity ){
         return  new RatingDto(ratingEntity.getGrade(), ratingEntity.getDescription(), ratingEntity.getLeftBy(), ratingEntity.getUserId(), ratingEntity.getBookId());
+    }
+
+    public MarketBook toMarketBook(MarketBook recivedMarketBook) {
+        return new MarketBook(recivedMarketBook.getUserId(), recivedMarketBook.getBookId().toString(), recivedMarketBook.getBookState(), recivedMarketBook.isForSell(), recivedMarketBook.getSellPrice().doubleValue(), recivedMarketBook.isForRent(), recivedMarketBook.getRentPrice().doubleValue());
     }
 
 
