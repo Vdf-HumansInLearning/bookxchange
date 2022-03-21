@@ -1,6 +1,7 @@
 package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.NotificationException;
+import com.bookxchange.enums.BookStatus;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
@@ -27,7 +28,7 @@ public class NotificationService {
     public void checkForNotifications() {
         try {
             List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
-            if(!emailToNotify.isEmpty()){
+            if (!emailToNotify.isEmpty()) {
                 emailToNotify.forEach(customer -> {
                     NotificationProcessingPlugin notificationPlugin = pluginService.getPlugin(customer.getTemplate_Name());
                     notificationPlugin.sendMail(customer);
@@ -43,24 +44,30 @@ public class NotificationService {
     public NotificationsEntity addNotification(String marketBookId, String memberId) {
         // check if already available
 
+        boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookIdAndMemberId(marketBookId, memberId);
+
         Optional<BookMarketEntity> bookMarket = bmr.findById(marketBookId);
 
-        if(memberId.equals(bookMarket.get().getUserId())){
-            throw new NotificationException("User can't notify for his own book.");
-        }
-
-
-        BookMarketEntity bookMarketEntity = bookMarket.get();
-        String status = bookMarketEntity.getBookStatus();
-        if (status.equals("AVAILABLE") || status.equals("SOLD")) { //todo use enums
-            throw new NotificationException(String.format("Book is already %s"), status);
+        if (bookMarket.isPresent()) {
+            BookMarketEntity bookMarketEntity = bookMarket.get();
+            String status = bookMarketEntity.getBookStatus();
+            if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
+                String format = String.format("Book is already '%s'", status);
+                System.out.println(format);
+                throw new NotificationException(format);
+            } else if (!isDuplicate) {
+                NotificationsEntity notification = new NotificationsEntity();
+                notification.setMemberId(memberId);
+                notification.setMarketBookId(marketBookId);
+                notification.setTemplateType(1);
+                notification.setSent((byte) 0);
+                return notificationRepository.save(notification);
+            } else if (isDuplicate) {
+                throw new NotificationException("Duplicate Notification");
+            }
         } else {
-            NotificationsEntity notification = new NotificationsEntity();
-            notification.setMemberId(memberId);
-            notification.setMarketBookId(marketBookId);
-            notification.setTemplateType("1");
-           return notificationRepository.save(notification);
+            throw new NotificationException("Empty BookMarket");
         }
-
+        return null;
     }
 }

@@ -17,7 +17,7 @@ public class NotificationsEntity {
     private String marketBookId;
     @Basic
     @Column(name = "email_template_id")
-    private String templateType;
+    private Integer templateType;
     @Basic
     @Column(name = "sent")
     private Byte sent;

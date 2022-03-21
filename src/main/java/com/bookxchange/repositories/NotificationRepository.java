@@ -19,5 +19,6 @@ public interface NotificationRepository extends JpaRepository<NotificationsEntit
     @Query(value = "UPDATE notifications SET sent = 1 where id = ?1", nativeQuery = true)
     void updateToSent(Integer id);
 
+    boolean existsNotificationsEntitiesByMarketBookIdAndMemberId(String marketBookId, String memberId);
 
 }
