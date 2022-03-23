@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class NotificationsDTO {
-    String marketBookId;
-    String memberId;
+    String marketBookUuid;
+    String memberUuid;
 }

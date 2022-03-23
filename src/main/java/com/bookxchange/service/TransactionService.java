@@ -22,7 +22,7 @@ public class TransactionService {
 
     }
     public List<TransactionEntity> getTransactionByUserID(String id){
-        return transactionRepository.findAllByMemberIdFrom(id);
+        return transactionRepository.findAllByMemberuuIdFrom(id);
     }
     public List<TransactionEntity> getTransactionByType(String transactionType){
         return transactionRepository.findByTransactionType(transactionType);

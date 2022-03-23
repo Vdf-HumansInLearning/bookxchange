@@ -44,10 +44,9 @@ public class NotificationService {
     public NotificationsEntity addNotification(String marketBookId, String memberId) {
         // check if already available
 
-        boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookIdAndMemberId(marketBookId, memberId);
+        boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookUuidAndMemberUuid(marketBookId, memberId);
 
-        Optional<BookMarketEntity> bookMarket = bmr.findById(marketBookId);
-
+        Optional<BookMarketEntity> bookMarket = bmr.findByBookMarketUuid(marketBookId);
         if (bookMarket.isPresent()) {
             BookMarketEntity bookMarketEntity = bookMarket.get();
             String status = bookMarketEntity.getBookStatus();
@@ -57,8 +56,8 @@ public class NotificationService {
                 throw new NotificationException(format);
             } else if (!isDuplicate) {
                 NotificationsEntity notification = new NotificationsEntity();
-                notification.setMemberId(memberId);
-                notification.setMarketBookId(marketBookId);
+                notification.setMemberUuid(memberId);
+                notification.setMarketBookUuid(marketBookId);
                 notification.setTemplateType(1);
                 notification.setSent((byte) 0);
                 return notificationRepository.save(notification);

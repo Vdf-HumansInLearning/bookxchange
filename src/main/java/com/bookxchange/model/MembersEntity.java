@@ -11,7 +11,9 @@ public class MembersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "member_user_id")
-    private String memberUserId;
+    private Integer memberUserId;
+    @Column(name = "member_uuid")
+    private String memberUserUuid;
     @Basic
     @Column(name = "username")
     private String username;

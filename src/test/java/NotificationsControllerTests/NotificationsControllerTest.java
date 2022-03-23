@@ -3,7 +3,6 @@ package NotificationsControllerTests;
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.model.*;
 import com.bookxchange.repositories.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,48 +44,50 @@ public class NotificationsControllerTest {
     BookRepository bookRepository;
 
 
-    UUID bookMarketId = UUID.randomUUID();
-    UUID userId = UUID.randomUUID();
-    UUID author = UUID.randomUUID();
-    String bookIsbn = "12345";
-
-    String marketBookId = "b9861c66-fb3f-416f-b00a-59cbc521314d";
-    String memberId = "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9";
+    private String marketBookIdTest;
+    private String memberIdTest;
 
     @Before
     public void createNewBookMarket() {
 
-        /*System.out.println("user" + userId.toString());
-        System.out.println("bookmarket" + bookMarketId.toString());
-        System.out.println("author" + author.toString());
 
+
+        MembersEntity membersEntity = new MembersEntity();
+        membersEntity.setEmailAddress("test@gmail.com");
+        membersEntity.setMemberUserUuid("1234-1244");
+        membersEntity.setUsername("name");
+        membersEntity.setPoints(0);
+        memberRepository.save(membersEntity);
+
+        memberIdTest = membersEntity.getMemberUserUuid();
 
         AuthorsEntity authors = new AuthorsEntity();
-        authors.setId(author.toString());
+        authors.setAuthorsUuid("2124-24124-5332");
         authors.setName("Test name");
         authors.setSurname("Test surname");
         authorsRepository.save(authors);
 
         BooksEntity booksEntity = new BooksEntity();
-        booksEntity.setIsbn(bookIsbn);
+        booksEntity.setIsbn("testisbn");
         booksEntity.setTitle("Test title");
-        booksEntity.setAuthor(author.toString());
         booksEntity.setDescription("test descript");
         booksEntity.setQuantity(1);
         bookRepository.save(booksEntity);
 
 
         BookMarketEntity bookMarketEntity = new BookMarketEntity();
-        bookMarketEntity.setBookId(bookMarketId.toString());
-        bookMarketEntity.setUserId(userId.toString());
-        bookMarketEntity.setBookId(bookIsbn);
+        bookMarketEntity.setUserUuid(membersEntity.getMemberUserUuid());
+        bookMarketEntity.setBookIsbn(booksEntity.getIsbn());
+        bookMarketEntity.setBookMarketUuid("1223-34534-6343-3222");
         bookMarketEntity.setBookState("ORIGINALBOX");
         bookMarketEntity.setForSell(Integer.valueOf(0).byteValue());
         bookMarketEntity.setSellPrice(0d);
         bookMarketEntity.setForRent(Integer.valueOf(1).byteValue());
         bookMarketEntity.setRentPrice(200d);
         bookMarketEntity.setBookStatus("RENTED");
-        bookMarketRepository.save(bookMarketEntity);*/
+        bookMarketRepository.save(bookMarketEntity);
+
+        marketBookIdTest = bookMarketEntity.getBookMarketUuid();
     }
 
     @Test
@@ -94,13 +95,13 @@ public class NotificationsControllerTest {
 
         mvc.perform(post("/notifications")
                         .content("{\n" +
-                                "  \"marketBookId\": \"" + marketBookId + "\",\n" +
-                                "  \"memberId\": \"" + memberId + "\"\n" +
+                                "  \"marketBookUuid\": \"" + marketBookIdTest + "\",\n" +
+                                "  \"memberUuid\": \"" + memberIdTest + "\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.marketBookId").value(marketBookId))
-                .andExpect(jsonPath("$.memberId").value(memberId))
+                .andExpect(jsonPath("$.marketBookUuid").value("1223-34534-6343-3222"))
+                .andExpect(jsonPath("$.memberUuid").value("1234-1244"))
                 .andExpect(jsonPath("$.sent").value("0"))
                 .andExpect(jsonPath("$.templateType").value("1"));
     }
@@ -110,20 +111,20 @@ public class NotificationsControllerTest {
 
         mvc.perform(post("/notifications")
                         .content("{\n" +
-                                "  \"marketBookId\": \"" + marketBookId + "\",\n" +
-                                "  \"memberId\": \"" + memberId + "\"\n" +
+                                "  \"marketBookUuid\": \"" + marketBookIdTest + "\",\n" +
+                                "  \"memberUuid\": \"" + memberIdTest + "\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.marketBookId").value(marketBookId))
-                .andExpect(jsonPath("$.memberId").value(memberId))
+                .andExpect(jsonPath("$.marketBookUuid").value(marketBookIdTest))
+                .andExpect(jsonPath("$.memberUuid").value(memberIdTest))
                 .andExpect(jsonPath("$.sent").value("0"))
                 .andExpect(jsonPath("$.templateType").value("1"));
 
         mvc.perform(post("/notifications")
                         .content("{\n" +
-                                "  \"marketBookId\": \"" + marketBookId + "\",\n" +
-                                "  \"memberId\": \"" + memberId + "\"\n" +
+                                "  \"marketBookUuid\": \"" + marketBookIdTest + "\",\n" +
+                                "  \"memberUuid\": \"" + memberIdTest + "\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value("Duplicate Notification"));

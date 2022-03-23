@@ -11,13 +11,15 @@ public class BookMarketEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "book_market_id")
-    private String bookMarketId;
+    private Integer bookMarketId;
+    @Column(name = "book_market_uuid")
+    private String bookMarketUuid;
     @Basic
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "user_uuid")
+    private String userUuid;
     @Basic
-    @Column(name = "book_id")
-    private String bookId;
+    @Column(name = "book_isbn")
+    private String bookIsbn;
     @Basic
     @Column(name = "book_state")
     private String bookState;
