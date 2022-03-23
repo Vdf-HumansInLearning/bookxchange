@@ -2,16 +2,22 @@ package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.NotificationException;
 import com.bookxchange.enums.BookStatus;
+import com.bookxchange.enums.EmailTemplateType;
 import com.bookxchange.model.BookMarketEntity;
+import com.bookxchange.model.EmailsEntity;
 import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
 import com.bookxchange.repositories.BookMarketRepository;
+import com.bookxchange.repositories.EmailsRepository;
 import com.bookxchange.repositories.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,18 +28,15 @@ public class NotificationService {
     private static final Log LOG = LogFactory.getLog(NotificationService.class);
     private final NotificationRepository notificationRepository;
     private final BookMarketRepository bmr;
+    private final EmailService emailService;
+    private final EmailsRepository emailsRepository;
 
-    PluginService pluginService;
-
+    @Transactional
     public void checkForNotifications() {
         try {
             List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
             if (!emailToNotify.isEmpty()) {
-                emailToNotify.forEach(customer -> {
-                    NotificationProcessingPlugin notificationPlugin = pluginService.getPlugin(customer.getTemplate_Name());
-                    notificationPlugin.sendMail(customer);
-                    LOG.info(String.format("E-mail sent to %s", customer.getEmail_Address()));
-                });
+                emailToNotify.stream().filter(customer -> customer.getTemplate_Name().equals(EmailTemplateType.AVAILABILITY)).forEach(this::sendMail);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,5 +71,20 @@ public class NotificationService {
             throw new NotificationException("Empty BookMarket");
         }
         return null;
+    }
+
+    @Transactional
+    void sendMail(NotificationHelper userToBeNotifiedInfo) {
+        String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
+        emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);
+        notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
+        EmailsEntity emailsEntity = new EmailsEntity();
+        emailsEntity.setContent(body);
+      //  System.out.println(body);
+      //  System.out.println(userToBeNotifiedInfo.getEmail_Address());
+        emailsEntity.setStatus("SENT");
+        emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
+        emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
+        emailsRepository.save(emailsEntity);
     }
 }
