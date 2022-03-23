@@ -21,7 +21,7 @@ public class Mapper {
     }
 
     public  RatingDto toRatingDto(RatingEntity ratingEntity ){
-        return  new RatingDto(ratingEntity.getGrade(), ratingEntity.getDescription(), ratingEntity.getLeftBy(), ratingEntity.getUserId(), ratingEntity.getBookId());
+        return  new RatingDto(ratingEntity.getGrade(), ratingEntity.getDescription(), ratingEntity.getLeftByUuid(), ratingEntity.getUserIdUuid(), ratingEntity.getBookIsbn());
     }
 
     public MarketBook toMarketBook(MarketBook recivedMarketBook) {

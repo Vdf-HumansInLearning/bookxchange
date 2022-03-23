@@ -1,6 +1,4 @@
-USE bookOLX;
-
-INSERT INTO authors (id, name, surname)
+INSERT INTO authors (authors_uuid, name, surname)
 values
     ("d41f41f6-c469-495d-9fd1-4b4ddd37957e", "Rowling", "Joanne K"),
     ("635c4c57-abc0-476e-a941-4265cf164f73", "Tolkien", "John Ronald Reuel"),
@@ -22,27 +20,14 @@ values
     ('978-0-230-75700-4', "The Air War ", "Something something War, kitty ipsom atack", 1)
 ;
 
-INSERT INTO author_book_mtm (id, book_isbn, author_id)
-values
-    ("1102ed27-19bd-4d62-b2a2-52f9a0b9e752",'0-7475-3269-9',"d41f41f6-c469-495d-9fd1-4b4ddd37957e"),
-    ("1a7d2288-0209-42dc-93b2-bda65a17861d",'0-7475-8108-8',"d41f41f6-c469-495d-9fd1-4b4ddd37957e"),
-    ("1f5616fa-9af2-4b89-9364-d093353c2812",'978-0521792608',"9f017f2a-4330-4a8c-9b3e-311bf638ddf1"),
-    ("2e3199ce-1b75-41fb-8118-a6f01288acc5",'978-1-61213-028-6',"d713c2d0-baee-4383-9207-7851cc4651e3"),
-    ("8b701020-35ff-4233-999c-e88f47a50393",'978-0-230-75700-4',"350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011"),
-    ("b7afa9f4-ef0c-4ad5-b94c-b43b1d779ad8",'978-0-330-51144-5',"350c18f7-c1b5-4d8b-9f7c-ab4fa5fda011"),
-    ("c579ed98-8273-40c2-bb0d-9f5c3aa8a600",'0-7475-3849-2',"d41f41f6-c469-495d-9fd1-4b4ddd37957e"),
-    ("c7543048-4fe9-4e84-b946-7226c0dc2a6a",'978-0007488353',"635c4c57-abc0-476e-a941-4265cf164f73")
-    ;
-
-
-INSERT INTO members (member_user_id, username, points, email_address)
+INSERT INTO members (member_uuid, username, points, email_address)
 values
     ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde",0,"dani@gmail.com"),
     ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin",0,"robot@gmail.com"),
     ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina",0,"rozza@gmail.com")
 ;
 
-INSERT INTO book_market (book_market_id, user_id, book_id, book_state, for_sell, sell_price, for_rent, rent_price, book_status)
+INSERT INTO book_market (book_market_uuid, user_uuid, book_isbn, book_state, for_sell, sell_price, for_rent, rent_price, book_status)
 values
     ("42a48524-20fd-4708-9311-55bf1a247eaf", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0-7475-3269-9', "ASNEW", false, 0, true, 50, "AVAILABLE"),
     ("495c9b8d-5a71-4215-abe0-71a46e79a02c", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0-7475-3849-2', "ASNEW", true, 200, false, 0, "AVAILABLE"),
@@ -56,5 +41,10 @@ values
     ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '978-0-230-75700-4', "USED", true, 20 , true, 3, "AVAILABLE")
 ;
 INSERT INTO email_templates values (default, 'AVAILABILITY', 'Book availability notification', 'Hey %s , your book entitled %s is available');
-INSERT INTO notifications (id, market_book_id, email_template_id, sent, member_id) VALUES (1, '1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb', 1, 1, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
-INSERT INTO notifications (id, market_book_id, email_template_id, sent, member_id) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 1, 1, '6eca21ce-861b-4dd7-975d-20a969e3183a');
+INSERT INTO notifications (id, market_book_uuid, email_template_id, sent, member_uuid) VALUES (1, '1c821fb0-1024-4cd0-8f23-2d763fb2c13b', 1, 1, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
+INSERT INTO notifications (id, market_book_uuid, email_template_id, sent, member_uuid) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 1, 1, '6eca21ce-861b-4dd7-975d-20a969e3183a');
+
+-- INSERT INTO members values ('90b52881-7897-467f-87eb-e1e9202110e2', 'testingUser', 0, 'testing@gmail.com');
+-- INSERT INTO authors values ('8dda2ec-90c1-4fb1-9e58-4d19f582e1a8', 'testauthor', 'testy');
+-- INSERT INTO books values ('1234', 'title test', '8dda2ec-90c1-4fb1-9e58-4d19f582e1a8', 'desc test', 1);
+-- INSERT INTO book_market values ('b9861c66-fb3f-416f-b00a-59cbc521314d', '90b52881-7897-467f-87eb-e1e9202110e2', '1234', 'USED', false, 0, true, 10, 'RENTED');
