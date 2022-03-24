@@ -3,7 +3,8 @@ package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.model.Author;
-import com.bookxchange.model.Book;
+import com.bookxchange.model.AuthorsEntity;
+import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.Isbn;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
@@ -12,16 +13,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 import utils.PropertyLoader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.UUID;
 
+@Service
 public class IsbnService {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -59,12 +59,12 @@ public class IsbnService {
 //        return hashMap;
 //    }
 
-    public Book hitIsbnBookRequest(String isbn) {
+    public BooksEntity hitIsbnBookRequest(String isbn) {
         String infoFromApi = getInfoFromApi(isbn);
         System.out.println(infoFromApi);
         Gson gson = new Gson();
         Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
-        Book bookToReturn = new Book();
+        BooksEntity bookToReturn = new BooksEntity();
         if (isbnDTO.getTotalItems() > 0) {
 
 
@@ -72,15 +72,15 @@ public class IsbnService {
             bookToReturn.setTitle(isbnDTO.getItems().get(0).getVolumeInfo().getTitle());
 
             List<String> author = isbnDTO.getItems().get(0).getVolumeInfo().getAuthors();
-            List<Author> authorsToAdd= new ArrayList<>();
+            Set<AuthorsEntity> authorsToAdd= new HashSet<>();
             for(int i=0; i<author.size(); i++) {
-                Author selectedAuthor=new Author();
+                AuthorsEntity selectedAuthor=new AuthorsEntity();
                 Pattern patternAuthorName= Pattern.compile("^(.*)\\s([a-zA-Z]{1,})$");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
                 if (matcher.find()) {
                     selectedAuthor.setName(matcher.group(2));
                     selectedAuthor.setSurname(matcher.group(1));
-                    selectedAuthor.setId(UUID.randomUUID());
+                    selectedAuthor.setAuthorsUuid(UUID.randomUUID().toString());
                 }
                 authorsToAdd.add(selectedAuthor);
             }
@@ -88,6 +88,7 @@ public class IsbnService {
             bookToReturn.setAuthors(authorsToAdd);
 
             bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
+            System.out.println(authorsToAdd);
         } else {
             throw new InvalidISBNException(isbn + " is invalid");
         }

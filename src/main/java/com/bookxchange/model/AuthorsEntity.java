@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "authors", schema = "bookOLX")
@@ -26,9 +27,10 @@ public class AuthorsEntity {
     @Basic
     @Column(name = "surname")
     private String surname;
+//
+//    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
-    private Set<BooksEntity> books;
+//    private Set<BooksEntity> books;
 
     @Override
     public boolean equals(Object o) {

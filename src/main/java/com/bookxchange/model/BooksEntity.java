@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class BooksEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,13 +30,24 @@ public class BooksEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     @JoinTable(
-            name = "authors",
-            joinColumns = @JoinColumn(name = "id")
+            name = "authors_books_mtm",
+            joinColumns = @JoinColumn(name = "book_isbn"),
+            inverseJoinColumns = @JoinColumn(name = "authors_uuid")
     )
     private Set<AuthorsEntity> authors = new HashSet<>();
 
+    public BooksEntity() {
+    }
+
+    public BooksEntity(String isbn, String title, String description, Integer quantity, Set<AuthorsEntity> authors) {
+        this.isbn = isbn;
+        this.title = title;
+        this.description = description;
+        this.quantity = quantity;
+        this.authors = authors;
+    }
 
     @Override
     public boolean equals(Object o) {

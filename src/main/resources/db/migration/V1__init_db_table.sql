@@ -23,14 +23,14 @@ CREATE TABLE books (
                        primary key (book_id)
 );
 
-# CREATE TABLE author_book_mtm (
-#                              id varchar(36) NOT NULL unique ,
-#                              book_id int NOT NULL,
-#                              author_id int NOT NULL,
-#                              PRIMARY KEY (id),
+CREATE TABLE authors_books_mtm (
+                             id int NOT NULL unique auto_increment,
+                             book_isbn varchar(36) NOT NULL,
+                             authors_uuid varchar(36) NOT NULL,
+                             PRIMARY KEY (id)
 #                              FOREIGN KEY (author_id) REFERENCES authors(author_id),
 #                              FOREIGN KEY (book_id) REFERENCES books(book_id)
-# );
+);
 
 
 

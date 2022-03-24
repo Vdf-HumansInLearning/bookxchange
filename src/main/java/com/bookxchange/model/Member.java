@@ -11,10 +11,10 @@ public class Member {
 
   private UUID id;
   private String username;
-  private List<Book> bookList;
+  private List<BooksEntity> bookList;
   private short points;
 
-  public Member(String username, List<Book> bookList) {
+  public Member(String username, List<BooksEntity> bookList) {
     this.id = UUID.randomUUID();
     this.username = username;
     this.bookList = bookList;
