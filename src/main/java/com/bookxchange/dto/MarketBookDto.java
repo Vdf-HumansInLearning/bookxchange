@@ -41,4 +41,6 @@ public class MarketBookDto {
     this.bookStatus = bookStatus;
     this.memberUsername = memberUsername;
   }
+
+
 }

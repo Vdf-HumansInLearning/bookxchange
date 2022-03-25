@@ -8,5 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface AuthorsRepository extends JpaRepository<AuthorsEntity, UUID> {
+public interface AuthorsRepository extends JpaRepository<AuthorsEntity, Integer> {
+
+    boolean existsByNameAndSurname(String name, String surname);
+
 }

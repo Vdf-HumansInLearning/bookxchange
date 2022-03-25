@@ -15,14 +15,14 @@ public class TransactionEntity {
     @Column(name = "id")
     private long id;
     @Basic
-    @Column(name = "market_book_id")
-    private String marketBookId;
+    @Column(name = "market_book_uuid")
+    private String marketBookuuId;
     @Basic
-    @Column(name = "member_id_from")
-    private String memberIdFrom;
+    @Column(name = "member_uuid_from")
+    private String memberuuIdFrom;
     @Basic
-    @Column(name = "member_id_to")
-    private String memberIdTo;
+    @Column(name = "member_uuid_to")
+    private String memberuuIdTo;
     @Basic
     @Column(name = "transaction_type")
     private String transactionType;
@@ -34,9 +34,9 @@ public class TransactionEntity {
     private LocalDate expectedReturnDate;
 
     public TransactionEntity(String marketBookId, String memberIdFrom, String memberIdTo, String transactionType, LocalDate transactionDate) {
-        this.marketBookId = marketBookId;
-        this.memberIdFrom = memberIdFrom;
-        this.memberIdTo = memberIdTo;
+        this.marketBookuuId = marketBookId;
+        this.memberuuIdFrom = memberIdFrom;
+        this.memberuuIdTo = memberIdTo;
         this.transactionType = transactionType;
         this.transactionDate = transactionDate;
         if(transactionType.equalsIgnoreCase(TransactionType.RENT.toString())){

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface MemberRepository extends JpaRepository<MembersEntity, UUID> {
     @Modifying
-    @Query(value="UPDATE members SET points = points+?1  WHERE member_user_id = ?2 ",nativeQuery = true)
+    @Query(value="UPDATE members SET points = points+?1  WHERE member_uuid = ?2 ",nativeQuery = true)
     void updatePointsToMember( int points, String memberId);
 
 }

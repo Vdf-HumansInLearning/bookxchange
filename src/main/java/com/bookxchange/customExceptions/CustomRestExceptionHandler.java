@@ -91,4 +91,19 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
+
+    @ExceptionHandler({ InvalidISBNException.class })
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+            InvalidISBNException ex, WebRequest request) {
+        String error =
+                ex.getMessage();
+
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<Object>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+
+
 }

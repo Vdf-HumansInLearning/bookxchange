@@ -1,5 +1,6 @@
 package com.bookxchange.service;
 
+import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.repositories.BookMarketRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,5 +15,9 @@ public class BookMarketService {
     @Transactional
     public void updateBookMarketStatus(String status, String bookMarketID){
         bookMarketRepository.updateBookMarketStatusForId(status,bookMarketID);
+    }
+
+    public void addBookMarketEntry(BookMarketEntity bookMarketEntityToAdd){
+        bookMarketRepository.save(bookMarketEntityToAdd);
     }
 }

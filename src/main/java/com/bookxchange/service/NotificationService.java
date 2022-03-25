@@ -1,16 +1,23 @@
 package com.bookxchange.service;
 
 import com.bookxchange.customExceptions.NotificationException;
+import com.bookxchange.enums.BookStatus;
+import com.bookxchange.enums.EmailTemplateType;
 import com.bookxchange.model.BookMarketEntity;
+import com.bookxchange.model.EmailsEntity;
 import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.pojo.NotificationHelper;
 import com.bookxchange.repositories.BookMarketRepository;
+import com.bookxchange.repositories.EmailsRepository;
 import com.bookxchange.repositories.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,18 +28,15 @@ public class NotificationService {
     private static final Log LOG = LogFactory.getLog(NotificationService.class);
     private final NotificationRepository notificationRepository;
     private final BookMarketRepository bmr;
+    private final EmailService emailService;
+    private final EmailsRepository emailsRepository;
 
-    PluginService pluginService;
-
+    @Transactional
     public void checkForNotifications() {
         try {
             List<NotificationHelper> emailToNotify = notificationRepository.getEmailToNotify();
-            if(!emailToNotify.isEmpty()){
-                emailToNotify.forEach(customer -> {
-                    NotificationProcessingPlugin notificationPlugin = pluginService.getPlugin(customer.getTemplate_Name());
-                    notificationPlugin.sendMail(customer);
-                    LOG.info(String.format("E-mail sent to %s", customer.getEmail_Address()));
-                });
+            if (!emailToNotify.isEmpty()) {
+                emailToNotify.stream().filter(customer -> customer.getTemplate_Name().equals(EmailTemplateType.AVAILABILITY)).forEach(this::sendMail);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,24 +47,44 @@ public class NotificationService {
     public NotificationsEntity addNotification(String marketBookId, String memberId) {
         // check if already available
 
-        Optional<BookMarketEntity> bookMarket = bmr.findById(marketBookId);
+        boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookUuidAndMemberUuid(marketBookId, memberId);
 
-        if(memberId.equals(bookMarket.get().getUserId())){
-            throw new NotificationException("User can't notify for his own book.");
-        }
-
-
-        BookMarketEntity bookMarketEntity = bookMarket.get();
-        String status = bookMarketEntity.getBookStatus();
-        if (status.equals("AVAILABLE") || status.equals("SOLD")) { //todo use enums
-            throw new NotificationException(String.format("Book is already %s"), status);
+        Optional<BookMarketEntity> bookMarket = bmr.findByBookMarketUuid(marketBookId);
+        if (bookMarket.isPresent()) {
+            BookMarketEntity bookMarketEntity = bookMarket.get();
+            String status = bookMarketEntity.getBookStatus();
+            if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
+                String format = String.format("Book is already '%s'", status);
+                System.out.println(format);
+                throw new NotificationException(format);
+            } else if (!isDuplicate) {
+                NotificationsEntity notification = new NotificationsEntity();
+                notification.setMemberUuid(memberId);
+                notification.setMarketBookUuid(marketBookId);
+                notification.setTemplateType(1);
+                notification.setSent((byte) 0);
+                return notificationRepository.save(notification);
+            } else if (isDuplicate) {
+                throw new NotificationException("Duplicate Notification");
+            }
         } else {
-            NotificationsEntity notification = new NotificationsEntity();
-            notification.setMemberId(memberId);
-            notification.setMarketBookId(marketBookId);
-            notification.setTemplateType("1");
-           return notificationRepository.save(notification);
+            throw new NotificationException("Empty BookMarket");
         }
+        return null;
+    }
 
+    @Transactional
+    void sendMail(NotificationHelper userToBeNotifiedInfo) {
+        String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
+        emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);
+        notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
+        EmailsEntity emailsEntity = new EmailsEntity();
+        emailsEntity.setContent(body);
+      //  System.out.println(body);
+      //  System.out.println(userToBeNotifiedInfo.getEmail_Address());
+        emailsEntity.setStatus("SENT");
+        emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
+        emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
+        emailsRepository.save(emailsEntity);
     }
 }

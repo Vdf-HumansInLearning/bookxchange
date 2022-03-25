@@ -25,26 +25,26 @@ public class RatingEntity {
     @NotBlank(message = "description is mandatory")
     private String description;
     @Basic
-    @Column(name = "left_by")
+    @Column(name = "left_by_uuid")
     @NotBlank(message = "the user who left the rating is mandatory")
-    private String leftBy;
+    private String leftByUuid;
     @Basic
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "user_uuid")
+    private String userIdUuid;
     @Basic
-    @Column(name = "book_id")
-    private String bookId;
+    @Column(name = "book_isbn")
+    private String bookIsbn;
 
 
     public RatingEntity() {
 
     }
 
-    public RatingEntity(Integer grade, String description, String leftBy, String userId, String bookId) {
+    public RatingEntity(Integer grade, String description, String leftByUuid, String userIdUuid, String bookIsbn) {
         this.grade = grade;
         this.description = description;
-        this.leftBy = leftBy;
-        this.userId = userId;
-        this.bookId = bookId;
+        this.leftByUuid = leftByUuid;
+        this.userIdUuid = userIdUuid;
+        this.bookIsbn = bookIsbn;
     }
 }

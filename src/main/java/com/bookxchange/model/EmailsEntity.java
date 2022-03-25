@@ -24,7 +24,7 @@ public class EmailsEntity {
     private String status;
     @Basic
     @Column(name = "member_id")
-    private String memberId;
+    private Integer memberId;
 
 
 }

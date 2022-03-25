@@ -5,10 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.UUID;
 
 @Data
-public class Book {
+public class BookEntity {
 
   @NotNull(message = "ISBN cannot be null")
   @Size(min = 13, max = 13, message = "must be 13 chars")

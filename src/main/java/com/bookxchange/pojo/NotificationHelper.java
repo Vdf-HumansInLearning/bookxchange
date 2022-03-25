@@ -17,4 +17,8 @@ public interface NotificationHelper {
     String getUsername();
 
     Integer getNotid();
+
+    Integer getMember_User_Id();
+
+    String getMember_uuid();
 }
