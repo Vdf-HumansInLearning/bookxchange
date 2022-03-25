@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("transactions")
 public class TransactionController {
 
     private final Mapper mapper = new Mapper();
@@ -28,7 +29,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/transactions")
+    @PostMapping("/")
     public ResponseEntity<TransactionEntity> createTransaction(@RequestBody TransactionDto transactionDto) {
         TransactionEntity transactionEntity = mapper.toTransaction(transactionDto);
         transactionService.createTransaction(transactionEntity);
@@ -42,13 +43,13 @@ public class TransactionController {
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 
-    @GetMapping("/transactions/")
+    @GetMapping("/getTransactionById")
     public ResponseEntity<List<TransactionEntity>> getTransactionById(@RequestParam String userID) {
         return new ResponseEntity<>(transactionService.getTransactionByUserID(userID), HttpStatus.OK);
     }
 
 
-    @GetMapping("/transactions/a")
+    @GetMapping("/getTransactionsByType")
     public ResponseEntity<List<TransactionEntity>> getTransactionsByType(@RequestParam String type) {
         return new ResponseEntity<>(transactionService.getTransactionByType(type), HttpStatus.OK);
     }

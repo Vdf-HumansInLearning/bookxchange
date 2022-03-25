@@ -18,8 +18,6 @@ public class RetrievedBook {
     private BooksEntity retrievedBook= new BooksEntity();
     private String isbn;
 
-
-
     public RetrievedBook(String isbn) {
         retrievedBook.setIsbn(isbn);
     }

@@ -40,7 +40,8 @@ public class RatingController {
             return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
 
     }
-//  members/{memberID}/rating
+
+
     @PostMapping("/createMemberRating")
     public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDto ratingDto) {
 
@@ -53,7 +54,6 @@ public class RatingController {
 
     }
 
-//    la fel ca sus dar cu GET
     @GetMapping("/")
     public ResponseEntity<List<RatingEntity>> getAllRatings(@RequestParam(defaultValue = "0") Integer pageNo,
                                                             @RequestParam(defaultValue = "10") Integer pageSize,

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Items {
-    //TODO make those private
-    String id;
-    VolumeInfo volumeInfo;
+   private String id;
+   private VolumeInfo volumeInfo;
 }

@@ -2,7 +2,6 @@ package com.bookxchange.service;
 
 
 import com.bookxchange.customExceptions.InvalidISBNException;
-import com.bookxchange.model.Author;
 import com.bookxchange.model.AuthorsEntity;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.Isbn;
@@ -34,7 +33,6 @@ public class IsbnService {
         HttpGet request = new HttpGet(targetURL);
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
-            System.out.println(response.getStatusLine().toString());
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 result = EntityUtils.toString(entity);
@@ -49,7 +47,6 @@ public class IsbnService {
 
     public BooksEntity hitIsbnBookRequest(String isbn) {
         String infoFromApi = getInfoFromApi(isbn);
-        System.out.println(infoFromApi);
         Gson gson = new Gson();
         Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
         BooksEntity bookToReturn = new BooksEntity();
@@ -76,7 +73,6 @@ public class IsbnService {
             bookToReturn.setAuthors(authorsToAdd);
 
             bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
-            System.out.println(authorsToAdd);
         } else {
             throw new InvalidISBNException(isbn + " is invalid");
         }

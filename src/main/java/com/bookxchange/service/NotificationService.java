@@ -45,7 +45,6 @@ public class NotificationService {
     }
 
     public NotificationsEntity addNotification(String marketBookId, String memberId) {
-        // check if already available
 
         boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookUuidAndMemberUuid(marketBookId, memberId);
 
@@ -55,7 +54,7 @@ public class NotificationService {
             String status = bookMarketEntity.getBookStatus();
             if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
                 String format = String.format("Book is already '%s'", status);
-                System.out.println(format);
+                LOG.debug("format : "+format);
                 throw new NotificationException(format);
             } else if (!isDuplicate) {
                 NotificationsEntity notification = new NotificationsEntity();
@@ -80,11 +79,12 @@ public class NotificationService {
         notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
         EmailsEntity emailsEntity = new EmailsEntity();
         emailsEntity.setContent(body);
-      //  System.out.println(body);
-      //  System.out.println(userToBeNotifiedInfo.getEmail_Address());
         emailsEntity.setStatus("SENT");
         emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
         emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
+        LOG.debug("emailEntity created : "+emailsEntity);
         emailsRepository.save(emailsEntity);
+
+        LOG.debug("email sent succesfully");
     }
 }

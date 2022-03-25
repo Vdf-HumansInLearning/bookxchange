@@ -1,6 +1,5 @@
 package com.bookxchange.service;
 
-import com.bookxchange.model.MembersEntity;
 import com.bookxchange.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

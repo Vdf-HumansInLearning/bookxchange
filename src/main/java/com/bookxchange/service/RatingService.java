@@ -28,10 +28,10 @@ public class RatingService {
     @Autowired
     BookMarketRepository bookMarketRepository;
 
-    public void ratingAMember(RatingEntity ratingEntity)  {
+    public void ratingAMember(RatingEntity ratingEntity) {
 
         System.out.println(ratingEntity.toString());
-        if (ratingEntity.getUserIdUuid() == null || ratingEntity.getLeftByUuid()==null) {
+        if (ratingEntity.getUserIdUuid() == null || ratingEntity.getLeftByUuid() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
 
@@ -48,23 +48,20 @@ public class RatingService {
 
     }
 
-    public void ratingABook(RatingEntity ratingEntity)  {
+    public void ratingABook(RatingEntity ratingEntity) {
 
         if (ratingEntity.getBookIsbn() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");
         }
-
         BookMarketEntity marketBook = bookMarketRepository.getBookMarketEntityByBookId(ratingEntity.getBookIsbn());
 
         if (marketBook == null) {
             throw new InvalidRatingException("This user " + ratingEntity.getLeftByUuid() + " doesn't interact with this book");
         }
-
         List<TransactionEntity> transaction = transactionRepository.getTransactionsByBookIdAndLeftBy(marketBook.getBookMarketUuid(), ratingEntity.getLeftByUuid());
         if (transaction.isEmpty()) {
             throw new InvalidRatingException("This user " + ratingEntity.getLeftByUuid() + " doesn't interact with this book");
         }
-
         ratingRepository.save(ratingEntity);
 
     }
@@ -75,11 +72,10 @@ public class RatingService {
         Page<RatingEntity> pagedResult = ratingRepository.findAll(paging);
 
         if (pagedResult.hasContent()) {
-            if(booksRating == true){
-                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn()!=null).collect(Collectors.toList());
-            }
-            else {
-                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn()==null).collect(Collectors.toList());
+            if (booksRating == true) {
+                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn() != null).collect(Collectors.toList());
+            } else {
+                return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn() == null).collect(Collectors.toList());
             }
         } else {
             return new ArrayList<RatingEntity>();
