@@ -1,3 +1,5 @@
+USE bookOLX;
+
 INSERT INTO authors (authors_uuid, name, surname)
 values
     ("d41f41f6-c469-495d-9fd1-4b4ddd37957e", "Rowling", "Joanne K"),

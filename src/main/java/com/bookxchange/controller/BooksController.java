@@ -81,9 +81,12 @@ public class BooksController {
 
         try {
             if(receivedBookInfo.isDataIsRetrievedDb()) {
+
                 workingBookService.updateQuantityAtAdding(receivedBookInfo.getReceivedBook().getIsbn());
+
                 workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
             } else {
+
                 workingBookService.userAddsNewBook(receivedBookInfo.getReceivedBook());
                 workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
             }

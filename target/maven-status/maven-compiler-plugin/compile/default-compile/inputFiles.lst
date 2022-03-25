@@ -1,58 +1,63 @@
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\NotificationService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\dto\BookDto.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\controller\RatingController.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\EmailsRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\TransactionService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\dto\TransactionDto.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\EmailService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\RatingRepo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\enums\BookStatus.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\MembersEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\Author.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\BookReview.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\customExceptions\InvalidISBNException.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\IsbnService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\MarketBookRepo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\Member.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\Rating.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\pojo\NotificationHelper.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\AuthorsEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\dto\RatingDto.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\NotificationsEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\RatingEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\Transaction.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\pojo\Items.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\utils\PropertyLoader.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\pojo\Isbn.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\dto\MarketBookDto.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\enums\TransactionType.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\NotificationRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\EmailTemplatesRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\BookExchangeApplication.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\MemberRepo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\BookMarketEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\BooksEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\MarketBook.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\MarketPlaceService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\BookService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\utils\JdbcConnection.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\customExceptions\InvalidRatingException.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\enums\BookState.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\RatingService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\MemberRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\pojo\VolumeInfo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\BookRepo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\TransactionRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\EmailTemplatesEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\AuthorsRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\BookMarketRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\TransactionRepo.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\dto\Mapper.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\BookRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\controller\TransactionController.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\EmailsEntity.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\Book.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\customExceptions\NotEnoughPointsException.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\repositories\RatingRepository.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\service\BookVerificationService.java
-C:\Users\gabriel.vlad\OneDrive - Vodafone Group\Documents\GitHub\bookxchange\bookxchange\src\main\java\com\bookxchange\model\TransactionEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/BookMarketEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/TransactionDto.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/RatingRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/EmailTemplatesEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/TransactionRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/BookService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/BookMarketRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/MemberService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/Isbn.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/Mapper.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/BookDto.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/EmailTemplateType.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/CustomRestExceptionHandler.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/NotificationRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/EmailTemplatesRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/ApiError.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/NotificationException.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/VolumeInfo.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/BooksEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/MainIsbServiceCheck.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/NotificationController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/RatingEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/BooksController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/EmailService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/RetrievedBook.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/MemberRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/RatingService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/MarketPlaceService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/BookListing.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/MarketBookDto.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/BookStatus.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/InvalidRatingException.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/NotificationHelper.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/RatingDto.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/TransactionType.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/Items.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/utils/JdbcConnection.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/RatingController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/MembersEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/NotificationService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/BooksExceptions.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/BookRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/NotificationsEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/EmailsRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/MarketBook.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/BooksRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/BookMarketController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/BookState.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/AuthorsService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/BookExchangeApplication.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/NotificationsDTO.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/InvalidISBNException.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/AuthorsEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/utils/PropertyLoader.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/EmailsEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/IsbnService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/configurations/SwaggerConfig.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/TransactionController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/TransactionService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/NotEnoughPointsException.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/BookMarketService.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/TransactionEntity.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/AuthorsRepository.java

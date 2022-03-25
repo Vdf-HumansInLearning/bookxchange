@@ -3,6 +3,7 @@ package com.bookxchange.service;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.repositories.BooksRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -25,14 +26,16 @@ public class BookService {
 
             providedBook.setQuantity(1);
             bookRepository.save(providedBook);
-
-        bookRepository.updateQuantityAdd(providedBook.getIsbn());
+//
+//        bookRepository.updateQuantityAdd(providedBook.getIsbn());
     }
 
+    @Transactional
     public void updateQuantityAtAdding(String providedIsbn) {
         bookRepository.updateQuantityAdd(providedIsbn);
     }
 
+    @Transactional
     public void downgradeQuantityForTransaction(String providedIsbn) {
         bookRepository.downgradeQuantityForTransaction(providedIsbn);
     }

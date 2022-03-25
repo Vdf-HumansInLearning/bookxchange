@@ -82,10 +82,7 @@ CREATE TABLE rating (
                         left_by_uuid VARCHAR(36),
                         user_uuid VARCHAR(36),
                         book_isbn varchar(36),
-                        primary key (rating_id),
-                        foreign key (user_uuid) references members(member_uuid),
-                        foreign key (left_by_uuid) references members(member_uuid),
-                        foreign key (book_isbn) references books(isbn)
+                        primary key (rating_id)
 );
 
 CREATE TABLE emails (

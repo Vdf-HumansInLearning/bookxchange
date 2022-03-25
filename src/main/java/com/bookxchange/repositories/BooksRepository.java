@@ -12,7 +12,7 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
     BooksEntity getByIsbn(String providedIsbn);
 
     @Modifying
-    @Query(value = "UPDATE books SET quantity = quantity+1 where isbn = ?1", nativeQuery = true)
+    @Query(value = "UPDATE books SET books.quantity =books.quantity+1 where books.isbn = ?1", nativeQuery = true)
     void updateQuantityAdd(String isbn);
 
 
