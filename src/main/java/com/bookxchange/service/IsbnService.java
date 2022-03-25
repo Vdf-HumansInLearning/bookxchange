@@ -45,19 +45,7 @@ public class IsbnService {
         return result;
     }
 
-//    public HashMap<String, String> hitIsbnRequest(String isbn) {
-//        String infoFromApi = getInfoFromApi(isbn);
-//        Gson gson = new Gson();
-//        Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
-//        HashMap<String, String> hashMap = new HashMap<>();
-//        if (isbnDTO.getTotalItems() > 0) {
-//            String title = isbnDTO.getItems().get(0).getVolumeInfo().getTitle();
-//            hashMap.put(isbn, title);
-//        } else {
-//            throw new InvalidISBNException(isbn + " is invalid");
-//        }
-//        return hashMap;
-//    }
+
 
     public BooksEntity hitIsbnBookRequest(String isbn) {
         String infoFromApi = getInfoFromApi(isbn);
