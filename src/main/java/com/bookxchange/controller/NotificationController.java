@@ -12,20 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/notifications")
 public class NotificationController {
 
-    private final NotificationService ns;
+    private final NotificationService notificationService;
 
     @Autowired
-    public NotificationController(NotificationService ns) {
-        this.ns = ns;
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     @PostMapping("")
     public ResponseEntity<NotificationsEntity> addNotification(@RequestBody NotificationsDTO notificationsDTO){
 
-        System.out.println("in controller" + notificationsDTO.getMarketBookUuid());
-        System.out.println("in controller" + notificationsDTO.getMemberUuid());
-
-        return new ResponseEntity<>(ns.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()), HttpStatus.CREATED);
+        return new ResponseEntity<>(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()), HttpStatus.CREATED);
     }
 
 }

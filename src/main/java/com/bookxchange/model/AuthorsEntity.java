@@ -1,11 +1,13 @@
 package com.bookxchange.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "authors", schema = "bookOLX")
@@ -27,7 +29,8 @@ public class AuthorsEntity {
     @Column(name = "surname")
     private String surname;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<BooksEntity> books;
 
     @Override
