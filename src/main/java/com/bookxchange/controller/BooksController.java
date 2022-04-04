@@ -4,7 +4,7 @@ import com.bookxchange.customExceptions.BooksExceptions;
 import com.bookxchange.dto.Mapper;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.BookListing;
-import com.bookxchange.pojo.RetrievedBook;
+import com.bookxchange.pojo.retrievedBook;
 import com.bookxchange.service.BookMarketService;
 import com.bookxchange.service.BookService;
 
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("books")
@@ -39,17 +37,17 @@ public class BooksController {
 
 
     @GetMapping("/getBookDetailsISBN")
-    public ResponseEntity<RetrievedBook> RetriveBookDetails(@RequestParam String providedIsbn) {
+    public ResponseEntity<retrievedBook> retrieveBookDetails(@RequestParam String providedIsbn) {
 
         logger.debug("RetriveBookDetails starts : ");
 
-        RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
+        retrievedBook retrievedBookToReturn = new retrievedBook(providedIsbn);
         retrievedBookToReturn.setRetrievedInfo(false);
 
         System.out.println(retrievedBookToReturn);
         logger.debug("Starts to do the search  : " );
 
-        BooksEntity bookDetails = workingBookService.retriveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
+        BooksEntity bookDetails = workingBookService.retrieveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
         logger.debug("Has finished the search : " + bookDetails);
 
         if (bookDetails != null) {

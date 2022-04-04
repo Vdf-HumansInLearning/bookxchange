@@ -1,7 +1,6 @@
 package com.bookxchange.controller;
 
 import com.bookxchange.model.BookMarketEntity;
-import com.bookxchange.model.RatingEntity;
 import com.bookxchange.service.BookMarketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

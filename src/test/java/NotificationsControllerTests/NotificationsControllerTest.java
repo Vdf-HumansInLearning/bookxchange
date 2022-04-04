@@ -41,7 +41,7 @@ public class NotificationsControllerTest {
     AuthorsRepository authorsRepository;
 
     @Autowired
-    BookRepository bookRepository;
+    BooksRepository booksRepository;
 
 
     private String marketBookIdTest;
@@ -72,7 +72,7 @@ public class NotificationsControllerTest {
         booksEntity.setTitle("Test title");
         booksEntity.setDescription("test descript");
         booksEntity.setQuantity(1);
-        bookRepository.save(booksEntity);
+        booksRepository.save(booksEntity);
 
 
         BookMarketEntity bookMarketEntity = new BookMarketEntity();

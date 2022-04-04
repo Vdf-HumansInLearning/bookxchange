@@ -104,6 +104,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ BooksExceptions.class })
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+            BooksExceptions ex, WebRequest request) {
+        String error =
+                ex.getMessage();
+
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<Object>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
 
 
 }

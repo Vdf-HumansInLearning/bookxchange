@@ -1,6 +1,5 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.customExceptions.InvalidRatingException;
 import com.bookxchange.dto.Mapper;
 import com.bookxchange.dto.RatingDto;
 import com.bookxchange.model.RatingEntity;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;

@@ -17,17 +17,14 @@ public class BookService {
 
     }
 
-    public BooksEntity retriveBookFromDB(String providedIsbn){
-        BooksEntity bookToReturn = bookRepository.getByIsbn(providedIsbn);
-        return bookToReturn;
+    public BooksEntity retrieveBookFromDB(String providedIsbn) {
+        return bookRepository.getByIsbn(providedIsbn);
     }
 
     public void userAddsNewBook(BooksEntity providedBook) {
 
-            providedBook.setQuantity(1);
-            bookRepository.save(providedBook);
-//
-//        bookRepository.updateQuantityAdd(providedBook.getIsbn());
+        providedBook.setQuantity(1);
+        bookRepository.save(providedBook);
     }
 
     @Transactional
@@ -40,4 +37,7 @@ public class BookService {
         bookRepository.downgradeQuantityForTransaction(providedIsbn);
     }
 
+    public int getQuantityByIsbn(String isbn){
+       return bookRepository.getQuantityByIsbn(isbn);
+    }
 }

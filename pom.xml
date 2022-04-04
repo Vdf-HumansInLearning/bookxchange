@@ -19,7 +19,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-parent</artifactId>
             <version>1.3.2.RELEASE</version>
-            <scope>import</scope>
+            <scope>provided</scope>
             <type>pom</type>
         </dependency>
         <dependency>
@@ -167,10 +167,15 @@
                         <schema>bookOLX</schema>
                     </schemas>
                     <locations>
-                        <location>src/main/resources/db/migration</location>
+                        <location>filesystem:src/main/resources/db/migration</location>
                     </locations>
                     <createSchemas>true</createSchemas>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
