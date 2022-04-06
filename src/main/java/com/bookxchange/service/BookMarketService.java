@@ -50,6 +50,10 @@ public class BookMarketService {
     public String getBookIsbn(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
     }
+
+    public Double getPriceByMarketBookId(String bookMarketUuid) {
+        return bookMarketRepository.getPriceByUuid(bookMarketUuid);
+    }
 }
 
 

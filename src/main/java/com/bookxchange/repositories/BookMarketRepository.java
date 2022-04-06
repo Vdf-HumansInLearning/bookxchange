@@ -29,5 +29,7 @@ public interface BookMarketRepository extends PagingAndSortingRepository<BookMar
 
     List<BookMarketEntity> findAllByUserUuid(String userUuid);
 
+    @Query(value = "SELECT sell_price from book_market where book_market_uuid = ?1", nativeQuery = true)
+    Double getPriceByUuid(String uuid);
 
 }

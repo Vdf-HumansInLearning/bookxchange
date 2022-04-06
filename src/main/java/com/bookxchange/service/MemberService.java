@@ -14,7 +14,13 @@ public class MemberService {
         this.memberRepository=memberRepository;
     }
     @Transactional
-    public void updatePointsToMemberByID(String memberID){
-        memberRepository.updatePointsToMember(10, memberID);
+    public void updatePointsToSupplierByID(String memberID){
+        memberRepository.updatePointsToMember(10d, memberID);
     }
+
+    public void updatePointsToClientById(Double bookPoints,String memberId) {
+        memberRepository.updatePointsToMember(bookPoints,memberId);
+    }
+
+    public Double getPointsByMemberId(String memberId) {return memberRepository.getPointsByMemberId(memberId);}
 }

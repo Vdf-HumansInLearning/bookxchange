@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 @Repository
 public interface MemberRepository extends JpaRepository<MembersEntity, UUID> {
     @Modifying
     @Query(value="UPDATE members SET points = points+?1  WHERE member_uuid = ?2 ",nativeQuery = true)
-    void updatePointsToMember( int points, String memberId);
+    void updatePointsToMember( Double points, String memberId);
 
+    @Query(value = "SELECT points from members where member_uuid = ?1", nativeQuery = true)
+    Double getPointsByMemberId(String memberId);
 }

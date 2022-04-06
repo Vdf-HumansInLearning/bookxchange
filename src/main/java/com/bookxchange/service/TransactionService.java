@@ -45,6 +45,12 @@ public class TransactionService {
             } throw new BooksExceptions("Book is not available at this time");
     }
 
+    @Transactional
+    public TransactionEntity createTransactionBuyingWithPoints(TransactionDto transactionDto) {
+        TransactionEntity transactionEntity = mapper.toTransactionEntity(transactionDto);
+            return transactionRepository.save(transactionEntity);
+    }
+
 
     public List<TransactionEntity> getTransactionsByMemberUuIDAndType(String memberId, TransactionType type) {
         return transactionRepository.findAllByMemberUuIDAndTransactionType(memberId, type.toString());
@@ -56,26 +62,35 @@ public class TransactionService {
 
     public void updateBookMarketStatusAndMemberPoints(TransactionDto transactionDto) {
         if (transactionDto.getTransactionType().equals(TransactionType.RENT)) {
-            memberService.updatePointsToMemberByID(transactionDto.getSupplier());
+            memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
             bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookId());
         } else {
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookId());
+            memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
+
+            Double priceByMarketBookId = bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookId());
+            memberService.updatePointsToClientById(priceByMarketBookId*10*-1, transactionDto.getClient());
+            bookService.downgradeQuantityForTransaction(bookMarketService.getBookIsbn(transactionDto.getMarketBookId()));
         }
     }
 
 
-//
-//    //TODO check points <0, or number of points if the transacation can be made
-//    public boolean buyBookWithPoints(MarketBook marketBook, UUID memberWhoBuys) throws SQLException {
-//        if (marketBook.getBookStatus().equals(BookStatus.AVAILABLE) && marketBook.isForSell()) {
-//            if(memberRepo.getPointsForMember(memberWhoBuys) >= memberRepo.convertMoneyToPoints(marketBook)){
-//                buyBook(marketBook, memberWhoBuys);
-//                memberRepo.updatePointsAfterBuy(marketBook,memberWhoBuys);
-//                return true;
-//            }else {
-//                throw new NotEnoughPointsException("You don't have enough points to buy this book");
-//            }
-//        }
-//        return false;
-//    }
+
+    //TODO check points <0, or number of points if the transacation can be made
+    @Transactional
+    public void buyBookWithPoints(TransactionDto transactionDto) {
+
+        if (isEligibleForBuy(transactionDto)) {
+            updateBookMarketStatusAndMemberPoints(transactionDto);
+            //TODO need to add if transaction is made with points or money
+            createTransactionBuyingWithPoints(transactionDto);
+        }
+    }
+
+    private boolean isEligibleForBuy(TransactionDto transactionDto) {
+        return bookMarketService.getBookMarketStatus(transactionDto.getMarketBookId().toString()).equals(BookStatus.AVAILABLE.toString())
+                && bookMarketService.isBookMarketForSell(transactionDto.getMarketBookId())
+                && memberService.getPointsByMemberId(transactionDto.getClient()) / 10 >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookId());
+    }
+
 }

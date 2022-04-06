@@ -1,22 +1,21 @@
 package com.bookxchange.dto;
 
 import com.bookxchange.enums.TransactionType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 public class TransactionDto {
 
     @NotBlank(message = "marketBookId is mandatory")
-    private final String marketBookId;
+    private String marketBookId;
     @NotBlank(message = "supplier is mandatory")
-    private final String supplier;
+    private String supplier;
     @NotBlank(message = "client is mandatory")
-    private final String client;
+    private String client;
     @NotBlank(message = "transactionType is mandatory")
-    private final TransactionType transactionType;
+    private TransactionType transactionType;
 
 }
