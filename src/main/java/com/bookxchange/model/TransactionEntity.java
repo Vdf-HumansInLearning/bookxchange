@@ -1,16 +1,20 @@
 package com.bookxchange.model;
 
 import com.bookxchange.enums.TransactionType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "transaction", schema = "bookOLX")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -47,7 +51,9 @@ public class TransactionEntity {
     }
 
 
-    public TransactionEntity() {
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
