@@ -8,13 +8,13 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @ToString
-public class retrievedBook {
+public class RetrievedBook {
 
     private boolean retrievedInfo = false;
     private BooksEntity retrievedBook = new BooksEntity();
     private String isbn;
 
-    public retrievedBook(String isbn) {
+    public RetrievedBook(String isbn) {
         retrievedBook.setIsbn(isbn);
     }
 }

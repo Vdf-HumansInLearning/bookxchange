@@ -4,7 +4,7 @@ import com.bookxchange.customExceptions.BooksExceptions;
 import com.bookxchange.dto.Mapper;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.BookListing;
-import com.bookxchange.pojo.retrievedBook;
+import com.bookxchange.pojo.RetrievedBook;
 import com.bookxchange.service.BookMarketService;
 import com.bookxchange.service.BookService;
 
@@ -12,6 +12,7 @@ import com.bookxchange.service.IsbnService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,11 +38,11 @@ public class BooksController {
 
 
     @GetMapping("/getBookDetailsISBN")
-    public ResponseEntity<retrievedBook> retrieveBookDetails(@RequestParam String providedIsbn) {
+    public ResponseEntity<RetrievedBook> retrieveBookDetails(@RequestParam String providedIsbn) {
 
         logger.debug("RetriveBookDetails starts : ");
 
-        retrievedBook retrievedBookToReturn = new retrievedBook(providedIsbn);
+        RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
         retrievedBookToReturn.setRetrievedInfo(false);
 
         System.out.println(retrievedBookToReturn);
