@@ -1,5 +1,6 @@
 package com.bookxchange.service;
 
+import com.bookxchange.model.MembersEntity;
 import com.bookxchange.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,8 @@ public class MemberService {
     }
 
     public Double getPointsByMemberId(String memberId) {return memberRepository.getPointsByMemberId(memberId);}
+
+    public MembersEntity getMemberEntity (String username) {
+        return memberRepository.getMembersEntityByUsername(username);
+    }
 }

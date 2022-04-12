@@ -17,4 +17,6 @@ public interface MemberRepository extends JpaRepository<MembersEntity, UUID> {
 
     @Query(value = "SELECT points from members where member_uuid = ?1", nativeQuery = true)
     Double getPointsByMemberId(String memberId);
+
+    MembersEntity getMembersEntityByUsername(String username);
 }

@@ -38,6 +38,7 @@ CREATE TABLE members (
                          member_user_id int auto_increment not null ,
                          member_uuid varchar(36) NOT NULL unique,
                          username TEXT,
+                         password TEXT,
                          points INT,
                          email_address varchar(100),
                          primary key (member_user_id)

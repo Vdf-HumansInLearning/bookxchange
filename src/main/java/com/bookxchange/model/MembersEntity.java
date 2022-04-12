@@ -23,6 +23,8 @@ public class MembersEntity {
     @Basic
     @Column(name = "email_address")
     private String emailAddress;
+    @Column(name = "password")
+    private String password;
 
 
 }
