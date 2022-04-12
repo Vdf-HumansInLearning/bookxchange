@@ -39,11 +39,9 @@ public class RatingsControllerTests {
 
         mvc.perform(post("/transactions")
                         .content("{\n" +
-                                "  \"expectedReturnDate\": \"2012-12-12\",\n" +
                                 "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
-                                "  \"memberIdFrom\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
-                                "  \"memberIdTo\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "  \"transactionDate\": \"1999-12-12\",\n" +
+                                "  \"supplier\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
+                                "  \"client\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
                                 "  \"transactionType\": \"RENT\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON));
@@ -145,7 +143,7 @@ public class RatingsControllerTests {
     }
 
     @Test
-    public void createMemberRatingUserCanNotLetRatingsToThemlefs() throws Exception {
+    public void createMemberRatingUserCanNotLetRatingsToThemselves() throws Exception {
 
         mvc.perform(post("/ratings/createMemberRating")
                         .content("{\n" +
@@ -157,7 +155,7 @@ public class RatingsControllerTests {
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Users can not let reviews to themselfs"));
+                .andExpect(jsonPath("$.message").value("Users can not let reviews to themselves"));
     }
 
     @Test

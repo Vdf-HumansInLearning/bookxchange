@@ -7,16 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
 
-    boolean existsByIsbn(String providedIsbn);
-
     BooksEntity getByIsbn(String providedIsbn);
 
     @Modifying
-    @Query(value = "UPDATE books SET books.quantity =books.quantity+1 where books.isbn = ?1", nativeQuery = true)
+    @Query(value = "UPDATE books SET books.quantity =books.quantity+1 WHERE books.isbn = ?1", nativeQuery = true)
     void updateQuantityAdd(String isbn);
 
-
     @Modifying
-    @Query(value = "UPDATE books SET quantity = quantity-1 where isbn = ?1", nativeQuery = true)
+    @Query(value = "UPDATE books SET quantity = quantity-1 WHERE isbn = ?1", nativeQuery = true)
     void downgradeQuantityForTransaction(String isbn);
+
+    @Query(value = "SELECT quantity FROM books WHERE isbn = ?1", nativeQuery = true)
+    Integer getQuantityByIsbn(String isbn);
+
 }

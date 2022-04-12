@@ -82,9 +82,9 @@ public class NotificationService {
         emailsEntity.setStatus("SENT");
         emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
         emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
-        LOG.debug("emailEntity created : "+emailsEntity);
+        LOG.debug("emailEntity created : "+ emailsEntity);
         emailsRepository.save(emailsEntity);
 
-        LOG.debug("email sent succesfully");
+        LOG.debug("email sent successfully");
     }
 }

@@ -1,14 +1,20 @@
 package com.bookxchange.model;
 
 import com.bookxchange.enums.TransactionType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "transaction", schema = "bookOLX")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -33,19 +39,21 @@ public class TransactionEntity {
     @Column(name = "expected_return_date")
     private LocalDate expectedReturnDate;
 
-    public TransactionEntity(String marketBookId, String memberIdFrom, String memberIdTo, String transactionType, LocalDate transactionDate) {
+    public TransactionEntity(String marketBookId, String supplier, String client, String transactionType) {
         this.marketBookuuId = marketBookId;
-        this.memberuuIdFrom = memberIdFrom;
-        this.memberuuIdTo = memberIdTo;
+        this.memberuuIdFrom = supplier;
+        this.memberuuIdTo = client;
         this.transactionType = transactionType;
-        this.transactionDate = transactionDate;
-        if(transactionType.equalsIgnoreCase(TransactionType.RENT.toString())){
+        this.transactionDate = LocalDate.now();
+        if (transactionType.equalsIgnoreCase(TransactionType.RENT.toString())) {
             this.expectedReturnDate = LocalDate.now().plusDays(30);
         }
     }
 
 
-    public TransactionEntity() {
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

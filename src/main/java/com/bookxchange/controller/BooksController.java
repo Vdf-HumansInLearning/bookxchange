@@ -12,12 +12,11 @@ import com.bookxchange.service.IsbnService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("books")
@@ -39,7 +38,7 @@ public class BooksController {
 
 
     @GetMapping("/getBookDetailsISBN")
-    public ResponseEntity<RetrievedBook> RetriveBookDetails(@RequestParam String providedIsbn) {
+    public ResponseEntity<RetrievedBook> retrieveBookDetails(@RequestParam String providedIsbn) {
 
         logger.debug("RetriveBookDetails starts : ");
 
@@ -49,7 +48,7 @@ public class BooksController {
         System.out.println(retrievedBookToReturn);
         logger.debug("Starts to do the search  : " );
 
-        BooksEntity bookDetails = workingBookService.retriveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
+        BooksEntity bookDetails = workingBookService.retrieveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
         logger.debug("Has finished the search : " + bookDetails);
 
         if (bookDetails != null) {

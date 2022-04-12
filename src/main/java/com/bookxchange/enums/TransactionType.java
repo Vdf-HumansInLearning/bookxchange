@@ -2,6 +2,8 @@ package com.bookxchange.enums;
 
 public enum TransactionType {
   RENT,
-  SOLD,
+  SELL,
+  POINTSELL,
   TRADE
 }
+

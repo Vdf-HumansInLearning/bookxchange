@@ -36,7 +36,7 @@ public class RatingService {
         }
 
         if (ratingEntity.getUserIdUuid().equals(ratingEntity.getLeftByUuid())) {
-            throw new InvalidRatingException("Users can not let reviews to themselfs");
+            throw new InvalidRatingException("Users can not let reviews to themselves");
         }
 
         List<TransactionEntity> transaction = transactionRepository.getTransactionByWhoSelleddAndWhoBuys(ratingEntity.getLeftByUuid(), ratingEntity.getUserIdUuid());
@@ -72,13 +72,13 @@ public class RatingService {
         Page<RatingEntity> pagedResult = ratingRepository.findAll(paging);
 
         if (pagedResult.hasContent()) {
-            if (booksRating == true) {
+            if (booksRating) {
                 return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn() != null).collect(Collectors.toList());
             } else {
                 return pagedResult.getContent().stream().filter(ratingEntity -> ratingEntity.getBookIsbn() == null).collect(Collectors.toList());
             }
         } else {
-            return new ArrayList<RatingEntity>();
+            return new ArrayList<>();
         }
     }
 

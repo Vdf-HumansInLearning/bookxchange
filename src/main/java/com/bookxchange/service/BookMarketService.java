@@ -1,19 +1,12 @@
 package com.bookxchange.service;
 
 import com.bookxchange.model.BookMarketEntity;
-import com.bookxchange.model.RatingEntity;
 import com.bookxchange.repositories.BookMarketRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookMarketService {
@@ -22,21 +15,47 @@ public class BookMarketService {
     public BookMarketService(BookMarketRepository bookMarketRepository) {
         this.bookMarketRepository = bookMarketRepository;
     }
+
     @Transactional
-    public void updateBookMarketStatus(String status, String bookMarketID){
-        bookMarketRepository.updateBookMarketStatusForId(status,bookMarketID);
+    public void updateBookMarketStatus(String status, String bookMarketID) {
+        bookMarketRepository.updateBookMarketStatusForId(status, bookMarketID);
     }
 
-    public void addBookMarketEntry(BookMarketEntity bookMarketEntityToAdd){
+    public void addBookMarketEntry(BookMarketEntity bookMarketEntityToAdd) {
         bookMarketRepository.save(bookMarketEntityToAdd);
     }
 
- public List<BookMarketEntity>  findAllByIsbn( String isbn){
+    public List<BookMarketEntity> findAllByIsbn(String isbn) {
 
-        return  bookMarketRepository.findAllByBookIsbn(isbn);
- }
-    public List<BookMarketEntity>  findAllByUserId( String userUuid){
+        return bookMarketRepository.findAllByBookIsbn(isbn);
+    }
 
-        return  bookMarketRepository.findAllByUserUuid(userUuid);
+    public List<BookMarketEntity> findAllByUserId(String userUuid) {
+
+        return bookMarketRepository.findAllByUserUuid(userUuid);
+    }
+
+    public BookMarketEntity getBookMarketFromOptional(String bookMarketUuId) throws NoSuchElementException {
+        return bookMarketRepository.findByBookMarketUuid(bookMarketUuId).get();
+    }
+    public String getBookMarketStatus(String bookMarketUuId){
+        return getBookMarketFromOptional(bookMarketUuId).getBookStatus();
+    }
+    public boolean isBookMarketForRent(String bookMarketUuId){
+        return getBookMarketFromOptional(bookMarketUuId).getForRent() == 1;
+    }
+    public boolean isBookMarketForSell(String bookMarketUuId){
+        return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
+    }
+    public String getBookIsbn(String bookMarketUuId){
+        return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
+    }
+
+    public Double getPriceByMarketBookId(String bookMarketUuid) {
+        return bookMarketRepository.getPriceByUuid(bookMarketUuid);
     }
 }
+
+
+
+

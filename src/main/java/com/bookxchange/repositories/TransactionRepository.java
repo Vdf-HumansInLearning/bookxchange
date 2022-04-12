@@ -1,5 +1,6 @@
 package com.bookxchange.repositories;
 
+import com.bookxchange.enums.TransactionType;
 import com.bookxchange.model.TransactionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,10 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
      List<TransactionEntity> findAllByMemberuuIdFrom(String memberIdFrom);
-     List<TransactionEntity> findByTransactionType(String transactionType);
+
+     @Query(value= "SELECT * FROM transaction WHERE transaction.member_uuid_from =?1  AND transaction.transaction_type =?2", nativeQuery = true)
+     List<TransactionEntity> findAllByMemberUuIDAndTransactionType(String memberUuid, String type);
+
 
      @Query(value= "SELECT * FROM transaction WHERE transaction.market_book_uuid =?1  AND transaction.member_uuid_to =?2", nativeQuery = true)
      List<TransactionEntity> getTransactionsByBookIdAndLeftBy(String marketBookId, String memberIdTo);
@@ -21,4 +25,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
      List<TransactionEntity> getTransactionByWhoSelleddAndWhoBuys(String memberIdFrom, String memberIdTo);
 
      List<TransactionEntity> findAllByTransactionDate(LocalDate transactionDate);
+
+
 }
