@@ -28,4 +28,9 @@ public class MemberService {
     public MembersEntity getMemberEntity (String username) {
         return memberRepository.getMembersEntityByUsername(username);
     }
+
+    public void saveMember (MembersEntity member) {
+         memberRepository.save(member);
+    }
+
 }
