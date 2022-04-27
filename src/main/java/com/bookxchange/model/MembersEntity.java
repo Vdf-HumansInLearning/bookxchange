@@ -1,5 +1,6 @@
 package com.bookxchange.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,4 +30,14 @@ public class MembersEntity {
 
 
 
+    public MembersEntity() {
+    }
+
+    public MembersEntity(String memberUserUuid, String username, Integer points, String emailAddress, String password) {
+        this.memberUserUuid = memberUserUuid;
+        this.username = username;
+        this.points = points;
+        this.emailAddress = emailAddress;
+        this.password = password;
+    }
 }
