@@ -1,6 +1,7 @@
 com/bookxchange/service/AuthorsService.class
 com/bookxchange/service/TransactionService.class
 com/bookxchange/BookExchangeApplication.class
+com/bookxchange/security/JwtUserDetailsService.class
 com/bookxchange/enums/BookStatus.class
 com/bookxchange/customExceptions/InvalidISBNException.class
 com/bookxchange/controller/TransactionController.class
@@ -11,15 +12,19 @@ com/bookxchange/pojo/NotificationHelper.class
 com/bookxchange/service/MarketPlaceService.class
 com/bookxchange/pojo/VolumeInfo.class
 com/bookxchange/repositories/TransactionRepository.class
+com/bookxchange/validators/BookValidators.class
 com/bookxchange/model/AuthorsEntity.class
 com/bookxchange/dto/NotificationsDTO.class
 com/bookxchange/dto/BookDto.class
+com/bookxchange/security/JwtRequestFilter.class
 com/bookxchange/repositories/RatingRepository.class
 com/bookxchange/model/MembersEntity.class
 com/bookxchange/service/MemberService.class
+com/bookxchange/security/JwtResponse.class
 com/bookxchange/enums/TransactionType.class
 com/bookxchange/pojo/Isbn.class
 com/bookxchange/enums/BookState.class
+com/bookxchange/security/JwtRequest.class
 com/bookxchange/controller/BookMarketController.class
 com/bookxchange/model/MarketBook.class
 com/bookxchange/service/IsbnService.class
@@ -30,8 +35,9 @@ com/bookxchange/service/BookService.class
 com/bookxchange/repositories/EmailsRepository.class
 com/bookxchange/repositories/MemberRepository.class
 com/bookxchange/customExceptions/ApiError.class
+com/bookxchange/validators/ValidatorsInteface.class
 com/bookxchange/pojo/RetrievedBook.class
-com/bookxchange/repositories/BookRepository.class
+com/bookxchange/security/WebSecurityConfig.class
 com/bookxchange/repositories/NotificationRepository.class
 com/bookxchange/service/EmailService.class
 com/bookxchange/controller/NotificationController.class
@@ -41,6 +47,7 @@ com/bookxchange/repositories/EmailTemplatesRepository.class
 com/bookxchange/pojo/Items.class
 com/bookxchange/model/RatingEntity.class
 com/bookxchange/service/NotificationService.class
+com/bookxchange/validators/MarketBookValidator.class
 com/bookxchange/dto/RatingDto.class
 com/bookxchange/customExceptions/InvalidRatingException.class
 com/bookxchange/pojo/BookListing.class
@@ -52,6 +59,8 @@ com/bookxchange/controller/RatingController.class
 com/bookxchange/service/RatingService.class
 com/bookxchange/model/EmailsEntity.class
 com/bookxchange/service/EmailService$EmailServiceBuilder.class
+com/bookxchange/security/JwtAuthenticationEntryPoint.class
+com/bookxchange/controller/JwtAuthenticationController.class
 com/bookxchange/customExceptions/CustomRestExceptionHandler.class
 com/bookxchange/model/TransactionEntity.class
 com/bookxchange/repositories/AuthorsRepository.class
@@ -62,3 +71,4 @@ com/bookxchange/model/NotificationsEntity.class
 com/bookxchange/dto/MarketBookDto.class
 com/bookxchange/repositories/BookMarketRepository.class
 com/bookxchange/enums/EmailTemplateType.class
+com/bookxchange/security/JwtTokenUtil.class

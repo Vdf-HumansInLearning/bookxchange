@@ -12,4 +12,7 @@ public interface AuthorsRepository extends JpaRepository<AuthorsEntity, Integer>
 
     boolean existsByNameAndSurname(String name, String surname);
 
+    AuthorsEntity findAuthorsEntityByNameEqualsAndSurnameEquals(String name, String surname);
+
+    int countAuthorsEntityByNameAndSurname(String name, String surname);
 }

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
+
 public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
 
     BooksEntity getByIsbn(String providedIsbn);
@@ -19,5 +21,8 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Integer> {
 
     @Query(value = "SELECT quantity FROM books WHERE isbn = ?1", nativeQuery = true)
     Integer getQuantityByIsbn(String isbn);
+
+
+    ArrayList<BooksEntity> findAll();
 
 }

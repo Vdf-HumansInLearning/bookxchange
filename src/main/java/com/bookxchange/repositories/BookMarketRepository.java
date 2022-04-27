@@ -1,5 +1,6 @@
 package com.bookxchange.repositories;
 
+import com.bookxchange.customExceptions.BooksExceptions;
 import com.bookxchange.model.BookMarketEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+//    @Query
+//    default <S extends BookMarketEntity> S save(S entity) {
+////        if(!entity.isForSell() && !entity.isForRent()){
+////            throw new BooksExceptions("Something something");
+////
+////        }
+//        return null;
+//    }
+
+
 
 
 @Repository
