@@ -18,15 +18,6 @@ public class JdbcConnection {
     private static String username = "root";
     private static String password = "root";
 
-  public static void main(String[] args) {
-    //  getConnection();
-
-        File resourcesDirectory = new File("src/main/resources");
-        String absolutePath = resourcesDirectory.getAbsolutePath();
-      System.out.println(absolutePath);
-
-
-  }
 
     public static Connection getConnection() {
         Properties properties = PropertyLoader.loadProperties();

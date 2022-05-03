@@ -54,8 +54,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ ConstraintViolationException.class })
-    public ResponseEntity<Object> handleConstraintViolation(
-            ConstraintViolationException ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleConstraintViolation(
+            ConstraintViolationException ex) {
         List<String> errors = new ArrayList<String>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getRootBeanClass().getName() + " " +
@@ -64,57 +64,70 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({ InvalidRatingException.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            InvalidRatingException ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleMethodInvalidRating(
+            InvalidRatingException ex) {
         String error =
                 ex.getMessage();
 
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({ NotificationException.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            NotificationException ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleMethodNotificationException(
+            NotificationException ex) {
         String error =
                 ex.getMessage();
 
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({ InvalidISBNException.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            InvalidISBNException ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleMethodInvalidIsbn(
+            InvalidISBNException ex) {
         String error =
                 ex.getMessage();
 
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({ BooksExceptions.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            BooksExceptions ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleMethodBookException(
+            BooksExceptions ex) {
         String error =
                 ex.getMessage();
 
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
+
+    @ExceptionHandler({ BadAuthentificationException.class })
+    public ResponseEntity<ApiError> handleMethodBadAuth(
+            BadAuthentificationException ex) {
+        String error =
+                ex.getMessage();
+
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
 
 
 

@@ -40,7 +40,7 @@ public class NotificationService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.fatal("Notification fatal error.");
+            LOG.debug("Notification fatal error.");
         }
     }
 

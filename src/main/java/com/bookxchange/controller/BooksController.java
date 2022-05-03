@@ -52,7 +52,6 @@ public class BooksController {
         RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
         retrievedBookToReturn.setRetrievedInfo(false);
 
-        System.out.println(retrievedBookToReturn);
         logger.debug("Starts to do the search  : " );
 
         BooksEntity bookDetails = workingBookService.retrieveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());

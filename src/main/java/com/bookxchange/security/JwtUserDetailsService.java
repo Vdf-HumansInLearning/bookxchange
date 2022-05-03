@@ -1,5 +1,6 @@
 package com.bookxchange.security;
 
+import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.model.MembersEntity;
@@ -36,7 +37,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (usr != null) {
             return new User(usr.getUsername(), usr.getPassword(), new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("Nu");
+            throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
         }
     }
 
@@ -48,7 +49,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             logger.debug("it's a match");
         }
             else {
-                throw new InvalidISBNException("Parolele nu sunt identice, te rugam sa incerci din nou");
+                throw new BadAuthentificationException("Parolele nu sunt identice, te rugam sa incerci din nou");
         }
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));

@@ -2,6 +2,7 @@ package com.bookxchange.controller;
 
 import java.util.Objects;
 
+import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.security.JwtRequest;
 import com.bookxchange.security.JwtResponse;
@@ -31,7 +32,7 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService userDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)  {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -49,13 +50,13 @@ public class JwtAuthenticationController {
         userDetailsService.register(registerDto);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new BadAuthentificationException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new BadAuthentificationException("INVALID_CREDENTIALS", e);
         }
     }
 }
