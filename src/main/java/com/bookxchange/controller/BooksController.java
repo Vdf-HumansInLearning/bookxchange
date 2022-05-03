@@ -14,6 +14,7 @@ import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -89,34 +90,34 @@ public class BooksController {
     @PostMapping ("/userAddBook")
     public ResponseEntity<BookListing> creatBookEntry(@RequestHeader HttpHeaders headers, @RequestBody BookListing receivedBookInfo) {
 
-    public ResponseEntity<BookListing> creatBookEntry(
-            @Valid
-            @RequestBody BookListing receivedBookInfo) {
+//        public ResponseEntity<BookListing> creatBookEntry (
+//                @Valid
+//                @RequestBody BookListing receivedBookInfo){
 
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        Claims claims=  jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
+            String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+            Claims claims = jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
 
-       receivedBookInfo.getReceivedBookMarket().setUserUuid(claims.get("userUUID").toString());
-        System.out.println(receivedBookInfo.getReceivedBookMarket().getUserUuid() + " E NULL?");
+            receivedBookInfo.getReceivedBookMarket().setUserUuid(claims.get("userUUID").toString());
+            System.out.println(receivedBookInfo.getReceivedBookMarket().getUserUuid() + " E NULL?");
 
-        try {
-            if(receivedBookInfo.isDataIsRetrievedDb()) {
-                System.out.println("Reached adding book in market place");
-                System.out.println("reached here?");
-                workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
-            } else {
-                workingBookService.addNewBookToDB(receivedBookInfo.getReceivedBook());
-                workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
-                workingBookService.updateQuantityAtAdding(receivedBookInfo.getReceivedBook().getIsbn());
+            try {
+                if (receivedBookInfo.isDataIsRetrievedDb()) {
+                    System.out.println("Reached adding book in market place");
+                    System.out.println("reached here?");
+                    workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
+                } else {
+                    workingBookService.addNewBookToDB(receivedBookInfo.getReceivedBook());
+                    workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
+                    workingBookService.updateQuantityAtAdding(receivedBookInfo.getReceivedBook().getIsbn());
+                }
+
+                return new ResponseEntity(receivedBookInfo, HttpStatus.CREATED);
+            } catch (Exception invalidISBNException) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, invalidISBNException.getMessage());
+
             }
-
-            return new ResponseEntity(receivedBookInfo, HttpStatus.CREATED);
-        } catch (Exception invalidISBNException) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, invalidISBNException.getMessage());
-
         }
+
     }
 
-
-}
