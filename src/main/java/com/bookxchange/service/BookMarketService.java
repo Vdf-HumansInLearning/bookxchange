@@ -1,5 +1,6 @@
 package com.bookxchange.service;
 
+import com.bookxchange.customExceptions.BooksExceptions;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.repositories.BookMarketRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,9 @@ public class BookMarketService {
     }
 
     public void addBookMarketEntry(BookMarketEntity bookMarketEntityToAdd) {
-        bookMarketRepository.save(bookMarketEntityToAdd);
+        if (bookMarketEntityToAdd.getForRent() == 1 || bookMarketEntityToAdd.getForSell() == 1) {
+            bookMarketRepository.save(bookMarketEntityToAdd);
+        } else throw new BooksExceptions("Needs to sell, or rent");
     }
 
     public List<BookMarketEntity> findAllByIsbn(String isbn) {

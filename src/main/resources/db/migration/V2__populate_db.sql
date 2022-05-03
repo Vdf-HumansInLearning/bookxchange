@@ -22,11 +22,11 @@ values
     ('978-0-230-75700-4', "The Air War ", "Something something War, kitty ipsom atack", 1)
 ;
 
-INSERT INTO members (member_uuid, username, points, email_address)
+INSERT INTO members (member_uuid, username, password ,points, email_address)
 values
-    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde",0,"dani@gmail.com"),
-    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin",0,"robot@gmail.com"),
-    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina",0,"rozza@gmail.com")
+    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde", "Verde", 0,"dani@gmail.com"),
+    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin", "Robo",0,"robot@gmail.com"),
+    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina", "Roz", 0,"rozza@gmail.com")
 ;
 
 INSERT INTO book_market (book_market_uuid, user_uuid, book_isbn, book_state, for_sell, sell_price, for_rent, rent_price, book_status)

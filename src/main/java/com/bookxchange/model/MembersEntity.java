@@ -19,13 +19,15 @@ public class MembersEntity {
     @Column(name = "username")
     private String username;
     @Basic
+    @Column(name = "password")
+    private String password;
+    @Basic
     @Column(name = "points")
     private Integer points;
     @Basic
     @Column(name = "email_address")
     private String emailAddress;
-    @Column(name = "password")
-    private String password;
+
 
 
     public MembersEntity() {

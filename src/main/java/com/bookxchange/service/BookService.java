@@ -2,29 +2,41 @@ package com.bookxchange.service;
 
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.repositories.BooksRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 
 @Service
 public class BookService {
 
-
+    @Autowired
     private final BooksRepository bookRepository;
+    @Autowired
+    private final AuthorsService workingAuthorsService;
 
-    public BookService(BooksRepository bookRepository) {
+    public BookService(BooksRepository bookRepository, AuthorsService workingAuthorsService) {
         this.bookRepository = bookRepository;
 
+        this.workingAuthorsService = workingAuthorsService;
     }
 
     public BooksEntity retrieveBookFromDB(String providedIsbn) {
         return bookRepository.getByIsbn(providedIsbn);
     }
 
-    public void userAddsNewBook(BooksEntity providedBook) {
+    public ArrayList<BooksEntity> userRetrievesBookList(){
+        return bookRepository.findAll();
+    }
 
-        providedBook.setQuantity(1);
+    @Transactional
+    public void addNewBookToDB(BooksEntity providedBook) {
         bookRepository.save(providedBook);
+
+//
+//        bookRepository.updateQuantityAdd(providedBook.getIsbn());
     }
 
     @Transactional
@@ -40,4 +52,5 @@ public class BookService {
     public int getQuantityByIsbn(String isbn){
        return bookRepository.getQuantityByIsbn(isbn);
     }
+
 }

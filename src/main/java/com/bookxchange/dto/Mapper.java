@@ -23,7 +23,7 @@ public class Mapper {
     }
 
     public BookMarketEntity toBookMarketEntity(BookMarketEntity recivedMarketBook) {
-        return new BookMarketEntity(recivedMarketBook.getUserUuid(), recivedMarketBook.getBookIsbn(), recivedMarketBook.getBookState(), recivedMarketBook.getForSell(), recivedMarketBook.getSellPrice().doubleValue(), recivedMarketBook.getForRent(), recivedMarketBook.getRentPrice().doubleValue());
+        return new BookMarketEntity(recivedMarketBook);
     }
 
     public BooksEntity toBooksEntity(BooksEntity receivedBook) {

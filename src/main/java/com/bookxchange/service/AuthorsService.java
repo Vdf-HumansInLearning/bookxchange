@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 public class AuthorsService {
 
@@ -27,5 +29,9 @@ public class AuthorsService {
          if(!workingAuthorsRepository.existsByNameAndSurname(authorToCheck.getName(), authorToCheck.getSurname())){
              workingAuthorsRepository.save(authorToCheck);
          }
+    }
+
+    public int getAuthorCountFromDataBaseFullName(String name, String surname) {
+       return workingAuthorsRepository.countAuthorsEntityByNameAndSurname(name, surname);
     }
 }

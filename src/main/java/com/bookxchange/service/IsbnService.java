@@ -73,6 +73,7 @@ public class IsbnService {
             bookToReturn.setAuthors(authorsToAdd);
 
             bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
+            bookToReturn.setQuantity(0);
         } else {
             throw new InvalidISBNException(isbn + " is invalid");
         }
