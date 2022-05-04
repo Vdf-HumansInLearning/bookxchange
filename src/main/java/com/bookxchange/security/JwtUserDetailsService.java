@@ -48,10 +48,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private Set<SimpleGrantedAuthority> getAuthority(MembersEntity user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            //authorities.add(new SimpleGrantedAuthority(role.getName()));
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
-        });
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName()));
         return authorities;
         //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
@@ -69,9 +66,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
         MembersEntity membersEntity = new MembersEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
-        Set<RolesEntity> roles = new HashSet<>();
-        roles.add(new RolesEntity(1, "ADMIN"));
-        membersEntity.setRoles(roles);
+        RolesEntity role = new RolesEntity(1,"ADMIN");
+        membersEntity.setRole(role);
         memberService.saveMember(membersEntity);
     }
 

@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+@CrossOrigin(origins = "*", maxAge = 3600)
 
 @RestController
 @RequestMapping("books")
@@ -48,7 +49,7 @@ public class BooksController {
     }
 
 
-    @PreAuthorize("hasRoles('ADMIN')")
+//    @PreAuthorize("hasRoles('ADMIN')")
     @GetMapping("/getBookDetailsISBN")
     public ResponseEntity<RetrievedBook> RetriveBookDetails(
            @Valid @RequestParam String providedIsbn) {

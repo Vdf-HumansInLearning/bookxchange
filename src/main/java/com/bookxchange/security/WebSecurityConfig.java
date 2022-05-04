@@ -83,7 +83,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/authenticate","/register").permitAll()
+                .authorizeRequests()
+                .antMatchers("/authenticate","/register").permitAll()
+                .antMatchers("/books/getBookDetailsISBN").hasAnyRole("ADMIN")
                 .anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
