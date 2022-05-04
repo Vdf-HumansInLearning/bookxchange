@@ -3,10 +3,15 @@ package com.bookxchange.service;
 import com.bookxchange.model.MembersEntity;
 import com.bookxchange.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+import java.util.HashSet;
+import java.util.Set;
+
+@Service(value = "userService")
 public class MemberService {
    private final MemberRepository memberRepository;
 
@@ -32,5 +37,6 @@ public class MemberService {
     public void saveMember (MembersEntity member) {
          memberRepository.save(member);
     }
+
 
 }

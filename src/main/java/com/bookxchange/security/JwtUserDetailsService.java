@@ -4,10 +4,12 @@ import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.model.MembersEntity;
+import com.bookxchange.model.RolesEntity;
 import com.bookxchange.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,10 +39,21 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         MembersEntity usr = memberService.getMemberEntity(username);
         if (usr != null) {
-            return new User(usr.getUsername(), usr.getPassword(), new ArrayList<>());
+            return new User(usr.getUsername(), usr.getPassword(), getAuthority(usr));
         } else {
             throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
         }
+    }
+
+
+    private Set<SimpleGrantedAuthority> getAuthority(MembersEntity user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            //authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        });
+        return authorities;
+        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
 
@@ -54,6 +69,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
         MembersEntity membersEntity = new MembersEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
+        Set<RolesEntity> roles = new HashSet<>();
+        roles.add(new RolesEntity(1, "ADMIN"));
+        membersEntity.setRoles(roles);
         memberService.saveMember(membersEntity);
     }
 
