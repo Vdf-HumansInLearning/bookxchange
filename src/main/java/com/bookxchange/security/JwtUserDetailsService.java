@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,19 +37,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         MembersEntity usr = memberService.getMemberEntity(username);
         if (usr != null) {
-            return new User(usr.getUsername(), usr.getPassword(), getAuthority(usr));
+            return new MyUserDetails(usr);
+
         } else {
             throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
         }
     }
 
-
-    private Set<SimpleGrantedAuthority> getAuthority(MembersEntity user) {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName()));
-        return authorities;
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
 
 
     public void register(RegisterDto registerDto) {

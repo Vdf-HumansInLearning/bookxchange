@@ -62,9 +62,7 @@ public class JwtTokenUtil implements Serializable {
       MembersEntity member =  memberService.getMemberEntity(userDetails.getUsername());
 
         claims.put("userUUID",member.getMemberUserUuid());
-        System.out.println("UserRole" + member);
-//        claims.put("userRole", member.getRole().getRoleName());
-        return doGenerateToken(claims, userDetails.getUsername());
+       return doGenerateToken(claims, userDetails.getUsername());
     }
 
 //    public String generateToken(Authentication authentication) {
@@ -92,6 +90,7 @@ public class JwtTokenUtil implements Serializable {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .claim("scopes", "ADMIN")
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 

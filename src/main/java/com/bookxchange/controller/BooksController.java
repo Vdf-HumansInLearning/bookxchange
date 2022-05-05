@@ -48,8 +48,7 @@ public class BooksController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-
-//    @PreAuthorize("hasRoles('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getBookDetailsISBN")
     public ResponseEntity<RetrievedBook> RetriveBookDetails(
            @Valid @RequestParam String providedIsbn) {

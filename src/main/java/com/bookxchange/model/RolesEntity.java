@@ -19,6 +19,9 @@ public class RolesEntity {
     private String roleName;
 
 
+    @OneToMany(mappedBy="role")
+    private Set<MembersEntity> items;
+
     public int getRoleId() {
         return roleId;
     }
