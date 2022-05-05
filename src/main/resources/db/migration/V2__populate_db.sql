@@ -36,13 +36,6 @@ values
     ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina", "Roz", 0,"rozza@gmail.com")
 ;
 
-INSERT INTO user_roles_mtm (id, member_uuid, role_id)
-values
-(1,"f633f699-ce76-4485-ae69-e7bb35cd71d5" ,2),
-(2, "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9" , 1),
-(3, "6eca21ce-861b-4dd7-975d-20a969e3183a" , 2),
-(4, "13177e99-14b5-43c5-a446-e0dc751c3153", 2)
-;
 
 
 INSERT INTO book_market (book_market_uuid, user_uuid, book_isbn, book_state, for_sell, sell_price, for_rent, rent_price, book_status)

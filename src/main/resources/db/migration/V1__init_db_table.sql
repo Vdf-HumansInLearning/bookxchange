@@ -44,15 +44,6 @@ CREATE TABLE privilages (
                             primary key (privilage_id)
 );
 
-CREATE TABLE roles_privilages_mtm (
-                                      id int auto_increment not null,
-                                      role_id int,
-                                      privilage_id int,
-                                      primary key (id),
-                                      FOREIGN KEY (role_id) REFERENCES roles(role_id),
-                                      FOREIGN KEY (privilage_id) REFERENCES privilages(privilage_id)
-);
-
 
 CREATE TABLE members (
                          member_user_id int auto_increment not null ,
@@ -64,13 +55,7 @@ CREATE TABLE members (
                          role_id INT,
                          primary key (member_user_id)
 );
-CREATE TABLE user_roles_mtm (
 
-                                id int auto_increment not null,
-                                member_uuid varchar(36) NOT NULL,
-                                role_id int,
-                                primary key (id)
-);
 
 CREATE TABLE book_market (
                              book_market_id int auto_increment not null ,

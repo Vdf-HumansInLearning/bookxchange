@@ -1,39 +1,39 @@
 package com.bookxchange.security;
 
-import java.util.*;
-
 import com.bookxchange.model.MembersEntity;
-import com.bookxchange.model.RolesEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MyUserDetails implements UserDetails {
 
-    private MembersEntity user;
+    private MembersEntity membersEntity;
 
     public MyUserDetails(MembersEntity user) {
-        this.user = user;
+        this.membersEntity = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole().getRoleName()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + membersEntity.getRole().getRoleName()));
 
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return membersEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return membersEntity.getUsername();
     }
 
     @Override

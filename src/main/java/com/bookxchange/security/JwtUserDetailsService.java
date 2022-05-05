@@ -38,7 +38,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         MembersEntity usr = memberService.getMemberEntity(username);
         if (usr != null) {
             return new MyUserDetails(usr);
-
         } else {
             throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
         }
