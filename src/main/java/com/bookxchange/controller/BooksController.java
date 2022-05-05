@@ -1,7 +1,6 @@
 package com.bookxchange.controller;
 
 import com.bookxchange.customExceptions.BooksExceptions;
-import com.bookxchange.dto.Mapper;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.BookListing;
 import com.bookxchange.pojo.RetrievedBook;
@@ -33,7 +32,7 @@ public class BooksController {
 //    private final Mapper mapper = new Mapper();
     private final BookService workingBookService;
     private final BookMarketService workingBookMarketService;
-    private final IsbnService workingIsbnService = new IsbnService();
+    private final IsbnService workingIsbnService;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -41,10 +40,10 @@ public class BooksController {
     Logger logger = LoggerFactory.getLogger(BooksController.class);
 
     @Autowired
-    public BooksController(BookService workingBookService, BookMarketService workingBookMarketService, JwtTokenUtil jwtTokenUtil) {
+    public BooksController(BookService workingBookService, BookMarketService workingBookMarketService, IsbnService workingIsbnService, JwtTokenUtil jwtTokenUtil) {
         this.workingBookService = workingBookService;
         this.workingBookMarketService = workingBookMarketService;
-
+        this.workingIsbnService = workingIsbnService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 

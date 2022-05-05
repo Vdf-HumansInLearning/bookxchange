@@ -24,9 +24,8 @@ import java.util.regex.Pattern;
 public class IsbnService {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-
-    @Value("${ISBN_API_URL}")
-    String targetURL ;
+    @Value("${isbn.url}")
+    private String targetURL;
 
     private String getInfoFromApi(String isbn) {
 
@@ -52,8 +51,6 @@ public class IsbnService {
         Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
         BooksEntity bookToReturn = new BooksEntity();
         if (isbnDTO.getTotalItems() > 0) {
-
-
             bookToReturn.setIsbn(isbn);
             bookToReturn.setTitle(isbnDTO.getItems().get(0).getVolumeInfo().getTitle());
 
@@ -76,7 +73,7 @@ public class IsbnService {
             bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
             bookToReturn.setQuantity(0);
         } else {
-            throw new InvalidISBNException(isbn + " is invalid");
+
         }
         return bookToReturn;
     }
