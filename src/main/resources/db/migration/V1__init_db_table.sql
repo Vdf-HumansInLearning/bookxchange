@@ -32,6 +32,26 @@ CREATE TABLE authors_books_mtm (
 #                              FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
+CREATE TABLE roles (
+                       role_id int auto_increment not null,
+                       role_name varchar (25),
+                       primary key (role_id)
+);
+
+CREATE TABLE privilages (
+                            privilage_id int auto_increment not null ,
+                            privilage_name varchar(25),
+                            primary key (privilage_id)
+);
+
+CREATE TABLE roles_privilages_mtm (
+                                      id int auto_increment not null,
+                                      role_id int,
+                                      privilage_id int,
+                                      primary key (id),
+                                      FOREIGN KEY (role_id) REFERENCES roles(role_id),
+                                      FOREIGN KEY (privilage_id) REFERENCES privilages(privilage_id)
+);
 
 
 CREATE TABLE members (
@@ -43,7 +63,13 @@ CREATE TABLE members (
                          email_address varchar(100),
                          primary key (member_user_id)
 );
+CREATE TABLE user_roles_mtm (
 
+    id int auto_increment not null,
+    member_uuid varchar(36) NOT NULL,
+    role_id int
+                            primary key (id)
+);
 
 CREATE TABLE book_market (
                             book_market_id int auto_increment not null ,
