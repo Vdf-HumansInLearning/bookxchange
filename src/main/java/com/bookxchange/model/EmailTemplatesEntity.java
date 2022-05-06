@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "email_templates", schema = "bookOLX")
+@Table(name = "email_templates")
 @Data
 public class EmailTemplatesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

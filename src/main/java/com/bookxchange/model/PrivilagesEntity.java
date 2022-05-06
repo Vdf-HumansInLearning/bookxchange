@@ -3,7 +3,7 @@ package com.bookxchange.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "privilages", schema = "bookOLX", catalog = "")
+@Table(name = "privilages")
 public class PrivilagesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

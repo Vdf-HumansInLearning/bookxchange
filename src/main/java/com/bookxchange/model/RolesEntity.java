@@ -1,6 +1,5 @@
 package com.bookxchange.model;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -8,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "roles", schema = "bookOLX", catalog = "")
+@Table(name = "roles")
 public class RolesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -1,8 +1,3 @@
-BEGIN;
-CREATE DATABASE IF NOT EXISTS bookOLX ;
-
-USE bookOLX;
-
 
 CREATE TABLE authors (
                          author_id int auto_increment,
