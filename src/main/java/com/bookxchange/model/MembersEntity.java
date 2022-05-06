@@ -28,6 +28,10 @@ public class MembersEntity {
     @Column(name = "email_address")
     private String emailAddress;
 
+    @ManyToOne
+    @JoinColumn(name="role_id", nullable=false)
+    private RolesEntity role;
+
 
 
     public MembersEntity() {

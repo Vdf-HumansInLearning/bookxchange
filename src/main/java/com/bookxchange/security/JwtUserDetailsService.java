@@ -4,10 +4,12 @@ import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.model.MembersEntity;
+import com.bookxchange.model.RolesEntity;
 import com.bookxchange.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,11 +37,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         MembersEntity usr = memberService.getMemberEntity(username);
         if (usr != null) {
-            return new User(usr.getUsername(), usr.getPassword(), new ArrayList<>());
+            return new MyUserDetails(usr);
         } else {
             throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
         }
     }
+
 
 
     public void register(RegisterDto registerDto) {
@@ -54,6 +57,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
         MembersEntity membersEntity = new MembersEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
+        RolesEntity role = new RolesEntity(1,"ADMIN");
+        membersEntity.setRole(role);
         memberService.saveMember(membersEntity);
     }
 

@@ -1,7 +1,6 @@
 package com.bookxchange.controller;
 
 import com.bookxchange.customExceptions.BooksExceptions;
-import com.bookxchange.dto.Mapper;
 import com.bookxchange.model.BooksEntity;
 import com.bookxchange.pojo.BookListing;
 import com.bookxchange.pojo.RetrievedBook;
@@ -15,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+@CrossOrigin(origins = "*", maxAge = 3600)
 
 @RestController
 @RequestMapping("books")
@@ -31,7 +32,7 @@ public class BooksController {
 //    private final Mapper mapper = new Mapper();
     private final BookService workingBookService;
     private final BookMarketService workingBookMarketService;
-    private final IsbnService workingIsbnService = new IsbnService();
+    private final IsbnService workingIsbnService;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -39,16 +40,17 @@ public class BooksController {
     Logger logger = LoggerFactory.getLogger(BooksController.class);
 
     @Autowired
-    public BooksController(BookService workingBookService, BookMarketService workingBookMarketService, JwtTokenUtil jwtTokenUtil) {
+    public BooksController(BookService workingBookService, BookMarketService workingBookMarketService, IsbnService workingIsbnService, JwtTokenUtil jwtTokenUtil) {
         this.workingBookService = workingBookService;
         this.workingBookMarketService = workingBookMarketService;
-
+        this.workingIsbnService = workingIsbnService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getBookDetailsISBN")
-   public ResponseEntity<RetrievedBook> RetriveBookDetails(@Valid @RequestParam String providedIsbn) {
+    public ResponseEntity<RetrievedBook> RetriveBookDetails(
+           @Valid @RequestParam String providedIsbn) {
 
         logger.debug("RetriveBookDetails starts : ");
 

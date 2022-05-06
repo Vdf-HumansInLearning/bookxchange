@@ -12,8 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import utils.PropertyLoader;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,13 +24,13 @@ import java.util.regex.Pattern;
 public class IsbnService {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
+    @Value("${isbn.url}")
+    private String targetURL;
+
     private String getInfoFromApi(String isbn) {
-        String targetURL;
-        Properties properties = PropertyLoader.loadProperties();
-        targetURL = properties.getProperty("ISBN_API_URL") + isbn;
 
         String result = "";
-        HttpGet request = new HttpGet(targetURL);
+        HttpGet request = new HttpGet(targetURL+isbn);
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
@@ -51,8 +51,6 @@ public class IsbnService {
         Isbn isbnDTO = gson.fromJson(infoFromApi, Isbn.class);
         BooksEntity bookToReturn = new BooksEntity();
         if (isbnDTO.getTotalItems() > 0) {
-
-
             bookToReturn.setIsbn(isbn);
             bookToReturn.setTitle(isbnDTO.getItems().get(0).getVolumeInfo().getTitle());
 
@@ -75,7 +73,7 @@ public class IsbnService {
             bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
             bookToReturn.setQuantity(0);
         } else {
-            throw new InvalidISBNException(isbn + " is invalid");
+
         }
         return bookToReturn;
     }
