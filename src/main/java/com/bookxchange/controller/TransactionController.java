@@ -28,9 +28,8 @@ public class TransactionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader HttpHeaders headers, @RequestBody TransactionDto transactionDto) {
+    public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDto transactionDto) {
 
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         Claims claims = jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
         transactionDto.setSupplier(claims.get("userUUID").toString());
         TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto);
