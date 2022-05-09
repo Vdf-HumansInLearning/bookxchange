@@ -3,13 +3,10 @@ package com.bookxchange.service;
 import com.bookxchange.model.MembersEntity;
 import com.bookxchange.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 @Service(value = "userService")
 public class MemberService {
@@ -39,4 +36,7 @@ public class MemberService {
     }
 
 
+    public MembersEntity findByUuid(String uuid) {
+     return   memberRepository.getMembersEntitiesByMemberUserUuid(uuid);
+    }
 }
