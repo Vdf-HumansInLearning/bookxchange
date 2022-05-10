@@ -50,12 +50,16 @@ public class BookMarketService {
     public boolean isBookMarketForSell(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
     }
+
     public String getBookIsbn(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
     }
 
     public Double getPriceByMarketBookId(String bookMarketUuid) {
         return bookMarketRepository.getPriceByUuid(bookMarketUuid);
+    }
+    public Double moneyToPoints(Double bookMarketPrice){
+        return bookMarketPrice*10;
     }
 }
 

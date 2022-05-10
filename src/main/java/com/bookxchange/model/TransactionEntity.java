@@ -1,5 +1,6 @@
 package com.bookxchange.model;
 
+import com.bookxchange.enums.TransactionStatus;
 import com.bookxchange.enums.TransactionType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,11 @@ public class TransactionEntity {
     @Column(name = "id")
     private long id;
     @Basic
-    @Column(name = "market_book_uuid")
-    private String marketBookuuId;
+    @Column(name = "market_book_uuid_supplier")
+    private String marketBookIdSupplier;
+    @Basic
+    @Column(name = "market_book_uuid_client")
+    private String marketBookIdClient;
     @Basic
     @Column(name = "member_uuid_from")
     private String memberuuIdFrom;
@@ -38,18 +42,22 @@ public class TransactionEntity {
     @Basic
     @Column(name = "expected_return_date")
     private LocalDate expectedReturnDate;
+    @Basic
+    @Column(name = "transaction_status")
+    private String transactionStatus;
 
-    public TransactionEntity(String marketBookId, String supplier, String client, String transactionType) {
-        this.marketBookuuId = marketBookId;
-        this.memberuuIdFrom = supplier;
-        this.memberuuIdTo = client;
+
+    public TransactionEntity(String marketBookIdSupplier, String marketBookIdClient, String memberuuIdFrom, String memberuuIdTo, String transactionType) {
+        this.marketBookIdSupplier = marketBookIdSupplier;
+        this.marketBookIdClient = marketBookIdClient;
+        this.memberuuIdFrom = memberuuIdFrom;
+        this.memberuuIdTo = memberuuIdTo;
         this.transactionType = transactionType;
         this.transactionDate = LocalDate.now();
         if (transactionType.equalsIgnoreCase(TransactionType.RENT.toString())) {
             this.expectedReturnDate = LocalDate.now().plusDays(30);
         }
     }
-
 
 
     @Override

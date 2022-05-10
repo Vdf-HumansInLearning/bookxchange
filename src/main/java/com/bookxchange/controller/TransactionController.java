@@ -3,8 +3,11 @@ package com.bookxchange.controller;
 import com.bookxchange.dto.TransactionDto;
 import com.bookxchange.enums.TransactionType;
 import com.bookxchange.model.TransactionEntity;
+import com.bookxchange.security.JwtTokenUtil;
 import com.bookxchange.service.TransactionService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +26,9 @@ public class TransactionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TransactionEntity> createTransaction( @RequestBody TransactionDto transactionDto) {
-        TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto);
+    public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDto transactionDto) {
+
+        TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto, token);
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 
@@ -37,5 +41,8 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getTransactionsByMemberUuIDAndType(userID, type), HttpStatus.OK);
     }
 
-
+    @GetMapping("/trade/decision")
+    public void approveTradingTransaction(@RequestParam String answerToTrade, @RequestParam String transactionId) {
+        transactionService.updateTransactionByUserTradeDecision(answerToTrade, transactionId);
+    }
 }

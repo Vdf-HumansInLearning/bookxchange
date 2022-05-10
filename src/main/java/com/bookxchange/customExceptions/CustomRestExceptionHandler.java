@@ -128,7 +128,17 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ TransactionException.class })
+    public ResponseEntity<ApiError> handleMethodTransactionException(
+            TransactionException ex) {
+        String error =
+                ex.getMessage();
 
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
 
 
 }
