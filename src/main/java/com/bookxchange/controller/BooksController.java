@@ -9,7 +9,7 @@ import com.bookxchange.service.BookMarketService;
 import com.bookxchange.service.BookService;
 
 import com.bookxchange.service.IsbnService;
-import io.jsonwebtoken.Claims;
+import com.bookxchange.service.ApplicationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +89,15 @@ public class BooksController {
 
     @Transactional
     @PostMapping ("/userAddBook")
-    public ResponseEntity<BookListing> creatBookEntry(@RequestHeader HttpHeaders headers, @RequestBody BookListing receivedBookInfo) {
+    public ResponseEntity<BookListing> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
 
 //        public ResponseEntity<BookListing> creatBookEntry (
 //                @Valid
 //                @RequestBody BookListing receivedBookInfo){
 
-            String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-            Claims claims = jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
 
-            receivedBookInfo.getReceivedBookMarket().setUserUuid(claims.get("userUUID").toString());
+
+            receivedBookInfo.getReceivedBookMarket().setUserUuid(ApplicationUtils.getUserFromToken(token));
             System.out.println(receivedBookInfo.getReceivedBookMarket().getUserUuid() + " E NULL?");
 
             try {

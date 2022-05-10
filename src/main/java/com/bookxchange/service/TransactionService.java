@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -27,6 +26,7 @@ public class TransactionService {
     private final BookService bookService;
     private final EmailService emailService;
     private final EmailTemplatesService emailTemplatesService;
+
 
 
     @Value("${server.port}")
@@ -48,7 +48,8 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionEntity createTransaction(TransactionDto transactionDto) {
+    public TransactionEntity createTransaction(TransactionDto transactionDto, String token) {
+        transactionDto.setSupplier(ApplicationUtils.getUserFromToken(token));
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transactionDto);
         if (transactionDto.getTransactionType() != TransactionType.TRADE) {
             transactionEntity.setTransactionStatus(TransactionStatus.SUCCESS.toString());
@@ -126,7 +127,7 @@ public class TransactionService {
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
             memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
             memberService.updatePointsToClientById(priceByMarketBookId * 10 * -1, transactionDto.getClient());
-        } else throw new TransactionException("Transaction Invalid");
+        } else throw new TransactionException("Invalid Transaction");
     }
 
     private boolean isEligibleForBuy(TransactionDto transactionDto) {
