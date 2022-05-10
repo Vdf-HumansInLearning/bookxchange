@@ -48,7 +48,7 @@ public class TransactionService {
 
     @Transactional
     public TransactionEntity createTransaction(TransactionDto transactionDto, String token) {
-        transactionDto.setSupplier(ApplicationUtils.getUserFromToken(token));
+        transactionDto.setSupplierId(ApplicationUtils.getUserFromToken(token));
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transactionDto);
         if (transactionDto.getTransactionType() != TransactionType.TRADE) {
             transactionEntity.setTransactionStatus(TransactionStatus.SUCCESS.toString());
@@ -72,8 +72,8 @@ public class TransactionService {
     public void sendEmail(TransactionDto transactionDto) {
 
         EmailTemplatesEntity emailTemplate = emailTemplatesService.getById(2);
-        MembersEntity client = memberService.findByUuid(transactionDto.getClient());
-        MembersEntity supplier = memberService.findByUuid(transactionDto.getSupplier());
+        MembersEntity client = memberService.findByUuid(transactionDto.getClientId());
+        MembersEntity supplier = memberService.findByUuid(transactionDto.getSupplierId());
         String clientBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookIdClient());
         String supplierBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookIdSupplier());
         BooksEntity clientBook = bookService.getBookByIsbn(clientBookIsbn);
@@ -118,21 +118,21 @@ public class TransactionService {
     public void updateBookMarketStatusAndMemberPointsForTransactionType(TransactionDto transactionDto) {
 //        TODO: mai e nevoie sa verific flagul de isForSell isForRent???
         if (transactionDto.getTransactionType().equals(TransactionType.RENT) && bookMarketService.isBookMarketForRent(transactionDto.getMarketBookIdSupplier())) {
-            memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
+            memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
             bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookIdSupplier());
         } else if (transactionDto.getTransactionType().equals(TransactionType.SELL) && bookMarketService.isBookMarketForSell(transactionDto.getMarketBookIdSupplier())) {
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
-            memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
+            memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
         } else if (transactionDto.getTransactionType().equals(TransactionType.POINTSELL) && isEligibleForBuy(transactionDto)) {
             Double priceByMarketBookId = bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookIdSupplier());
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
-            memberService.updatePointsToSupplierByID(transactionDto.getSupplier());
-            memberService.updatePointsToClientById(bookMarketService.moneyToPoints(priceByMarketBookId), transactionDto.getClient());
+            memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
+            memberService.updatePointsToClientById(bookMarketService.moneyToPoints(priceByMarketBookId), transactionDto.getClientId());
         } else throw new TransactionException("Invalid Transaction");
     }
 
     private boolean isEligibleForBuy(TransactionDto transactionDto) {
-        if ((memberService.getPointsByMemberId(transactionDto.getClient()) / 10) >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookIdSupplier())) {
+        if ((memberService.getPointsByMemberId(transactionDto.getClientId()) / 10) >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookIdSupplier())) {
             return true;
         }
         throw new TransactionException("Member is not eligible for buying");
