@@ -26,6 +26,8 @@ public class MembersEntity {
     @Basic
     @Column(name = "email_address")
     private String emailAddress;
+    @Column(name = "is_email_confirmed")
+    private byte isEmailConfirmed;
 
     @ManyToOne
     @JoinColumn(name="role_id", nullable=false)
