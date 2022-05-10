@@ -19,20 +19,16 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public TransactionController(TransactionService transactionService, JwtTokenUtil jwtTokenUtil) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @PostMapping("")
     public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDto transactionDto) {
 
-        Claims claims = jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
-        transactionDto.setSupplier(claims.get("userUUID").toString());
-        TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto);
+        TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto, token);
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
 

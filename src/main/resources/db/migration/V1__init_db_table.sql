@@ -38,10 +38,10 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-CREATE TABLE privilages (
-                            privilage_id int auto_increment not null ,
-                            privilage_name varchar(25),
-                            primary key (privilage_id)
+CREATE TABLE privileges (
+                            privilege_id int auto_increment not null ,
+                            privilege_name varchar(25),
+                            primary key (privilege_id)
 );
 
 
