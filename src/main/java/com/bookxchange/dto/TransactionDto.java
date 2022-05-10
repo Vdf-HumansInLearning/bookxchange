@@ -17,7 +17,6 @@ public class TransactionDto {
     private String supplierId;
     @NotBlank(message = "clientId is mandatory")
     private String clientId;
-
     private TransactionType transactionType;
 
 

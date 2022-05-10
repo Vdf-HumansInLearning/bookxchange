@@ -116,7 +116,7 @@ public class TransactionService {
 
     @Transactional
     public void updateBookMarketStatusAndMemberPointsForTransactionType(TransactionDto transactionDto) {
-//        TODO: mai e nevoie sa verific flagul de isForSell isForRent???
+//Ce trebuie testat cand faci doar apeluri la repo.
         if (transactionDto.getTransactionType().equals(TransactionType.RENT) && bookMarketService.isBookMarketForRent(transactionDto.getMarketBookIdSupplier())) {
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
             bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookIdSupplier());

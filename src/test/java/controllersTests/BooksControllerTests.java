@@ -16,7 +16,9 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,8 @@ import static org.springframework.security.config.http.MatcherType.mvc;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BookExchangeApplication.class)
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
+@PropertySource("classpath:application-test.properties")
 public class BooksControllerTests {
 
     @Autowired
