@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "book_market", schema = "bookOLX")
+@Table(name = "book_market")
 @Getter
 @Setter
 @ToString

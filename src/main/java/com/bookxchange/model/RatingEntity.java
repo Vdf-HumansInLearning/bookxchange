@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "rating", schema = "bookOLX")
+@Table(name = "rating")
 @Data
 @AllArgsConstructor
 public class RatingEntity {

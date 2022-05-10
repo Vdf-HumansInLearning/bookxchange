@@ -1,12 +1,11 @@
 package com.bookxchange.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "members", schema = "bookOLX")
+@Table(name = "members")
 @Data
 public class MembersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

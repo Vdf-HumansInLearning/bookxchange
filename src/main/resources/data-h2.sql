@@ -1,8 +1,3 @@
-BEGIN;
-CREATE DATABASE IF NOT EXISTS bookOLX ;
-
-USE bookOLX;
-
 
 CREATE TABLE authors (
                          author_id int auto_increment,
@@ -38,8 +33,7 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-
-CREATE TABLE privileges (
+CREATE TABLE privilages (
                             privilage_id int auto_increment not null ,
                             privilage_name varchar(25),
                             primary key (privilage_id)
@@ -76,19 +70,16 @@ CREATE TABLE book_market (
 
 CREATE TABLE transaction (
                              id bigint not null unique auto_increment,
-
-                             market_book_uuid_supplier VARCHAR(36) not null  ,
-                             market_book_uuid_client VARCHAR(36)   ,
+                             market_book_uuid VARCHAR(36) not null  ,
                              member_uuid_from VARCHAR(36) not null  ,
                              member_uuid_to VARCHAR(36) not null,
                              transaction_type VARCHAR(10),
-                             transaction_status VARCHAR (20),
                              transaction_date date,
                              expected_return_date date,
                              primary key(id),
                              foreign key (member_uuid_from) references members(member_uuid),
                              foreign key (member_uuid_to) references members(member_uuid),
-
+                             foreign key (market_book_uuid) references book_market(book_market_uuid)
 );
 
 

@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "transaction", schema = "bookOLX")
+@Table(name = "transaction")
 @Getter
 @Setter
 @ToString

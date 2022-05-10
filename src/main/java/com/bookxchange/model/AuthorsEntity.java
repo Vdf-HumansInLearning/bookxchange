@@ -1,22 +1,21 @@
 package com.bookxchange.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "authors", schema = "bookOLX")
+@Table(name = "authors")
 @Getter
 @Setter
 @ToString
