@@ -59,8 +59,11 @@ public class BookMarketService {
         return bookMarketRepository.getPriceByUuid(bookMarketUuid);
     }
     public Double moneyToPoints(Double bookMarketPrice){
-        return bookMarketPrice*10;
+        return (-1)*bookMarketPrice*10;
     }
+
+
+
 }
 
 
