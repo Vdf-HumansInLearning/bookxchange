@@ -40,8 +40,8 @@ public class RatingsControllerTests {
         mvc.perform(post("/transactions")
                         .content("{\n" +
                                 "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
-                                "  \"supplier\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
-                                "  \"client\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
+                                "  \"supplierId\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
+                                "  \"clientId\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
                                 "  \"transactionType\": \"RENT\"\n" +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON));

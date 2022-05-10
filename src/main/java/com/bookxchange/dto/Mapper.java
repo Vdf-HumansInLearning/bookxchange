@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class Mapper {
 
     public TransactionEntity toTransactionEntity(TransactionDto transactionDto) {
-        return new TransactionEntity(transactionDto.getMarketBookIdSupplier(),transactionDto.getMarketBookIdClient(), transactionDto.getSupplier(),
-                transactionDto.getClient(), transactionDto.getTransactionType().toString());
+        return new TransactionEntity(transactionDto.getMarketBookIdSupplier(),transactionDto.getMarketBookIdClient(), transactionDto.getSupplierId(),
+                transactionDto.getClientId(), transactionDto.getTransactionType().toString());
     }
 
     public RatingEntity toRatingEntity(RatingDto ratingDto ){
