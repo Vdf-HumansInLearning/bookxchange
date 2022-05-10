@@ -26,5 +26,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
      List<TransactionEntity> findAllByTransactionDate(LocalDate transactionDate);
 
+     List<TransactionEntity> findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus( String MarketBookUuidClient, String MarketBookUuidSupplier, String transactionType, String transactionStatus);
 
 }

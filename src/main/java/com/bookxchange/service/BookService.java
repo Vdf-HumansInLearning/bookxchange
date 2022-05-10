@@ -53,4 +53,9 @@ public class BookService {
        return bookRepository.getQuantityByIsbn(isbn);
     }
 
+    public BooksEntity getBookByIsbn(String isbn){
+
+        return bookRepository.getByIsbn(isbn);
+    }
+
 }

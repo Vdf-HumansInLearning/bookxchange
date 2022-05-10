@@ -50,6 +50,7 @@ public class BookMarketService {
     public boolean isBookMarketForSell(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
     }
+
     public String getBookIsbn(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
     }

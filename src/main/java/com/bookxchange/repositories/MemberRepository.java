@@ -19,4 +19,6 @@ public interface MemberRepository extends JpaRepository<MembersEntity, UUID> {
     Double getPointsByMemberId(String memberId);
 
     MembersEntity getMembersEntityByUsername(String username);
+
+    MembersEntity getMembersEntitiesByMemberUserUuid(String uuid);
 }
