@@ -53,6 +53,7 @@ CREATE TABLE members (
                          points INT,
                          email_address varchar(100),
                          role_id INT,
+                         is_email_confirmed boolean default 0,
                          primary key (member_user_id)
 );
 
