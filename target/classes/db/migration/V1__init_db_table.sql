@@ -38,11 +38,10 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-
 CREATE TABLE privileges (
-                            privilage_id int auto_increment not null ,
-                            privilage_name varchar(25),
-                            primary key (privilage_id)
+                            privilege_id int auto_increment not null ,
+                            privilege_name varchar(25),
+                            primary key (privilege_id)
 );
 
 
@@ -54,6 +53,7 @@ CREATE TABLE members (
                          points INT,
                          email_address varchar(100),
                          role_id INT,
+                         is_email_confirmed boolean default 0,
                          primary key (member_user_id)
 );
 
@@ -76,7 +76,6 @@ CREATE TABLE book_market (
 
 CREATE TABLE transaction (
                              id bigint not null unique auto_increment,
-
                              market_book_uuid_supplier VARCHAR(36) not null  ,
                              market_book_uuid_client VARCHAR(36)   ,
                              member_uuid_from VARCHAR(36) not null  ,
@@ -88,7 +87,7 @@ CREATE TABLE transaction (
                              primary key(id),
                              foreign key (member_uuid_from) references members(member_uuid),
                              foreign key (member_uuid_to) references members(member_uuid),
-
+                             foreign key (market_book_uuid_supplier) references book_market(book_market_uuid)
 );
 
 

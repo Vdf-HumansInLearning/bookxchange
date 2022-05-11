@@ -44,21 +44,14 @@ public class RatingServiceTest {
     @Before
     public void createRentTransaction() throws Exception {
 
-
-
-        TransactionEntity transactionEntity = new TransactionEntity();
-        transactionEntity.setTransactionType(TransactionType.RENT.toString());
-        transactionEntity.setMarketBookIdSupplier("42a48524-20fd-4708-9311-55bf1a247eaf");
-        transactionEntity.setMemberuuIdFrom("6eca21ce-861b-4dd7-975d-20a969e3183a");
-        transactionEntity.setMemberuuIdTo("13177e99-14b5-43c5-a446-e0dc751c3153");
-        transactionEntity.setMarketBookIdSupplier("42a48524-20fd-4708-9311-55bf1a247eaf");
-        transactionRepository.save(transactionEntity);
-
-        BookMarketEntity bookMarketEntity = new BookMarketEntity();
-        bookMarketEntity.setBookIsbn("0747532699");
-        bookMarketEntity.setBookMarketUuid("42a48524-20fd-4708-9311-55bf1a247eaf");
-        bookMarketEntity.setForRent((byte) 1);
-        bookMarketService.addBookMarketEntry(bookMarketEntity);
+        mvc.perform(post("/transactions")
+                        .content("{\n" +
+                                "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
+                                "  \"supplier\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
+                                "  \"client\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
+                                "  \"transactionType\": \"RENT\"\n" +
+                                "}")
+                        .contentType(MediaType.APPLICATION_JSON));
     }
 
 

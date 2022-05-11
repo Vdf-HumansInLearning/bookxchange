@@ -35,9 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @PropertySource("classpath:application-test.properties")
 
-
 @Transactional
-
 public class NotificationsControllerTest {
 
     @Autowired

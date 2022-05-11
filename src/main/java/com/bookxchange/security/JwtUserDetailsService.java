@@ -5,6 +5,8 @@ import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.model.MembersEntity;
 import com.bookxchange.model.RolesEntity;
+import com.bookxchange.service.EmailService;
+import com.bookxchange.service.EmailTemplatesService;
 import com.bookxchange.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,15 @@ import java.util.regex.Pattern;
 public class JwtUserDetailsService implements UserDetailsService {
 
     MemberService memberService;
+    EmailService emailService;
+    EmailTemplatesService emailTemplatesService;
+
     Logger logger = LoggerFactory.getLogger(JwtUserDetailsService.class);
     @Autowired
-    public JwtUserDetailsService(MemberService memberService) {
+    public JwtUserDetailsService(MemberService memberService, EmailService emailService, EmailTemplatesService emailTemplatesService) {
         this.memberService = memberService;
+        this.emailService = emailService;
+        this.emailTemplatesService = emailTemplatesService;
     }
 
     @Override
@@ -45,7 +52,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 
 
-    public void register(RegisterDto registerDto) {
+    public void register(RegisterDto registerDto, String confirmationGetUrl) {
 
         if (registerDto.getPassword().equals(registerDto.getConfirmedPassword()) && isValidPassword(registerDto.getPassword()))
         {
@@ -60,6 +67,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         RolesEntity role = new RolesEntity(1,"ADMIN");
         membersEntity.setRole(role);
         memberService.saveMember(membersEntity);
+
+        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid());
+       // emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid()));
     }
 
     public static boolean isValidPassword(String password) {

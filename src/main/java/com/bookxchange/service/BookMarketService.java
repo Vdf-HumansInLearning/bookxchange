@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class BookMarketService {
@@ -59,8 +60,11 @@ public class BookMarketService {
         return bookMarketRepository.getPriceByUuid(bookMarketUuid);
     }
     public Double moneyToPoints(Double bookMarketPrice){
-        return bookMarketPrice*10;
+        return (-1)*bookMarketPrice*10;
     }
+
+
+
 }
 
 
