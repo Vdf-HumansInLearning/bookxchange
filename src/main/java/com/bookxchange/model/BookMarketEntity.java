@@ -60,15 +60,15 @@ public class BookMarketEntity {
         this.bookMarketUuid = (UUID.randomUUID()).toString();
     };
 
-//    public BookMarketEntity(String userUuid, String bookIsbn, String bookState, Byte forSell, Double sellPrice, Byte forRent, Double rentPrice) {
-//        this.userUuid = userUuid;
-//        this.bookIsbn = bookIsbn;
-//        this.bookState = bookState;
-//        this.forSell = forSell;
-//        this.sellPrice = sellPrice;
-//        this.forRent = forRent;
-//        this.rentPrice = rentPrice;
-//    }
+    public BookMarketEntity(String userUuid, String bookIsbn, String bookState, Byte forSell, Double sellPrice, Byte forRent, Double rentPrice) {
+        this.userUuid = userUuid;
+        this.bookIsbn = bookIsbn;
+        this.bookState = bookState;
+        this.forSell = forSell;
+        this.sellPrice = sellPrice;
+        this.forRent = forRent;
+        this.rentPrice = rentPrice;
+    }
 
     public BookMarketEntity(BookMarketEntity recivedBookMarketEntity) {
         if ((forRent == 1) || (forSell == 1)) {

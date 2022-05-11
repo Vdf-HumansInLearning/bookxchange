@@ -1,8 +1,10 @@
-package com.bookxchange.service;
+package com.bookxchange.service.unitTest;
 
 import com.bookxchange.customExceptions.InvalidRatingException;
+import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.RatingEntity;
 import com.bookxchange.model.TransactionEntity;
+import com.bookxchange.repositories.BookMarketRepository;
 import com.bookxchange.repositories.TransactionRepository;
 import com.bookxchange.service.RatingService;
 import org.junit.Before;
@@ -30,6 +32,10 @@ public class RatingServiceTest {
     @Mock
     TransactionRepository transactionRepository;
 
+    @Mock
+    BookMarketRepository bookMarketRepository;
+
+
     @InjectMocks
     RatingService ratingService;
 
@@ -38,6 +44,13 @@ public class RatingServiceTest {
 
         return ratingEntity;
     }
+
+
+     public BookMarketEntity createBookMarketEntity(String userUuid, String bookIsbn, String bookState, Byte forSell, Double sellPrice, Byte forRent, Double rentPrice){
+
+        BookMarketEntity bookMarketEntity = new BookMarketEntity( userUuid,  bookIsbn,  bookState,  forSell,  sellPrice,  forRent,  rentPrice);
+        return bookMarketEntity;
+     }
 
     public List<TransactionEntity> createTransactions(){
 
@@ -51,21 +64,21 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void userIdUUidNullTest() {
+    public void ratingAMemberUserIdUUidNullTest() {
 
         Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingAMember(createRatingEntity(1,"ceva",null,null,"isbn")));
         assertEquals("User id can not be null when you rate a member",exception.getMessage());
     }
 
     @Test
-    public void leftByUUidNullTest() {
+    public void ratingAMemberLeftByUUidNullTest() {
 
         Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingAMember(createRatingEntity(1,"ceva",null,null,"isbn")));
         assertEquals("User id can not be null when you rate a member",exception.getMessage());
     }
 
     @Test
-    public void leftByUUidEqualsUserUuidTest() {
+    public void ratingAMemberLeftByUUidEqualsUserUuidTest() {
 
         Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingAMember(createRatingEntity(1,"ceva","123","123","isbn")));
         assertEquals("Users can not let reviews to themselves",exception.getMessage());
@@ -73,11 +86,40 @@ public class RatingServiceTest {
 
 
     @Test
-    public void noTransactionAvailableTest() {
+    public void ratingAMemberNoTransactionAvailableTest() {
 
         when(transactionRepository.getTransactionByWhoSelleddAndWhoBuys(any(),any())).thenReturn(createTransactions());
 
         Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingAMember(createRatingEntity(1,"ceva","123","1243","isbn")));
         assertEquals("These two users never interact",exception.getMessage());
     }
+
+
+    @Test
+    public void ratingABookInvalidIsbnOrNull() {
+
+        Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingABook(createRatingEntity(1,"ceva","123","1243",null)));
+        assertEquals("Book id can not be null when you rate a book",exception.getMessage());
+    }
+
+    @Test
+    public void ratingABookBookMarketNull() {
+
+        when(bookMarketRepository.getBookMarketEntityByBookId(any())).thenReturn(null);
+
+        Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingABook(createRatingEntity(1,"ceva","123","1243","123")));
+        assertEquals("This user 123 doesn't interact with this book",exception.getMessage());
+    }
+
+    @Test
+    public void ratingBookNoTransactionAvailableTest() {
+
+        when(transactionRepository.getTransactionByWhoSelleddAndWhoBuys(any(),any())).thenReturn(createTransactions());
+        when(bookMarketRepository.getBookMarketEntityByBookId(any())).thenReturn(createBookMarketEntity("uuit","ceva","noua", (byte) 1,3d, (byte) 1,2d));
+
+        Exception exception = assertThrows(InvalidRatingException.class, () -> ratingService.ratingABook(createRatingEntity(1,"ceva","123","1243","123")));
+        assertEquals("This user 123 doesn't interact with this book",exception.getMessage());
+    }
+
+
 }

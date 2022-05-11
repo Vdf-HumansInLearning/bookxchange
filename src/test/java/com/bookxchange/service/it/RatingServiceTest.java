@@ -1,21 +1,25 @@
-package RatingsController;
+package com.bookxchange.service.it;
 
 import com.bookxchange.BookExchangeApplication;
+import com.bookxchange.enums.TransactionType;
+import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.RatingEntity;
+import com.bookxchange.model.TransactionEntity;
 import com.bookxchange.repositories.TransactionRepository;
+import com.bookxchange.service.BookMarketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,8 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK, classes={ BookExchangeApplication.class })
-@AutoConfigureMockMvc
-public class RatingsControllerTests {
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+@PropertySource("classpath:application-test.properties")
+public class RatingServiceTest {
 
     @Autowired
     private MockMvc mvc;
@@ -32,19 +38,27 @@ public class RatingsControllerTests {
     @Autowired
     TransactionRepository transactionRepository;
 
-    //todo create transactions before creating ratings
+    @Autowired
+    BookMarketService bookMarketService;
 
     @Before
     public void createRentTransaction() throws Exception {
 
-        mvc.perform(post("/transactions")
-                        .content("{\n" +
-                                "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
-                                "  \"supplier\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
-                                "  \"client\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "  \"transactionType\": \"RENT\"\n" +
-                                "}")
-                        .contentType(MediaType.APPLICATION_JSON));
+
+
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setTransactionType(TransactionType.RENT.toString());
+        transactionEntity.setMarketBookIdSupplier("42a48524-20fd-4708-9311-55bf1a247eaf");
+        transactionEntity.setMemberuuIdFrom("6eca21ce-861b-4dd7-975d-20a969e3183a");
+        transactionEntity.setMemberuuIdTo("13177e99-14b5-43c5-a446-e0dc751c3153");
+        transactionEntity.setMarketBookIdSupplier("42a48524-20fd-4708-9311-55bf1a247eaf");
+        transactionRepository.save(transactionEntity);
+
+        BookMarketEntity bookMarketEntity = new BookMarketEntity();
+        bookMarketEntity.setBookIsbn("0747532699");
+        bookMarketEntity.setBookMarketUuid("42a48524-20fd-4708-9311-55bf1a247eaf");
+        bookMarketEntity.setForRent((byte) 1);
+        bookMarketService.addBookMarketEntry(bookMarketEntity);
     }
 
 
@@ -62,22 +76,6 @@ public class RatingsControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.grade").value("4"));
-    }
-
-    @Test
-    public void createBookRating() throws Exception {
-
-        mvc.perform(post("/ratings/createBookRating")
-                        .content("{\n" +
-                                "   \"grade\": 2, \n" +
-                                "   \"description\":\"o carte buna\",\n" +
-                                "   \"leftBy\":\"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "   \"userId\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "   \"bookId\": \"0-7475-3269-9\"\n" +
-                                "}")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.grade").value("2"));
     }
 
 
@@ -162,11 +160,6 @@ public class RatingsControllerTests {
     public void contextLoads() {
     }
 
-
-   @After
-    public void cleanUp() {
-       transactionRepository.deleteAll(transactionRepository.findAllByTransactionDate(LocalDate.of(1999, 12, 12)));
-    }
 
     public static String asJsonString(final Object obj) {
         try {
