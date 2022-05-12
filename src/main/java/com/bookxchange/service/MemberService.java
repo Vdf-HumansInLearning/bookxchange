@@ -1,5 +1,6 @@
 package com.bookxchange.service;
 
+import com.bookxchange.customExceptions.RegisterException;
 import com.bookxchange.model.MembersEntity;
 import com.bookxchange.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,16 @@ public class MemberService {
     }
 
     public void saveMember (MembersEntity member) {
-         memberRepository.save(member);
+
+        try {
+            memberRepository.save(member);
+        } catch (Exception exception) {
+            if (exception.getMessage().contains("constraint")) {
+                throw new RegisterException(String.format("Username %s or e-mail %s already exists.", member.getUsername(), member.getEmailAddress()));
+            } else {
+                throw exception;
+            }
+        }
     }
 
 

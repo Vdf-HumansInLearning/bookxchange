@@ -1,12 +1,18 @@
 package com.bookxchange.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.util.Objects;
 
 @Entity
-@Table(name = "members")
-@Data
+@Table(name = "members", uniqueConstraints = {@UniqueConstraint(columnNames = "username"),
+                                              @UniqueConstraint(columnNames = "email_address")})
+@Getter
+@Setter
+@ToString
 public class MembersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -15,7 +21,7 @@ public class MembersEntity {
     @Column(name = "member_uuid")
     private String memberUserUuid;
     @Basic
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Basic
     @Column(name = "password")
@@ -24,7 +30,8 @@ public class MembersEntity {
     @Column(name = "points")
     private Integer points;
     @Basic
-    @Column(name = "email_address")
+    @Email
+    @Column(name = "email_address", unique = true)
     private String emailAddress;
     @Column(name = "is_email_confirmed")
     private byte isEmailConfirmed;

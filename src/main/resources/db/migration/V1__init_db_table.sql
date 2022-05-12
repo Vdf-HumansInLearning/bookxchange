@@ -48,10 +48,10 @@ CREATE TABLE privileges (
 CREATE TABLE members (
                          member_user_id int auto_increment not null ,
                          member_uuid varchar(36) NOT NULL unique,
-                         username TEXT,
-                         password TEXT,
+                         username varchar(50) UNIQUE,
+                         password TEXT(50),
                          points INT,
-                         email_address varchar(100),
+                         email_address varchar(100) UNIQUE,
                          role_id INT,
                          is_email_confirmed boolean default 0,
                          primary key (member_user_id)
