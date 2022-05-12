@@ -3,6 +3,7 @@ package com.bookxchange.security;
 import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.customExceptions.InvalidISBNException;
 import com.bookxchange.dto.RegisterDto;
+import com.bookxchange.enums.UserRoles;
 import com.bookxchange.model.MembersEntity;
 import com.bookxchange.model.RolesEntity;
 import com.bookxchange.service.EmailService;
@@ -64,7 +65,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
         MembersEntity membersEntity = new MembersEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
-        RolesEntity role = new RolesEntity(1,"ADMIN");
+        RolesEntity role = new RolesEntity(UserRoles.valueOf(registerDto.getRole()).getCode(),registerDto.getRole());
         membersEntity.setRole(role);
         memberService.saveMember(membersEntity);
 
