@@ -76,7 +76,7 @@ public class BooksController {
         try {
             if (retrievedBookToReturn.getRetrievedBook() != null) {
                 retrievedBookToReturn.setRetrievedInfo(true);
-                return new ResponseEntity(retrievedBookToReturn, HttpStatus.OK);
+                return new ResponseEntity<>(retrievedBookToReturn, HttpStatus.OK);
             } else {
                 throw new ResponseStatusException(
                         HttpStatus.NO_CONTENT, new BooksExceptions("No content found, please add manually").toString());
@@ -111,7 +111,7 @@ public class BooksController {
                     workingBookService.updateQuantityAtAdding(receivedBookInfo.getReceivedBook().getIsbn());
                 }
 
-                return new ResponseEntity(receivedBookInfo, HttpStatus.CREATED);
+                return new ResponseEntity<>(receivedBookInfo, HttpStatus.CREATED);
             } catch (Exception invalidISBNException) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, invalidISBNException.getMessage());

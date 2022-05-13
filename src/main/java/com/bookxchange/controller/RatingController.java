@@ -18,13 +18,17 @@ import java.util.List;
 @RequestMapping("/ratings")
 public class RatingController {
 
-    @Autowired
     RatingService ratingService;
+
+    @Autowired
+    public RatingController(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
 
     Mapper mapper = new Mapper();
     Logger logger = LoggerFactory.getLogger(RatingController.class);
 
-//    books/{bookId}/rating
+    //    books/{bookId}/rating
     @PostMapping("/createBookRating")
     public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDto ratingDto) {
 
@@ -33,9 +37,9 @@ public class RatingController {
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
         logger.debug("ratingEntity : ", ratingEntity);
 
-            ratingService.ratingABook(ratingEntity);
+        ratingService.ratingABook(ratingEntity);
 
-            return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
+        return new ResponseEntity<>(ratingEntity, HttpStatus.CREATED);
 
     }
 
@@ -47,8 +51,8 @@ public class RatingController {
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
         logger.debug("ratingEntity : ", ratingEntity);
 
-            ratingService.ratingAMember(ratingEntity);
-            return new ResponseEntity(ratingEntity, HttpStatus.CREATED);
+        ratingService.ratingAMember(ratingEntity);
+        return new ResponseEntity<>(ratingEntity, HttpStatus.CREATED);
 
     }
 
@@ -62,7 +66,7 @@ public class RatingController {
 
         List<RatingEntity> list = ratingService.getAllRatings(pageNo, pageSize, sortBy, booksRating);
 
-        return new ResponseEntity<List<RatingEntity>>(list, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 }

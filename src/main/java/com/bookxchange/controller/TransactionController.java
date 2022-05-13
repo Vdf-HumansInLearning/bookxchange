@@ -3,9 +3,7 @@ package com.bookxchange.controller;
 import com.bookxchange.dto.TransactionDto;
 import com.bookxchange.enums.TransactionType;
 import com.bookxchange.model.TransactionEntity;
-import com.bookxchange.security.JwtTokenUtil;
 import com.bookxchange.service.TransactionService;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +23,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+
     @PostMapping("")
     public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDto transactionDto) {
 
@@ -42,6 +41,7 @@ public class TransactionController {
     }
 
     @GetMapping("/trade/decision")
+//    TODO: sa cosmetizam url astfel incat userul sa nu vada id-urile in link-ul de email. Am gasit o metoda dar nu am avut timp de implementare
     public void approveTradingTransaction(@RequestParam String answerToTrade, @RequestParam String transactionId) {
         transactionService.updateTransactionByUserTradeDecision(answerToTrade, transactionId);
     }

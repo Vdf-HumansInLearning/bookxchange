@@ -1,7 +1,5 @@
 package com.bookxchange.controller;
 
-import java.util.Objects;
-
 import com.bookxchange.customExceptions.BadAuthentificationException;
 import com.bookxchange.dto.RegisterDto;
 import com.bookxchange.model.MembersEntity;
@@ -26,20 +24,23 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin
 public class JwtAuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtUserDetailsService userDetailsService;
+    private final MemberService memberService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService, MemberService memberService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+        this.memberService = memberService;
+    }
 
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
-
-    @Autowired
-    private MemberService memberService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)  {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -52,7 +53,7 @@ public class JwtAuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public void register(@RequestBody RegisterDto registerDto, HttpServletRequest request)   {
+    public void register(@RequestBody RegisterDto registerDto, HttpServletRequest request) {
 
         userDetailsService.register(registerDto, request.getRequestURL().toString());
     }
@@ -118,7 +119,7 @@ public class JwtAuthenticationController {
                 "        <i class=\"checkmark\">✓</i>\n" +
                 "      </div>\n" +
                 "        <h1>Success</h1> \n" +
-                "        <p>Thank you, "+name+", for confirming your e-mail address;<br/> you may now close this page!</p>\n" +
+                "        <p>Thank you, " + name + ", for confirming your e-mail address;<br/> you may now close this page!</p>\n" +
                 "      </div>\n" +
                 "    </body>\n" +
                 "</html>";
