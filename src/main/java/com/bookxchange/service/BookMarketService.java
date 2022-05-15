@@ -40,7 +40,11 @@ public class BookMarketService {
     }
 
     public BookMarketEntity getBookMarketFromOptional(String bookMarketUuId) throws NoSuchElementException {
-        return bookMarketRepository.findByBookMarketUuid(bookMarketUuId).get();
+        Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
+        if(bookMarket.isPresent())
+            return bookMarket.get();
+        else  throw new NoSuchElementException("Can't find the book by this id");
+
     }
     public String getBookMarketStatus(String bookMarketUuId){
         return getBookMarketFromOptional(bookMarketUuId).getBookStatus();
@@ -53,6 +57,7 @@ public class BookMarketService {
     }
 
     public String getBookIsbn(String bookMarketUuId){
+
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
     }
 

@@ -2,6 +2,7 @@ package NotificationsControllerTests;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.controller.NotificationController;
+import com.bookxchange.customExceptions.NotificationException;
 import com.bookxchange.dto.NotificationsDTO;
 import com.bookxchange.model.NotificationsEntity;
 import com.bookxchange.repositories.*;
@@ -35,32 +36,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @PropertySource("classpath:application-test.properties")
 
-@Transactional
 public class NotificationsControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @Autowired
-    NotificationController notificationController;
+    private NotificationController notificationController;
 
     @MockBean
-    NotificationRepository notificationRepository;
+    private NotificationRepository notificationRepository;
 
     @MockBean
-    BookMarketRepository bookMarketRepository;
+    private BookMarketRepository bookMarketRepository;
 
     @MockBean
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @MockBean
-    AuthorsRepository authorsRepository;
+    private AuthorsRepository authorsRepository;
 
     @MockBean
-    BooksRepository booksRepository;
+    private BooksRepository booksRepository;
 
     @MockBean
-    NotificationService notificationService;
+    private NotificationService notificationService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -94,6 +94,10 @@ public class NotificationsControllerTest {
                 .andExpect(jsonPath("$.memberUuid").value("1234-1244"))
                 .andExpect(jsonPath("$.sent").value("1"))
                 .andExpect(jsonPath("$.templateType").value("1"));
+
+
+        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(),notificationsDTO.getMemberUuid()))
+                .thenThrow(new NotificationException("isDuplicate"));
 
 
 

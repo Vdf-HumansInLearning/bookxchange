@@ -61,19 +61,6 @@ public class JwtTokenUtil implements Serializable {
        return doGenerateToken(claims, userDetails.getUsername());
     }
 
-//    public String generateToken(Authentication authentication) {
-//        final String authorities = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-//        return Jwts.builder()
-//                .setSubject(authentication.getName())
-//                .claim(AUTHORITIES_KEY, authorities)
-//                .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
-//                .compact();
-//    }
-
     //while creating the token -
     //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
     //2. Sign the JWT using the HS512 algorithm and secret key.
