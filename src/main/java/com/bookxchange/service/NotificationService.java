@@ -5,7 +5,7 @@ import com.bookxchange.enums.BookStatus;
 import com.bookxchange.enums.EmailTemplateType;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.EmailsEntity;
-import com.bookxchange.model.NotificationsEntity;
+import com.bookxchange.model.NotificationEntity;
 import com.bookxchange.pojo.NotificationHelper;
 import com.bookxchange.repositories.BookMarketRepository;
 import com.bookxchange.repositories.EmailsRepository;
@@ -44,47 +44,48 @@ public class NotificationService {
         }
     }
 
-    public NotificationsEntity addNotification(String marketBookId, String memberId) {
+    public NotificationEntity addNotification(String marketBookId, String memberId) {
 
         boolean isDuplicate = notificationRepository.existsNotificationsEntitiesByMarketBookUuidAndMemberUuid(marketBookId, memberId);
 
         Optional<BookMarketEntity> bookMarket = bmr.findByBookMarketUuid(marketBookId);
+        NotificationEntity notification = new NotificationEntity();
         if (bookMarket.isPresent()) {
             BookMarketEntity bookMarketEntity = bookMarket.get();
             String status = bookMarketEntity.getBookStatus();
-            if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
-                String format = String.format("Book is already '%s'", status);
-                LOG.debug("format : "+format);
-                throw new NotificationException(format);
-            } else if (!isDuplicate) {
-                NotificationsEntity notification = new NotificationsEntity();
+            if (!isDuplicate) {
                 notification.setMemberUuid(memberId);
                 notification.setMarketBookUuid(marketBookId);
                 notification.setTemplateType(1);
                 notification.setSent((byte) 0);
-                return notificationRepository.save(notification);
+            } else if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
+                String format = String.format("Book is already '%s'", status);
+                LOG.debug("format : " + format);
+                throw new NotificationException(format);
             } else if (isDuplicate) {
                 throw new NotificationException("Duplicate Notification");
             }
         } else {
             throw new NotificationException("Empty BookMarket");
         }
-        return null;
+        return notificationRepository.save(notification);
     }
 
-    @Transactional
-    void sendMail(NotificationHelper userToBeNotifiedInfo) {
-        String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
-        emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);
-        notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
-        EmailsEntity emailsEntity = new EmailsEntity();
-        emailsEntity.setContent(body);
-        emailsEntity.setStatus("SENT");
-        emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
-        emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
-        LOG.debug("emailEntity created : "+ emailsEntity);
-        emailsRepository.save(emailsEntity);
 
-        LOG.debug("email sent successfully");
+    private void sendMail(NotificationHelper userToBeNotifiedInfo) {
+        EmailsEntity emailsEntity = new EmailsEntity();
+        try {
+            String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
+            emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);
+            notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
+            emailsEntity.setContent(body);
+            emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
+            emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
+            LOG.debug("emailEntity created : " + emailsEntity);
+        } catch (Exception e) {
+            emailsEntity.setStatus("ERROR");
+            LOG.info("Error in sending e-mail.");
+        }
+        emailsRepository.save(emailsEntity);
     }
 }

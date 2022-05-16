@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class NotificationsEntity {
+public class NotificationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")

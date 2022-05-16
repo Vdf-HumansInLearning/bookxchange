@@ -3,7 +3,7 @@ package com.bookxchange.dto;
 import lombok.Data;
 
 @Data
-public class NotificationsDTO {
+public class NotificationDTO {
     String marketBookUuid;
     String memberUuid;
 }

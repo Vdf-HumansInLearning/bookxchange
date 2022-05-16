@@ -3,10 +3,11 @@ package NotificationsControllerTests;
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.controller.NotificationController;
 import com.bookxchange.customExceptions.NotificationException;
-import com.bookxchange.dto.NotificationsDTO;
-import com.bookxchange.model.NotificationsEntity;
+import com.bookxchange.dto.NotificationDTO;
+import com.bookxchange.model.NotificationEntity;
 import com.bookxchange.repositories.*;
 import com.bookxchange.service.NotificationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,45 +45,39 @@ public class NotificationsControllerTest {
     private NotificationController notificationController;
 
     @MockBean
-    private NotificationRepository notificationRepository;
-
-    @MockBean
-    private BookMarketRepository bookMarketRepository;
-
-    @MockBean
-    private MemberRepository memberRepository;
-
-    @MockBean
-    private AuthorsRepository authorsRepository;
-
-    @MockBean
-    private BooksRepository booksRepository;
-
-    @MockBean
     private NotificationService notificationService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
+    private NotificationDTO notificationsDTO = new NotificationDTO();
+    private NotificationEntity notificationsEntity = new NotificationEntity();
 
     @BeforeEach
     public void setUp() {
+
+        notificationsDTO.setMarketBookUuid("1223-34534-6343-3222");
+        notificationsDTO.setMemberUuid("1234-1244");
+        Byte b = 1;
+
+
+        notificationsEntity.setSent(b);
+        notificationsEntity.setMemberUuid("1234-1244");
+        notificationsEntity.setMarketBookUuid("1223-34534-6343-3222");
+        notificationsEntity.setTemplateType(1);
         mvc = MockMvcBuilders.standaloneSetup(notificationController).build();
     }
 
     @Test
     public void testNotification() throws Exception {
-        NotificationsDTO notificationsDTO = new NotificationsDTO();
         notificationsDTO.setMarketBookUuid("1223-34534-6343-3222");
         notificationsDTO.setMemberUuid("1234-1244");
         Byte b = 1;
 
-        NotificationsEntity notificationsEntity = new NotificationsEntity();
         notificationsEntity.setSent(b);
         notificationsEntity.setMemberUuid("1234-1244");
         notificationsEntity.setMarketBookUuid("1223-34534-6343-3222");
         notificationsEntity.setTemplateType(1);
 
-        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(),notificationsDTO.getMemberUuid()))
+        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
                 .thenReturn(notificationsEntity);
 
         mvc.perform(post("/notifications")
@@ -96,13 +90,21 @@ public class NotificationsControllerTest {
                 .andExpect(jsonPath("$.templateType").value("1"));
 
 
-        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(),notificationsDTO.getMemberUuid()))
-                .thenThrow(new NotificationException("isDuplicate"));
-
-
-
     }
 
+    @Test
+    public void testDuplicateNotifications() throws Exception {
 
+        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
+                .thenThrow(new NotificationException("Duplicate Notification"));
+
+
+        mvc.perform(post("/notifications")
+                        .content(objectMapper.writeValueAsBytes(notificationsDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("Duplicate Notification"));
+    }
 
 }

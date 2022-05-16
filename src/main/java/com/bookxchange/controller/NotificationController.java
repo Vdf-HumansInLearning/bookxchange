@@ -1,7 +1,7 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.dto.NotificationsDTO;
-import com.bookxchange.model.NotificationsEntity;
+import com.bookxchange.dto.NotificationDTO;
+import com.bookxchange.model.NotificationEntity;
 import com.bookxchange.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +23,9 @@ public class NotificationController {
     }
 
     @PostMapping("")
-    public ResponseEntity<NotificationsEntity> addNotification(@RequestBody NotificationsDTO notificationsDTO){
+    public ResponseEntity<NotificationEntity> addNotification(@RequestBody NotificationDTO notificationDTO){
 
-        return new ResponseEntity<>(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()), HttpStatus.CREATED);
+        return new ResponseEntity<>(notificationService.addNotification(notificationDTO.getMarketBookUuid(), notificationDTO.getMemberUuid()), HttpStatus.CREATED);
     }
 
 }
