@@ -1,10 +1,12 @@
 package com.bookxchange.service;
 
-import com.bookxchange.customExceptions.InvalidRatingException;
+import com.bookxchange.exception.InvalidRatingException;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.RatingEntity;
 import com.bookxchange.model.TransactionEntity;
-import com.bookxchange.repositories.*;
+import com.bookxchange.repository.BookMarketRepository;
+import com.bookxchange.repository.RatingRepository;
+import com.bookxchange.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

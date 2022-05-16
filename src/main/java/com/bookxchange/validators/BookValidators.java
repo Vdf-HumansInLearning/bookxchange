@@ -1,7 +1,7 @@
 package com.bookxchange.validators;
 
 
-import com.bookxchange.customExceptions.BooksExceptions;
+import com.bookxchange.exception.BooksExceptions;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;

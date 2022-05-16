@@ -13,6 +13,7 @@ public enum UserRoles {
         this.code = code;
         this.role = role;
     }
+
     @Override
     public String toString() {
         return String.valueOf(code);

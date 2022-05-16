@@ -1,11 +1,11 @@
 package com.bookxchange.service.unitTest;
 
-import com.bookxchange.customExceptions.InvalidRatingException;
+import com.bookxchange.exception.InvalidRatingException;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.RatingEntity;
 import com.bookxchange.model.TransactionEntity;
-import com.bookxchange.repositories.BookMarketRepository;
-import com.bookxchange.repositories.TransactionRepository;
+import com.bookxchange.repository.BookMarketRepository;
+import com.bookxchange.repository.TransactionRepository;
 import com.bookxchange.service.RatingService;
 import org.junit.Before;
 import org.junit.Test;

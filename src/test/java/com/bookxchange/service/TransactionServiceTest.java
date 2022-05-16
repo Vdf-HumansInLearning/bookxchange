@@ -1,9 +1,9 @@
 //package com.bookxchange.service;
 //
-//import com.bookxchange.dto.Mapper;
+//import com.bookxchange.mapper.Mapper;
 //import com.bookxchange.dto.TransactionDto;
 //import com.bookxchange.enums.TransactionType;
-//import com.bookxchange.repositories.TransactionRepository;
+//import com.bookxchange.repository.TransactionRepository;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;

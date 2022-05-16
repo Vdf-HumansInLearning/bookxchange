@@ -1,26 +1,22 @@
 package com.bookxchange.controller;
 
 import com.bookxchange.BookExchangeApplication;
-import com.bookxchange.dto.TransactionDto;
+import com.bookxchange.dto.TransactionDTO;
 import com.bookxchange.enums.TransactionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -36,7 +32,7 @@ class TransactionControllerTest {
     @Autowired
     private TransactionController transactionController;
 
-    private TransactionDto transactionDto = new TransactionDto(
+    private TransactionDTO transactionDto = new TransactionDTO(
             "42a48524-20fd-4708-9311-55bf1a247eaf"
             , "1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb"
             , "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"

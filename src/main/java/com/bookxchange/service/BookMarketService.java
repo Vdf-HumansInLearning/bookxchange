@@ -1,8 +1,8 @@
 package com.bookxchange.service;
 
-import com.bookxchange.customExceptions.BooksExceptions;
+import com.bookxchange.exception.BooksExceptions;
 import com.bookxchange.model.BookMarketEntity;
-import com.bookxchange.repositories.BookMarketRepository;
+import com.bookxchange.repository.BookMarketRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,22 +41,25 @@ public class BookMarketService {
 
     public BookMarketEntity getBookMarketFromOptional(String bookMarketUuId) throws NoSuchElementException {
         Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
-        if(bookMarket.isPresent())
+        if (bookMarket.isPresent())
             return bookMarket.get();
-        else  throw new NoSuchElementException("Can't find the book by this id");
+        else throw new NoSuchElementException("Can't find the book by this id");
 
     }
-    public String getBookMarketStatus(String bookMarketUuId){
+
+    public String getBookMarketStatus(String bookMarketUuId) {
         return getBookMarketFromOptional(bookMarketUuId).getBookStatus();
     }
-    public boolean isBookMarketForRent(String bookMarketUuId){
+
+    public boolean isBookMarketForRent(String bookMarketUuId) {
         return getBookMarketFromOptional(bookMarketUuId).getForRent() == 1;
     }
-    public boolean isBookMarketForSell(String bookMarketUuId){
+
+    public boolean isBookMarketForSell(String bookMarketUuId) {
         return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
     }
 
-    public String getBookIsbn(String bookMarketUuId){
+    public String getBookIsbn(String bookMarketUuId) {
 
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
     }
@@ -64,10 +67,10 @@ public class BookMarketService {
     public Double getPriceByMarketBookId(String bookMarketUuid) {
         return bookMarketRepository.getPriceByUuid(bookMarketUuid);
     }
-    public Double moneyToPoints(Double bookMarketPrice){
-        return (-1)*bookMarketPrice*10;
-    }
 
+    public Double moneyToPoints(Double bookMarketPrice) {
+        return (-1) * bookMarketPrice * 10;
+    }
 
 
 }

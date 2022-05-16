@@ -1,6 +1,5 @@
 package com.bookxchange.model;
 
-import com.bookxchange.enums.TransactionStatus;
 import com.bookxchange.enums.TransactionType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

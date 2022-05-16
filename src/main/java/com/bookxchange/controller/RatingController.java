@@ -1,7 +1,7 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.dto.Mapper;
-import com.bookxchange.dto.RatingDto;
+import com.bookxchange.dto.RatingDTO;
+import com.bookxchange.mapper.Mapper;
 import com.bookxchange.model.RatingEntity;
 import com.bookxchange.service.RatingService;
 import org.slf4j.Logger;
@@ -19,18 +19,16 @@ import java.util.List;
 public class RatingController {
 
     RatingService ratingService;
-
+    Mapper mapper = new Mapper();
+    Logger logger = LoggerFactory.getLogger(RatingController.class);
     @Autowired
     public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
     }
 
-    Mapper mapper = new Mapper();
-    Logger logger = LoggerFactory.getLogger(RatingController.class);
-
     //    books/{bookId}/rating
     @PostMapping("/createBookRating")
-    public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDto ratingDto) {
+    public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDTO ratingDto) {
 
         logger.debug("createBookRating start ");
 
@@ -45,7 +43,7 @@ public class RatingController {
 
 
     @PostMapping("/createMemberRating")
-    public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDto ratingDto) {
+    public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDTO ratingDto) {
 
         logger.debug("createMemberRating start ");
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);

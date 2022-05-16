@@ -1,8 +1,8 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.customExceptions.BadAuthentificationException;
-import com.bookxchange.dto.RegisterDto;
-import com.bookxchange.model.MembersEntity;
+import com.bookxchange.dto.RegisterDTO;
+import com.bookxchange.exception.BadAuthentificationException;
+import com.bookxchange.model.MemberEntity;
 import com.bookxchange.security.JwtRequest;
 import com.bookxchange.security.JwtResponse;
 import com.bookxchange.security.JwtTokenUtil;
@@ -53,7 +53,7 @@ public class JwtAuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public void register(@RequestBody RegisterDto registerDto, HttpServletRequest request) {
+    public void register(@RequestBody RegisterDTO registerDto, HttpServletRequest request) {
 
         userDetailsService.register(registerDto, request.getRequestURL().toString());
     }
@@ -70,7 +70,7 @@ public class JwtAuthenticationController {
 
     @GetMapping(value = "/register/confirm", produces = "text/html")
     public String confirmEmailAddress(@RequestParam String memberUUID) {
-        MembersEntity confirmedMember = memberService.findByUuid(memberUUID);
+        MemberEntity confirmedMember = memberService.findByUuid(memberUUID);
         String name = confirmedMember.getUsername();
         confirmedMember.setIsEmailConfirmed((byte) 1);
         memberService.saveMember(confirmedMember);

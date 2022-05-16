@@ -2,12 +2,10 @@ package NotificationsControllerTests;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.controller.NotificationController;
-import com.bookxchange.customExceptions.NotificationException;
+import com.bookxchange.exception.NotificationException;
 import com.bookxchange.dto.NotificationDTO;
 import com.bookxchange.model.NotificationEntity;
-import com.bookxchange.repositories.*;
 import com.bookxchange.service.NotificationService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
