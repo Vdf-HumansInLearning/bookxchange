@@ -53,12 +53,12 @@ public class NotificationService {
         if (bookMarket.isPresent()) {
             BookMarketEntity bookMarketEntity = bookMarket.get();
             String status = bookMarketEntity.getBookStatus();
-            if (!isDuplicate) {
+            if (!isDuplicate && !isAvailableOrSold(status)) {
                 notification.setMemberUuid(memberId);
                 notification.setMarketBookUuid(marketBookId);
                 notification.setTemplateType(1);
                 notification.setSent((byte) 0);
-            } else if (status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString())) {
+            } else if (isAvailableOrSold(status)) {
                 String format = String.format("Book is already '%s'", status);
                 LOG.debug("format : " + format);
                 throw new NotificationException(format);
@@ -69,6 +69,10 @@ public class NotificationService {
             throw new NotificationException("Empty BookMarket");
         }
         return notificationRepository.save(notification);
+    }
+
+    public boolean isAvailableOrSold(String status) {
+        return status.equals(BookStatus.AVAILABLE.toString()) || status.equals(BookStatus.SOLD.toString());
     }
 
 
