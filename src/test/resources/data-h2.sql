@@ -131,3 +131,4 @@ ALTER TABLE notifications ADD CONSTRAINT
          market_book_uuid,
          member_uuid
             );
+INSERT INTO email_templates values (default, 'TRANSACTION_SUCCES', 'You just made a purchase/rent', "Hey %s , You just made a purchase/rent. Thank you for this.");

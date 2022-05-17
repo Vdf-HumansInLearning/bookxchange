@@ -2,14 +2,14 @@ package NotificationsControllerTests;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.controller.NotificationController;
-import com.bookxchange.exception.NotificationException;
 import com.bookxchange.dto.NotificationDTO;
+import com.bookxchange.exception.NotificationException;
 import com.bookxchange.model.NotificationEntity;
 import com.bookxchange.service.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -27,7 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BookExchangeApplication.class)
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase
@@ -93,9 +91,14 @@ public class NotificationsControllerTest {
     @Test
     public void testDuplicateNotifications() throws Exception {
 
-        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
-                .thenThrow(new NotificationException("Duplicate Notification"));
+//        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
+//                .thenThrow(new NotificationException("Duplicate Notification"));
 
+//modifica logica pentru eroare. duplicate
+        mvc.perform(post("/notifications")
+                        .content(objectMapper.writeValueAsBytes(notificationsDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
 
         mvc.perform(post("/notifications")
                         .content(objectMapper.writeValueAsBytes(notificationsDTO))
@@ -104,5 +107,6 @@ public class NotificationsControllerTest {
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.message").value("Duplicate Notification"));
     }
-
 }
+
+
