@@ -28,8 +28,6 @@ CREATE TABLE authors_books_mtm (
                                    book_isbn varchar(36) NOT NULL,
                                    authors_uuid varchar(36) NOT NULL,
                                    PRIMARY KEY (id)
-                                       #                              FOREIGN KEY (author_id) REFERENCES authors(author_id),
-                                   #                              FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
 CREATE TABLE roles (

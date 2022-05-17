@@ -23,7 +23,7 @@ public class NotificationController {
     }
 
     @PostMapping("")
-    public ResponseEntity<NotificationEntity> addNotification(@RequestBody NotificationDTO notificationDTO){
+    public ResponseEntity<NotificationEntity> addNotification(@RequestBody NotificationDTO notificationDTO) {
 
         return new ResponseEntity<>(notificationService.addNotification(notificationDTO.getMarketBookUuid(), notificationDTO.getMemberUuid()), HttpStatus.CREATED);
     }

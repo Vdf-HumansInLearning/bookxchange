@@ -1,16 +1,15 @@
 package com.bookxchange.service.unitTest;
 
-import com.bookxchange.dto.Mapper;
-import com.bookxchange.dto.TransactionDto;
+import com.bookxchange.mapper.Mapper;
+import com.bookxchange.dto.TransactionDTO;
 import com.bookxchange.enums.TransactionType;
-import com.bookxchange.repositories.TransactionRepository;
+import com.bookxchange.repository.TransactionRepository;
 import com.bookxchange.service.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +35,8 @@ class TransactionServiceTest {
 
 //    construiesc dto pentru fiecare rent, trade, sell, pointSell
 
-    public TransactionDto createTransactionDto(){
-         TransactionDto transactionDto= new TransactionDto();
+    public TransactionDTO createTransactionDto(){
+         TransactionDTO transactionDto= new TransactionDTO();
          transactionDto.setTransactionType(TransactionType.RENT);
          return transactionDto;
     }

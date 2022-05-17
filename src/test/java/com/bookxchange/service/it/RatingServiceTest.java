@@ -1,11 +1,8 @@
 package com.bookxchange.service.it;
 
 import com.bookxchange.BookExchangeApplication;
-import com.bookxchange.enums.TransactionType;
-import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.model.RatingEntity;
-import com.bookxchange.model.TransactionEntity;
-import com.bookxchange.repositories.TransactionRepository;
+import com.bookxchange.repository.TransactionRepository;
 import com.bookxchange.service.BookMarketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.dto.TransactionDto;
+import com.bookxchange.dto.TransactionDTO;
 import com.bookxchange.enums.TransactionType;
 import com.bookxchange.model.TransactionEntity;
 import com.bookxchange.service.TransactionService;
@@ -25,7 +25,7 @@ public class TransactionController {
 
 
     @PostMapping("")
-    public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDto transactionDto) {
+    public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDTO transactionDto) {
 
         TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto, token);
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);

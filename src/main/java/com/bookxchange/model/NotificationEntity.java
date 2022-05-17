@@ -32,8 +32,6 @@ public class NotificationEntity {
     private String memberUuid;
 
 
-
-
     @Override
     public int hashCode() {
         return getClass().hashCode();

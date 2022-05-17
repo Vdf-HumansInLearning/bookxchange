@@ -1,25 +1,21 @@
 package com.bookxchange.security;
 
-import com.bookxchange.customExceptions.BadAuthentificationException;
-import com.bookxchange.customExceptions.InvalidISBNException;
-import com.bookxchange.dto.RegisterDto;
+import com.bookxchange.dto.RegisterDTO;
 import com.bookxchange.enums.UserRoles;
-import com.bookxchange.model.MembersEntity;
-import com.bookxchange.model.RolesEntity;
+import com.bookxchange.exception.BadAuthentificationException;
+import com.bookxchange.model.MemberEntity;
+import com.bookxchange.model.RoleEntity;
 import com.bookxchange.service.EmailService;
 import com.bookxchange.service.EmailTemplatesService;
 import com.bookxchange.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-
 
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -33,44 +29,12 @@ public class JwtUserDetailsService implements UserDetailsService {
     EmailTemplatesService emailTemplatesService;
 
     Logger logger = LoggerFactory.getLogger(JwtUserDetailsService.class);
+
     @Autowired
     public JwtUserDetailsService(MemberService memberService, EmailService emailService, EmailTemplatesService emailTemplatesService) {
         this.memberService = memberService;
         this.emailService = emailService;
         this.emailTemplatesService = emailTemplatesService;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        MembersEntity usr = memberService.getMemberEntity(username);
-        if (usr != null) {
-            return new MyUserDetails(usr);
-        } else {
-            throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
-        }
-    }
-
-
-
-    public void register(RegisterDto registerDto, String confirmationGetUrl) {
-
-        if (registerDto.getPassword().equals(registerDto.getConfirmedPassword()) && isValidPassword(registerDto.getPassword()))
-        {
-            logger.debug("it's a match");
-        }
-            else {
-                throw new BadAuthentificationException("Parolele nu sunt identice, te rugam sa incerci din nou");
-        }
-
-        String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
-        MembersEntity membersEntity = new MembersEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
-        RolesEntity role = new RolesEntity(UserRoles.valueOf(registerDto.getRole()).getCode(),registerDto.getRole());
-        membersEntity.setRole(role);
-        memberService.saveMember(membersEntity);
-
-        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid());
-       // emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid()));
     }
 
     public static boolean isValidPassword(String password) {
@@ -96,6 +60,35 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         Matcher m = p.matcher(password);
         return m.matches();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        MemberEntity usr = memberService.getMemberEntity(username);
+        if (usr != null) {
+            return new MyUserDetails(usr);
+        } else {
+            throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
+        }
+    }
+
+    public void register(RegisterDTO registerDto, String confirmationGetUrl) {
+
+        if (registerDto.getPassword().equals(registerDto.getConfirmedPassword()) && isValidPassword(registerDto.getPassword())) {
+            logger.debug("it's a match");
+        } else {
+            throw new BadAuthentificationException("Parolele nu sunt identice, te rugam sa incerci din nou");
+        }
+
+        String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
+        MemberEntity memberEntity = new MemberEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
+        RoleEntity role = new RoleEntity(UserRoles.valueOf(registerDto.getRole()).getCode(), registerDto.getRole());
+        memberEntity.setRole(role);
+        memberService.saveMember(memberEntity);
+
+        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + memberEntity.getMemberUserUuid());
+        // emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid()));
     }
 
 }

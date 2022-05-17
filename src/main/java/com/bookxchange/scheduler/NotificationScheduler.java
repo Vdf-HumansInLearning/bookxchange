@@ -20,7 +20,7 @@ public class NotificationScheduler {
     }
 
     @Scheduled(fixedRateString = "${notification.check.every}")
-    void notificationCronJob(){
+    void notificationCronJob() {
 
         ns.checkForNotifications();
 

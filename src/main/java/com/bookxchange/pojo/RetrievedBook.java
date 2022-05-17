@@ -1,6 +1,6 @@
 package com.bookxchange.pojo;
 
-import com.bookxchange.model.BooksEntity;
+import com.bookxchange.model.BookEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +11,7 @@ import lombok.ToString;
 public class RetrievedBook {
 
     private boolean retrievedInfo = false;
-    private BooksEntity retrievedBook = new BooksEntity();
+    private BookEntity retrievedBook = new BookEntity();
     private String isbn;
 
     public RetrievedBook(String isbn) {

@@ -1,14 +1,14 @@
 package com.bookxchange.service;
 
-import com.bookxchange.customExceptions.BooksExceptions;
-import com.bookxchange.customExceptions.TransactionException;
-import com.bookxchange.dto.Mapper;
-import com.bookxchange.dto.TransactionDto;
-import com.bookxchange.enums.TransactionStatus;
+import com.bookxchange.dto.TransactionDTO;
 import com.bookxchange.enums.BookStatus;
+import com.bookxchange.enums.TransactionStatus;
 import com.bookxchange.enums.TransactionType;
+import com.bookxchange.exception.BooksExceptions;
+import com.bookxchange.exception.InvalidTransactionException;
+import com.bookxchange.mapper.Mapper;
 import com.bookxchange.model.*;
-import com.bookxchange.repositories.TransactionRepository;
+import com.bookxchange.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class TransactionService {
@@ -47,7 +46,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionEntity createTransaction(TransactionDto transactionDto, String token) {
+    public TransactionEntity createTransaction(TransactionDTO transactionDto, String token) {
         transactionDto.setClientId(ApplicationUtils.getUserFromToken(token));
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transactionDto);
         BookMarketEntity bookMarketEntity = bookMarketService.getBookMarketFromOptional(transactionDto.getMarketBookIdSupplier());
@@ -70,27 +69,27 @@ public class TransactionService {
         return transactionEntity;
     }
 
-    public void sendEmail(TransactionDto transactionDto) {
+    public void sendEmail(TransactionDTO transactionDto) {
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
         Runnable runnableTask = () -> {
             try {
-                MembersEntity client = new MembersEntity();
+                MemberEntity client = new MemberEntity();
                 EmailTemplatesEntity emailTemplate = new EmailTemplatesEntity();
                 String body = new String();
                 if (transactionDto.getTransactionType() == TransactionType.TRADE) {
                     emailTemplate = emailTemplatesService.getById(2);
                     client = memberService.findByUuid(transactionDto.getClientId());
-                    MembersEntity supplier = memberService.findByUuid(transactionDto.getSupplierId());
+                    MemberEntity supplier = memberService.findByUuid(transactionDto.getSupplierId());
                     String clientBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookIdClient());
                     String supplierBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookIdSupplier());
-                    BooksEntity clientBook = bookService.getBookByIsbn(clientBookIsbn);
-                    BooksEntity supplierBook = bookService.getBookByIsbn(supplierBookIsbn);
+                    BookEntity clientBook = bookService.getBookByIsbn(clientBookIsbn);
+                    BookEntity supplierBook = bookService.getBookByIsbn(supplierBookIsbn);
 
                     List<TransactionEntity> transactionEntities = transactionRepository.findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus(transactionDto.getMarketBookIdClient(), transactionDto.getMarketBookIdSupplier(), TransactionType.TRADE.toString(), TransactionStatus.PENDING.toString());
                     if (transactionEntities.size() > 1) {
-                        throw new TransactionException("Mai aveti deja o tranzactie in curs intre aceste doua carti");
+                        throw new InvalidTransactionException("Mai aveti deja o tranzactie in curs intre aceste doua carti");
                     }
                     TransactionEntity transaction = transactionEntities.get(0);
                     String approveUrl = String.format(applicationTradeUrl, applicationPort, approveResponse, transaction.getId());
@@ -135,7 +134,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public void updateBookMarketStatusAndMemberPoints(TransactionDto transactionDto) {
+    public void updateBookMarketStatusAndMemberPoints(TransactionDTO transactionDto) {
         if (transactionDto.getTransactionType().equals(TransactionType.RENT)) {
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
             bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookIdSupplier());
@@ -147,14 +146,14 @@ public class TransactionService {
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
             memberService.updatePointsToClientById(priceByMarketBookId * 10 * -1, transactionDto.getClientId());
-        } else throw new TransactionException("Invalid Transaction");
+        } else throw new InvalidTransactionException("Invalid Transaction");
     }
 
-    private boolean isEligibleForBuy(TransactionDto transactionDto) {
+    private boolean isEligibleForBuy(TransactionDTO transactionDto) {
         if ((memberService.getPointsByMemberId(transactionDto.getClientId()) / 10) >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookIdSupplier())) {
             return true;
         }
-        throw new TransactionException("Member is not eligible for buying");
+        throw new InvalidTransactionException("Member is not eligible for buying");
     }
 
 

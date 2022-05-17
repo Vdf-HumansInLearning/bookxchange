@@ -10,14 +10,15 @@ public class ApplicationUtils {
 
     private static JwtTokenUtil jwtTokenUtil;
 
-   @Autowired
+    @Autowired
     public ApplicationUtils(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
-    };
+    }
 
-    public static String getUserFromToken(String token){
+
+    public static String getUserFromToken(String token) {
         Claims claims = jwtTokenUtil.getAllClaimsFromToken(token.substring(7));
-         return claims.get("userUUID").toString();
+        return claims.get("userUUID").toString();
 
     }
 

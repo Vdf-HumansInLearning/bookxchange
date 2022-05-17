@@ -15,17 +15,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class BookExchangeApplication extends SpringBootServletInitializer {
 
 
-
     public static void main(String[] args) {
-        SpringApplication.run(BookExchangeApplication.class,args);
+        SpringApplication.run(BookExchangeApplication.class, args);
     }
 
     @Override
-    protected SpringApplicationBuilder configure (SpringApplicationBuilder builder){
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(BookExchangeApplication.class);
     }
-
-
 
 
 }

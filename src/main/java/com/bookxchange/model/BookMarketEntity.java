@@ -1,14 +1,17 @@
 package com.bookxchange.model;
 
-import com.bookxchange.customExceptions.BooksExceptions;
 import com.bookxchange.enums.BookStatus;
+import com.bookxchange.exception.BooksExceptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,7 +29,7 @@ public class BookMarketEntity {
     @Column(name = "book_market_uuid")
     @JsonIgnore
     private String bookMarketUuid;
-//    @Basic
+    //    @Basic
     @Column(name = "user_uuid")
     @JsonIgnore
     private String userUuid;
@@ -55,10 +58,11 @@ public class BookMarketEntity {
     private String bookStatus;
 
 
-
-    public BookMarketEntity(){
+    public BookMarketEntity() {
         this.bookMarketUuid = (UUID.randomUUID()).toString();
-    };
+    }
+
+    ;
 
     public BookMarketEntity(String userUuid, String bookIsbn, String bookState, Byte forSell, Double sellPrice, Byte forRent, Double rentPrice) {
         this.userUuid = userUuid;
@@ -81,7 +85,8 @@ public class BookMarketEntity {
             this.forRent = recivedBookMarketEntity.getForRent();
             this.rentPrice = recivedBookMarketEntity.getRentPrice();
             this.bookStatus = BookStatus.AVAILABLE.getDeclaringClass().getName();
-        } else throw new BooksExceptions("When posting your volume you need to select at least 1 of the following: Available for sale, Available for rent and/or Available for trade");
+        } else
+            throw new BooksExceptions("When posting your volume you need to select at least 1 of the following: Available for sale, Available for rent and/or Available for trade");
     }
 
     @Override

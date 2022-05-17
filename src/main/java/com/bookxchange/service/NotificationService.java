@@ -1,15 +1,15 @@
 package com.bookxchange.service;
 
-import com.bookxchange.customExceptions.NotificationException;
 import com.bookxchange.enums.BookStatus;
 import com.bookxchange.enums.EmailTemplateType;
+import com.bookxchange.exception.NotificationException;
 import com.bookxchange.model.BookMarketEntity;
-import com.bookxchange.model.EmailsEntity;
+import com.bookxchange.model.EmailEntity;
 import com.bookxchange.model.NotificationEntity;
 import com.bookxchange.pojo.NotificationHelper;
-import com.bookxchange.repositories.BookMarketRepository;
-import com.bookxchange.repositories.EmailsRepository;
-import com.bookxchange.repositories.NotificationRepository;
+import com.bookxchange.repository.BookMarketRepository;
+import com.bookxchange.repository.EmailsRepository;
+import com.bookxchange.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,7 +77,7 @@ public class NotificationService {
 
 
     private void sendMail(NotificationHelper userToBeNotifiedInfo) {
-        EmailsEntity emailsEntity = new EmailsEntity();
+        EmailEntity emailsEntity = new EmailEntity();
         try {
             String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
             emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);

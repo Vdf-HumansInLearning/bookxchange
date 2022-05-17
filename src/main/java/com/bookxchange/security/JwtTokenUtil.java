@@ -1,6 +1,6 @@
 package com.bookxchange.security;
 
-import com.bookxchange.model.MembersEntity;
+import com.bookxchange.model.MemberEntity;
 import com.bookxchange.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,12 +15,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 @Component
 public class JwtTokenUtil implements Serializable {
-    private static final long serialVersionUID = -2550185165626007488L;
-
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-
+    private static final long serialVersionUID = -2550185165626007488L;
     @Autowired
     MemberService memberService;
 
@@ -41,6 +40,7 @@ public class JwtTokenUtil implements Serializable {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
+
     //for retrieveing any information from token we will need the secret key
     public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -55,10 +55,10 @@ public class JwtTokenUtil implements Serializable {
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-      MembersEntity member =  memberService.getMemberEntity(userDetails.getUsername());
+        MemberEntity member = memberService.getMemberEntity(userDetails.getUsername());
 
-        claims.put("userUUID",member.getMemberUserUuid());
-       return doGenerateToken(claims, userDetails.getUsername());
+        claims.put("userUUID", member.getMemberUserUuid());
+        return doGenerateToken(claims, userDetails.getUsername());
     }
 
     //while creating the token -
