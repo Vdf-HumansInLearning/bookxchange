@@ -60,6 +60,7 @@ public class BookMarketEntity {
 
     public BookMarketEntity() {
         this.bookMarketUuid = (UUID.randomUUID()).toString();
+        this.bookStatus = BookStatus.AVAILABLE.toString();
     }
 
     ;

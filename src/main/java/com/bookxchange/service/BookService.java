@@ -15,12 +15,11 @@ public class BookService {
     @Autowired
     private final BooksRepository bookRepository;
     @Autowired
-    private final AuthorsService workingAuthorsService;
+    private final IsbnService workingIsbnService;
 
-    public BookService(BooksRepository bookRepository, AuthorsService workingAuthorsService) {
+    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService) {
         this.bookRepository = bookRepository;
-
-        this.workingAuthorsService = workingAuthorsService;
+        this.workingIsbnService = workingIsbnService;
     }
 
     public BookEntity retrieveBookFromDB(String providedIsbn) {
@@ -35,8 +34,6 @@ public class BookService {
     public void addNewBookToDB(BookEntity providedBook) {
         bookRepository.save(providedBook);
 
-//
-//        bookRepository.updateQuantityAdd(providedBook.getIsbn());
     }
 
     @Transactional
@@ -54,8 +51,21 @@ public class BookService {
     }
 
     public BookEntity getBookByIsbn(String isbn){
-
         return bookRepository.getByIsbn(isbn);
+    }
+
+    public BookEntity checkDbOrAttemptToPopulateFromIsbn(String providedIsbn) {
+
+        BookEntity bookToReturn = getBookByIsbn(providedIsbn);
+
+        if (bookToReturn == null) {
+            bookToReturn=workingIsbnService.hitIsbnBookRequest(providedIsbn);
+            if (bookToReturn != null) {
+                bookRepository.save(bookToReturn);
+            }
+        }
+
+        return bookToReturn;
     }
 
 }

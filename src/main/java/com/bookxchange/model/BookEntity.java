@@ -1,10 +1,13 @@
 package com.bookxchange.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -36,15 +39,13 @@ public class BookEntity {
     private String title;
     @Basic
     @Column(name = "description")
-    @NotNull
-    @Size(min = 25, message = "Description must not be empty and at least 25 charters long")
-    private String description;
+    private String description = "Description not provided";
     @Basic
     @Column(name = "quantity")
     @NotNull
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "authors_books_mtm",
             joinColumns = @JoinColumn(name = "book_isbn"),

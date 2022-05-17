@@ -38,6 +38,8 @@ public class IsbnService {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 result = EntityUtils.toString(entity);
+            } else {
+            result = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,24 +59,25 @@ public class IsbnService {
 
             List<String> author = isbnDTO.getItems().get(0).getVolumeInfo().getAuthors();
             Set<AuthorEntity> authorsToAdd = new HashSet<>();
+
             for (int i = 0; i < author.size(); i++) {
-                AuthorEntity selectedAuthor = new AuthorEntity();
                 Pattern patternAuthorName = Pattern.compile("^(.*)\\s([a-zA-Z]{1,})$");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
+
                 if (matcher.find()) {
-                    selectedAuthor.setName(matcher.group(2));
-                    selectedAuthor.setSurname(matcher.group(1));
-                    selectedAuthor.setAuthorsUuid(UUID.randomUUID().toString());
+                    AuthorEntity selectedAuthor=new AuthorEntity(matcher.group(2), matcher.group(1));
+                    authorsToAdd.add(selectedAuthor);
                 }
-                authorsToAdd.add(selectedAuthor);
             }
 
             bookToReturn.setAuthors(authorsToAdd);
-
-            bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
+            if(isbnDTO.getItems().get(0).getVolumeInfo().getDescription() != null) {
+                bookToReturn.setDescription(isbnDTO.getItems().get(0).getVolumeInfo().getDescription());
+            }
             bookToReturn.setQuantity(0);
-        } else {
 
+        } else {
+            bookToReturn = null;
         }
         return bookToReturn;
     }

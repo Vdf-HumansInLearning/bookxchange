@@ -21,17 +21,20 @@
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/BooksEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/MainIsbServiceCheck.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/NotificationController.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/RegisterDto.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/RatingEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/BooksController.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/EmailService.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/RetrievedBook.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/MemberRepository.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/PrivilagesEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/RatingService.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/service/MarketPlaceService.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/BookListing.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/MarketBookDto.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/BookStatus.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/InvalidRatingException.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/BadAuthentificationException.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/validators/MarketBookValidator.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/NotificationHelper.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/dto/RatingDto.java
@@ -39,6 +42,7 @@
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/enums/TransactionType.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/pojo/Items.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/utils/JdbcConnection.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/RolesEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/RatingController.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/MembersEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/JwtAuthenticationController.java
@@ -48,7 +52,7 @@
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/customExceptions/BooksExceptions.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/NotificationsEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/EmailsRepository.java
-/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/MarketBook.java
+/Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/model/RolesPrivilagesMtmEntity.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/repositories/BooksRepository.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/controller/BookMarketController.java
 /Users/mihai.cucuianu/IdeaProjects/bookxchange/src/main/java/com/bookxchange/security/WebSecurityConfig.java

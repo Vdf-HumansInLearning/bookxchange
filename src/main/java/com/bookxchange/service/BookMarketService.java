@@ -72,6 +72,10 @@ public class BookMarketService {
         return (-1) * bookMarketPrice * 10;
     }
 
+    @Transactional
+    public void deleteBookMarketEntry(String uuidToDelete) {
+        bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
+    }
 
 }
 

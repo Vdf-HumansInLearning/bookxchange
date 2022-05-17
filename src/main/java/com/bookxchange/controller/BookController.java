@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.sql.SQLOutput;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 
@@ -56,45 +57,29 @@ public class BookController {
 
         RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
         retrievedBookToReturn.setRetrievedInfo(false);
+        retrievedBookToReturn.setIsbn(providedIsbn);
 
         logger.debug("Starts to do the search  : ");
 
-        BookEntity bookDetails = workingBookService.retrieveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
-        logger.debug("Has finished the search : " + bookDetails);
 
-        if (bookDetails != null) {
-            retrievedBookToReturn.setRetrievedBook(bookDetails);
-        } else {
-            bookDetails = workingIsbnService.hitIsbnBookRequest(retrievedBookToReturn.getRetrievedBook().getIsbn());
-            retrievedBookToReturn.setRetrievedBook(bookDetails);
-            if (bookDetails != null) {
-                workingBookService.addNewBookToDB(bookDetails);
-            }
-            logger.debug("From the retrun package " + retrievedBookToReturn.getRetrievedBook().getTitle());
-        }
+        BookEntity bookDetails = workingBookService.checkDbOrAttemptToPopulateFromIsbn(providedIsbn);
+        retrievedBookToReturn.setRetrievedBook(bookDetails);
 
-        try {
+
+
             if (retrievedBookToReturn.getRetrievedBook() != null) {
                 retrievedBookToReturn.setRetrievedInfo(true);
                 return new ResponseEntity<>(retrievedBookToReturn, HttpStatus.OK);
             } else {
-                throw new ResponseStatusException(
-                        HttpStatus.NO_CONTENT, new BooksExceptions("No content found, please add manually").toString());
+                return  new ResponseEntity<> (retrievedBookToReturn, HttpStatus.OK);
             }
-        } catch (Exception bookExceptions) {
-            throw new ResponseStatusException(
-                    HttpStatus.NO_CONTENT, bookExceptions.getMessage());
-        }
+
+
     }
 
     @Transactional
     @PostMapping("/userAddBook")
     public ResponseEntity<BookListing> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
-
-//        public ResponseEntity<BookListing> creatBookEntry (
-//                @Valid
-//                @RequestBody BookListing receivedBookInfo){
-
 
         receivedBookInfo.getReceivedBookMarket().setUserUuid(ApplicationUtils.getUserFromToken(token));
         System.out.println(receivedBookInfo.getReceivedBookMarket().getUserUuid() + " E NULL?");

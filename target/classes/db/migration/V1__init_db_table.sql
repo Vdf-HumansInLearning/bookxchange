@@ -28,8 +28,6 @@ CREATE TABLE authors_books_mtm (
                                    book_isbn varchar(36) NOT NULL,
                                    authors_uuid varchar(36) NOT NULL,
                                    PRIMARY KEY (id)
-                                       #                              FOREIGN KEY (author_id) REFERENCES authors(author_id),
-                                   #                              FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
 CREATE TABLE roles (
@@ -38,40 +36,55 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-CREATE TABLE privileges (
-                            privilege_id int auto_increment not null ,
-                            privilege_name varchar(25),
-                            primary key (privilege_id)
+CREATE TABLE privilages (
+                            privilage_id int auto_increment not null ,
+                            privilage_name varchar(25),
+                            primary key (privilage_id)
+);
+
+CREATE TABLE roles_privilages_mtm (
+                                      id int auto_increment not null,
+                                      role_id int,
+                                      privilage_id int,
+                                      primary key (id),
+                                      FOREIGN KEY (role_id) REFERENCES roles(role_id),
+                                      FOREIGN KEY (privilage_id) REFERENCES privilages(privilage_id)
 );
 
 
 CREATE TABLE members (
                          member_user_id int auto_increment not null ,
                          member_uuid varchar(36) NOT NULL unique,
-                         username TEXT,
-                         password TEXT,
+                         username varchar(50) UNIQUE,
+                         password TEXT(50),
                          points INT,
-                         email_address varchar(100),
+                         email_address varchar(100) UNIQUE,
                          role_id INT,
                          is_email_confirmed boolean default 0,
                          primary key (member_user_id)
 );
+CREATE TABLE user_roles_mtm (
 
+    id int auto_increment not null,
+    member_uuid varchar(36) NOT NULL,
+    role_id int,
+                            primary key (id)
+);
 
 CREATE TABLE book_market (
-                             book_market_id int auto_increment not null ,
-                             book_market_uuid VARCHAR(36) not null unique,
-                             user_uuid VARCHAR(36) not null,
-                             book_isbn VARCHAR(36) not null,
-                             book_state VARCHAR(50),
-                             for_sell boolean,
-                             sell_price double,
-                             for_rent boolean,
-                             rent_price double,
-                             book_status VARCHAR(50),
-                             primary key(book_market_id),
-                             foreign key (user_uuid) references members(member_uuid),
-                             foreign key (book_isbn) references books(isbn)
+                            book_market_id int auto_increment not null ,
+                            book_market_uuid VARCHAR(36) not null unique,
+                            user_uuid VARCHAR(36) not null,
+                            book_isbn VARCHAR(36) not null,
+                            book_state VARCHAR(50),
+                            for_sell boolean,
+                            sell_price double,
+                            for_rent boolean,
+                            rent_price double,
+                            book_status VARCHAR(50),
+                            primary key(book_market_id),
+                            foreign key (user_uuid) references members(member_uuid),
+                            foreign key (book_isbn) references books(isbn)
 );
 
 CREATE TABLE transaction (
