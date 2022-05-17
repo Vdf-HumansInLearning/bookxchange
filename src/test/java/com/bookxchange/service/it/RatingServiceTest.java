@@ -2,6 +2,7 @@ package com.bookxchange.service.it;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.model.RatingEntity;
+import com.bookxchange.model.TransactionEntity;
 import com.bookxchange.repository.TransactionRepository;
 import com.bookxchange.service.BookMarketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK, classes={ BookExchangeApplication.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = {BookExchangeApplication.class})
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 @PropertySource("classpath:application-test.properties")
@@ -41,14 +42,14 @@ public class RatingServiceTest {
     @Before
     public void createRentTransaction() throws Exception {
 
-        mvc.perform(post("/transactions")
-                        .content("{\n" +
-                                "  \"marketBookId\": \"42a48524-20fd-4708-9311-55bf1a247eaf\",\n" +
-                                "  \"supplier\": \"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
-                                "  \"client\": \"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "  \"transactionType\": \"RENT\"\n" +
-                                "}")
-                        .contentType(MediaType.APPLICATION_JSON));
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.setTransactionType("RENT");
+        transactionEntity.setMarketBookIdSupplier("42a48524-20fd-4708-9311-55bf1a247eaf");
+        transactionEntity.setMemberuuIdFrom("6eca21ce-861b-4dd7-975d-20a969e3183a");
+        transactionEntity.setMemberuuIdTo("13177e99-14b5-43c5-a446-e0dc751c3153");
+        transactionRepository.save(transactionEntity);
+
+
     }
 
 
@@ -61,7 +62,7 @@ public class RatingServiceTest {
                                 "   \"description\":\"un user bun\",\n" +
                                 "   \"leftBy\":\"6eca21ce-861b-4dd7-975d-20a969e3183a\",\n" +
                                 "   \"userId\":\"13177e99-14b5-43c5-a446-e0dc751c3153\",\n" +
-                                "   \"bookId\": "+ null +
+                                "   \"bookId\": " + null +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -78,7 +79,7 @@ public class RatingServiceTest {
                                 "   \"description\":\"ceva\",\n" +
                                 "   \"leftBy\":\"ae677979-ffec-4a90-a3e5-a5d1d31c0ee9\",\n" +
                                 "   \"userId\": \"ae677979-ffec-4a90-a3e5-a5d1d31c0ee7\",\n" +
-                                "   \"bookId\":" +null +
+                                "   \"bookId\":" + null +
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -98,7 +99,7 @@ public class RatingServiceTest {
                                 "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-              .andExpect(jsonPath("$.message").value("This user ae677979-ffec-4a90-a3e5-a5d1d31c0ee9 doesn't interact with this book"));
+                .andExpect(jsonPath("$.message").value("This user ae677979-ffec-4a90-a3e5-a5d1d31c0ee9 doesn't interact with this book"));
     }
 
     @Test
@@ -108,7 +109,7 @@ public class RatingServiceTest {
                         .content(
                                 asJsonString(new RatingEntity(4, "user bun",
                                         " ae677979-ffec-4a90-a3e5-a5d1d31c0ee9",
-                                        null,"978-0-230-75700-4")))
+                                        null, "978-0-230-75700-4")))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("User id can not be null when you rate a member"));
