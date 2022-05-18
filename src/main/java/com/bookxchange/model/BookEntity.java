@@ -45,7 +45,7 @@ public class BookEntity {
     @NotNull
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "authors_books_mtm",
             joinColumns = @JoinColumn(name = "book_isbn"),

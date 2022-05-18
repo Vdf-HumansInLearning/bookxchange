@@ -1,6 +1,7 @@
 package com.bookxchange.service;
 
 import com.bookxchange.model.BookEntity;
+import com.bookxchange.pojo.RetrievedBook;
 import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,18 +55,28 @@ public class BookService {
         return bookRepository.getByIsbn(isbn);
     }
 
-    public BookEntity checkDbOrAttemptToPopulateFromIsbn(String providedIsbn) {
+    @Transactional
+    public RetrievedBook checkDbOrAttemptToPopulateFromIsbn(String providedIsbn) {
+
+        RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
+        retrievedBookToReturn.setRetrievedInfo(false);
+        retrievedBookToReturn.setIsbn(providedIsbn);
 
         BookEntity bookToReturn = getBookByIsbn(providedIsbn);
 
         if (bookToReturn == null) {
             bookToReturn=workingIsbnService.hitIsbnBookRequest(providedIsbn);
             if (bookToReturn != null) {
+                retrievedBookToReturn.setRetrievedInfo(true);
+                retrievedBookToReturn.setRetrievedBook(bookToReturn);
                 bookRepository.save(bookToReturn);
             }
+        } else {
+            retrievedBookToReturn.setRetrievedBook(bookToReturn);
+            retrievedBookToReturn.setRetrievedInfo(true);
         }
 
-        return bookToReturn;
+        return retrievedBookToReturn;
     }
 
 }

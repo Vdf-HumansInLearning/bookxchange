@@ -104,9 +104,9 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({BooksExceptions.class})
+    @ExceptionHandler({BookExceptions.class})
     public ResponseEntity<ApiError> handleMethodBookException(
-            BooksExceptions ex) {
+            BookExceptions ex) {
         String error =
                 ex.getMessage();
 

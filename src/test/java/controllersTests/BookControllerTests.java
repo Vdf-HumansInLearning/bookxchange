@@ -118,9 +118,9 @@ public class BookControllerTests {
         newBookMarketEntityThree.setUserUuid(newMeberTwo.getMemberUserUuid());
 
 
-        workingBookMarketService.addBookMarketEntry(newBookMarketEntityOne);
-        workingBookMarketService.addBookMarketEntry(newBookMarketEntityTwo);
-        workingBookMarketService.addBookMarketEntry(newBookMarketEntityThree);
+//        workingBookMarketService.addBookMarketEntry(newBookMarketEntityOne);
+//        workingBookMarketService.addBookMarketEntry(newBookMarketEntityTwo);
+//        workingBookMarketService.addBookMarketEntry(newBookMarketEntityThree);
 
 
     }

@@ -50,5 +50,6 @@ public class MemberEntity {
         this.points = points;
         this.emailAddress = emailAddress;
         this.password = password;
+        this.role = new RoleEntity(2, "USER");
     }
 }

@@ -83,8 +83,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
         MemberEntity memberEntity = new MemberEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
-        RoleEntity role = new RoleEntity(UserRoles.valueOf(registerDto.getRole()).getCode(), registerDto.getRole());
-        memberEntity.setRole(role);
+//        RoleEntity role = new RoleEntity(UserRoles.valueOf(registerDto.getRole()).getCode(), registerDto.getRole());
+//        memberEntity.setRole(role);
         memberService.saveMember(memberEntity);
 
         System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + memberEntity.getMemberUserUuid());

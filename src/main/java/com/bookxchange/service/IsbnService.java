@@ -61,7 +61,7 @@ public class IsbnService {
             Set<AuthorEntity> authorsToAdd = new HashSet<>();
 
             for (int i = 0; i < author.size(); i++) {
-                Pattern patternAuthorName = Pattern.compile("^(.*)\\s([a-zA-Z]{1,})$");
+                Pattern patternAuthorName = Pattern.compile("^(.*)\\s([a-zA-Z.]{1,})$");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
 
                 if (matcher.find()) {
