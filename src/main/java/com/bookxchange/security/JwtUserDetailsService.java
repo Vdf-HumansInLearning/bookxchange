@@ -87,7 +87,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 //        memberEntity.setRole(role);
         memberService.saveMember(memberEntity);
 
-        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + memberEntity.getMemberUserUuid());
+        logger.debug("sending " + confirmationGetUrl + "/confirm?memberUUID=" + memberEntity.getMemberUserUuid());
         // emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid()));
     }
 

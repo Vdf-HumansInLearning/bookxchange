@@ -13,6 +13,6 @@ public class EmailTemplatesService {
 
     public EmailTemplatesEntity getById(Integer id) {
 
-        return emailTemplatesRepository.findById(id).get();
+        return emailTemplatesRepository.findEmailTemplatesEntityById(id);
     }
 }

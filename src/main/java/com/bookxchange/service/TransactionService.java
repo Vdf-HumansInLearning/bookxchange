@@ -55,7 +55,7 @@ public class TransactionService {
             String bookIsbn = bookMarketEntity.getBookIsbn();
             String bookStatus = bookMarketEntity.getBookStatus();
             if (bookStatus.equals(BookStatus.AVAILABLE.toString())) {
-                updateBookMarketStatusAndMemberPoints(transactionDto);
+                updateBookMarketStatusAndMemberPoints(transactionDto, bookMarketEntity) ;
                 bookService.downgradeQuantityForTransaction(bookIsbn);
             } else {
                 throw new BookExceptions("Book is not available at this time");
@@ -75,9 +75,9 @@ public class TransactionService {
 
         Runnable runnableTask = () -> {
             try {
-                MemberEntity client = new MemberEntity();
-                EmailTemplatesEntity emailTemplate = new EmailTemplatesEntity();
-                String body = new String();
+                MemberEntity client;
+                EmailTemplatesEntity emailTemplate;
+                String body;
                 if (transactionDto.getTransactionType() == TransactionType.TRADE) {
                     emailTemplate = emailTemplatesService.getById(2);
                     client = memberService.findByUuid(transactionDto.getClientId());
@@ -98,7 +98,7 @@ public class TransactionService {
                 } else {
                     emailTemplate = emailTemplatesService.getById(3);
                     client = memberService.findByUuid(transactionDto.getClientId());
-                    body = String.format(client.getUsername());
+                    body =client.getUsername();
                 }
                 emailService.sendMail(client.getEmailAddress(), emailTemplate.getSubject(), body);
             } catch (Exception e) {
@@ -134,11 +134,11 @@ public class TransactionService {
     }
 
     @Transactional
-    public void updateBookMarketStatusAndMemberPoints(TransactionDTO transactionDto) {
-        if (transactionDto.getTransactionType().equals(TransactionType.RENT)) {
+    public void updateBookMarketStatusAndMemberPoints(TransactionDTO transactionDto, BookMarketEntity bookMarketEntity) {
+        if (transactionDto.getTransactionType().equals(TransactionType.RENT) && bookMarketEntity.getForRent()==1) {
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
             bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookIdSupplier());
-        } else if (transactionDto.getTransactionType().equals(TransactionType.SELL)) {
+        } else if (transactionDto.getTransactionType().equals(TransactionType.SELL)&& bookMarketEntity.getForSell()==1) {
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
         } else if (transactionDto.getTransactionType().equals(TransactionType.POINTSELL) && isEligibleForBuy(transactionDto)) {
