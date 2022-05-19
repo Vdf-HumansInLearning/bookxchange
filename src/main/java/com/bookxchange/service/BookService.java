@@ -1,6 +1,7 @@
 package com.bookxchange.service;
 
 import com.bookxchange.model.BookEntity;
+import com.bookxchange.pojo.RetrievedBook;
 import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,11 @@ public class BookService {
     @Autowired
     private final BooksRepository bookRepository;
     @Autowired
-    private final AuthorsService workingAuthorsService;
+    private final IsbnService workingIsbnService;
 
-    public BookService(BooksRepository bookRepository, AuthorsService workingAuthorsService) {
+    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService) {
         this.bookRepository = bookRepository;
-
-        this.workingAuthorsService = workingAuthorsService;
+        this.workingIsbnService = workingIsbnService;
     }
 
     public BookEntity retrieveBookFromDB(String providedIsbn) {
@@ -35,8 +35,6 @@ public class BookService {
     public void addNewBookToDB(BookEntity providedBook) {
         bookRepository.save(providedBook);
 
-//
-//        bookRepository.updateQuantityAdd(providedBook.getIsbn());
     }
 
     @Transactional
@@ -54,8 +52,31 @@ public class BookService {
     }
 
     public BookEntity getBookByIsbn(String isbn){
-
         return bookRepository.getByIsbn(isbn);
+    }
+
+    @Transactional
+    public RetrievedBook checkDbOrAttemptToPopulateFromIsbn(String providedIsbn) {
+
+        RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
+        retrievedBookToReturn.setRetrievedInfo(false);
+        retrievedBookToReturn.setIsbn(providedIsbn);
+
+        BookEntity bookToReturn = getBookByIsbn(providedIsbn);
+
+        if (bookToReturn == null) {
+            bookToReturn=workingIsbnService.hitIsbnBookRequest(providedIsbn);
+            if (bookToReturn != null) {
+                retrievedBookToReturn.setRetrievedInfo(true);
+                retrievedBookToReturn.setRetrievedBook(bookToReturn);
+                bookRepository.save(bookToReturn);
+            }
+        } else {
+            retrievedBookToReturn.setRetrievedBook(bookToReturn);
+            retrievedBookToReturn.setRetrievedInfo(true);
+        }
+
+        return retrievedBookToReturn;
     }
 
 }

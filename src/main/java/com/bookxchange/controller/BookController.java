@@ -1,6 +1,5 @@
 package com.bookxchange.controller;
 
-import com.bookxchange.exception.BooksExceptions;
 import com.bookxchange.model.BookEntity;
 import com.bookxchange.pojo.BookListing;
 import com.bookxchange.pojo.RetrievedBook;
@@ -47,76 +46,31 @@ public class BookController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/getBookDetailsISBN")
-    public ResponseEntity<RetrievedBook> RetriveBookDetails(
-            @Valid @RequestParam String providedIsbn) {
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+    @GetMapping("/isbn")
+    public ResponseEntity<RetrievedBook> retrieveBookDetails(@Valid @RequestParam String isbn) {
 
-        logger.debug("RetriveBookDetails starts : ");
+        String methodName = "[retrieveBookDetails]";
+        logger.info("Entering {}", methodName);
 
-        RetrievedBook retrievedBookToReturn = new RetrievedBook(providedIsbn);
-        retrievedBookToReturn.setRetrievedInfo(false);
-
-        logger.debug("Starts to do the search  : ");
-
-        BookEntity bookDetails = workingBookService.retrieveBookFromDB(retrievedBookToReturn.getRetrievedBook().getIsbn());
-        logger.debug("Has finished the search : " + bookDetails);
-
-        if (bookDetails != null) {
-            retrievedBookToReturn.setRetrievedBook(bookDetails);
-        } else {
-            bookDetails = workingIsbnService.hitIsbnBookRequest(retrievedBookToReturn.getRetrievedBook().getIsbn());
-            retrievedBookToReturn.setRetrievedBook(bookDetails);
-            if (bookDetails != null) {
-                workingBookService.addNewBookToDB(bookDetails);
-            }
-            logger.debug("From the retrun package " + retrievedBookToReturn.getRetrievedBook().getTitle());
-        }
-
-        try {
-            if (retrievedBookToReturn.getRetrievedBook() != null) {
-                retrievedBookToReturn.setRetrievedInfo(true);
-                return new ResponseEntity<>(retrievedBookToReturn, HttpStatus.OK);
-            } else {
-                throw new ResponseStatusException(
-                        HttpStatus.NO_CONTENT, new BooksExceptions("No content found, please add manually").toString());
-            }
-        } catch (Exception bookExceptions) {
-            throw new ResponseStatusException(
-                    HttpStatus.NO_CONTENT, bookExceptions.getMessage());
-        }
+        RetrievedBook retrievedBookData = workingBookService.checkDbOrAttemptToPopulateFromIsbn(isbn);
+        return new ResponseEntity<>(retrievedBookData , HttpStatus.OK);
     }
 
-    @Transactional
-    @PostMapping("/userAddBook")
-    public ResponseEntity<BookListing> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
 
-//        public ResponseEntity<BookListing> creatBookEntry (
-//                @Valid
-//                @RequestBody BookListing receivedBookInfo){
+    @PreAuthorize("hasRole('ADMIN') || hasRole('ADMIN')")
+    @PostMapping("")
+    public ResponseEntity<String> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
 
+        String methodName = "[creatBookEntry]";
+        logger.info("Entering {}", methodName);
 
         receivedBookInfo.getReceivedBookMarket().setUserUuid(ApplicationUtils.getUserFromToken(token));
-        System.out.println(receivedBookInfo.getReceivedBookMarket().getUserUuid() + " E NULL?");
+        String responseMessage = workingBookMarketService.addBookMarketEntityAndBookIfCustom(receivedBookInfo);
 
-        try {
-            if (receivedBookInfo.isDataIsRetrievedDb()) {
-                System.out.println("Reached adding book in market place");
-                System.out.println("reached here?");
-                workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
-            } else {
-                workingBookService.addNewBookToDB(receivedBookInfo.getReceivedBook());
-                workingBookMarketService.addBookMarketEntry(receivedBookInfo.getReceivedBookMarket());
-                workingBookService.updateQuantityAtAdding(receivedBookInfo.getReceivedBook().getIsbn());
-            }
-
-            return new ResponseEntity<>(receivedBookInfo, HttpStatus.CREATED);
-        } catch (Exception invalidISBNException) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, invalidISBNException.getMessage());
-
-        }
+        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
+
 
 }
 

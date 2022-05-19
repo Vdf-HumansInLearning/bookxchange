@@ -36,11 +36,8 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-CREATE TABLE privileges (
-                            privilege_id int auto_increment not null ,
-                            privilege_name varchar(25),
-                            primary key (privilege_id)
-);
+
+
 
 
 CREATE TABLE members (
@@ -54,22 +51,28 @@ CREATE TABLE members (
                          is_email_confirmed boolean default 0,
                          primary key (member_user_id)
 );
+CREATE TABLE user_roles_mtm (
 
+    id int auto_increment not null,
+    member_uuid varchar(36) NOT NULL,
+    role_id int,
+                            primary key (id)
+);
 
 CREATE TABLE book_market (
-                             book_market_id int auto_increment not null ,
-                             book_market_uuid VARCHAR(36) not null unique,
-                             user_uuid VARCHAR(36) not null,
-                             book_isbn VARCHAR(36) not null,
-                             book_state VARCHAR(50),
-                             for_sell boolean,
-                             sell_price double,
-                             for_rent boolean,
-                             rent_price double,
-                             book_status VARCHAR(50),
-                             primary key(book_market_id),
-                             foreign key (user_uuid) references members(member_uuid),
-                             foreign key (book_isbn) references books(isbn)
+                            book_market_id int auto_increment not null ,
+                            book_market_uuid VARCHAR(36) not null unique,
+                            user_uuid VARCHAR(36) not null,
+                            book_isbn VARCHAR(36) not null,
+                            book_state VARCHAR(50),
+                            for_sell boolean,
+                            sell_price double,
+                            for_rent boolean,
+                            rent_price double,
+                            book_status VARCHAR(50),
+                            primary key(book_market_id),
+                            foreign key (user_uuid) references members(member_uuid),
+                            foreign key (book_isbn) references books(isbn)
 );
 
 CREATE TABLE transaction (

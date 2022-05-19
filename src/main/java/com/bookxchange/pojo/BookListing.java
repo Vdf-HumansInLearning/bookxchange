@@ -3,18 +3,19 @@ package com.bookxchange.pojo;
 import com.bookxchange.model.BookEntity;
 import com.bookxchange.model.BookMarketEntity;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
-//@Validated
+@Valid
 public class BookListing {
 
     private boolean dataIsRetrievedDb;
 
     @Valid
-    @NotNull
+    @Nullable
     private BookEntity receivedBook;
 
 

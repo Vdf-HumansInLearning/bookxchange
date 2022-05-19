@@ -31,15 +31,15 @@ public class AuthorEntity {
     @Basic
     @Column(name = "name")
     @NotNull
-    @Pattern(regexp = "^[A-Za-z]{3,}$", message = "Author name needs to be formed only out of letters, a minimum of 3 charters are required")
+    @Pattern(regexp = "^[A-Za-z]{1,}$", message = "Author name needs to be formed only out of letters, a minimum of 3 charters are required")
     private String name;
     @Basic
     @Column(name = "surname")
     @NotNull
-    @Pattern(regexp = "^[A-Za-z\\s]{3,}$", message = "Author surname needs to be formed only out of letters, a minimum of 3 charters are required")
+    @Pattern(regexp = "^[A-Za-z\\s\\.]{1,}$", message = "Author surname needs to be formed only out of letters, a minimum of 3 charters are required")
     private String surname;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     private Set<BookEntity> books;
 

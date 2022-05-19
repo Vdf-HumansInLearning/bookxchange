@@ -1,7 +1,7 @@
 package com.bookxchange.model;
 
 import com.bookxchange.enums.BookStatus;
-import com.bookxchange.exception.BooksExceptions;
+import com.bookxchange.exception.BookExceptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,6 +60,7 @@ public class BookMarketEntity {
 
     public BookMarketEntity() {
         this.bookMarketUuid = (UUID.randomUUID()).toString();
+        this.bookStatus = BookStatus.AVAILABLE.toString();
     }
 
     ;
@@ -72,21 +73,6 @@ public class BookMarketEntity {
         this.sellPrice = sellPrice;
         this.forRent = forRent;
         this.rentPrice = rentPrice;
-    }
-
-    public BookMarketEntity(BookMarketEntity recivedBookMarketEntity) {
-        if ((forRent == 1) || (forSell == 1)) {
-            this.bookMarketUuid = (UUID.randomUUID()).toString();
-            this.userUuid = recivedBookMarketEntity.userUuid;
-            this.bookIsbn = recivedBookMarketEntity.getBookIsbn();
-            this.bookState = recivedBookMarketEntity.getBookState();
-            this.forSell = recivedBookMarketEntity.getForSell();
-            this.sellPrice = recivedBookMarketEntity.getSellPrice();
-            this.forRent = recivedBookMarketEntity.getForRent();
-            this.rentPrice = recivedBookMarketEntity.getRentPrice();
-            this.bookStatus = BookStatus.AVAILABLE.getDeclaringClass().getName();
-        } else
-            throw new BooksExceptions("When posting your volume you need to select at least 1 of the following: Available for sale, Available for rent and/or Available for trade");
     }
 
     @Override

@@ -29,4 +29,6 @@ public interface BookMarketRepository extends PagingAndSortingRepository<BookMar
     @Query(value = "SELECT sell_price from book_market where book_market_uuid = ?1", nativeQuery = true)
     Double getPriceByUuid(String uuid);
 
+    void deleteByBookMarketUuid(String uuidToDelete);
+
 }
