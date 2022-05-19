@@ -4,7 +4,7 @@ import com.bookxchange.dto.TransactionDTO;
 import com.bookxchange.enums.BookStatus;
 import com.bookxchange.enums.TransactionStatus;
 import com.bookxchange.enums.TransactionType;
-import com.bookxchange.exception.BooksExceptions;
+import com.bookxchange.exception.BookExceptions;
 import com.bookxchange.exception.InvalidTransactionException;
 import com.bookxchange.mapper.Mapper;
 import com.bookxchange.model.*;
@@ -58,7 +58,7 @@ public class TransactionService {
                 updateBookMarketStatusAndMemberPoints(transactionDto);
                 bookService.downgradeQuantityForTransaction(bookIsbn);
             } else {
-                throw new BooksExceptions("Book is not available at this time");
+                throw new BookExceptions("Book is not available at this time");
             }
         } else {
             transactionEntity.setTransactionStatus(TransactionStatus.PENDING.toString());

@@ -1,14 +1,14 @@
 package com.bookxchange.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class RegisterDTO {
 
     private String userName;
     private String emailAddress;
     private String password;
     private String confirmedPassword;
-    private String role;
-
 }
