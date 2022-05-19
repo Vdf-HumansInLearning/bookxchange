@@ -58,7 +58,3 @@ INSERT INTO email_templates values (default, 'TRANSACTION_SUCCES', 'You just mad
 INSERT INTO notifications (id, market_book_uuid, email_template_id, sent, member_uuid) VALUES (1, '1c821fb0-1024-4cd0-8f23-2d763fb2c13b', 1, 1, 'ae677979-ffec-4a90-a3e5-a5d1d31c0ee9');
 INSERT INTO notifications (id, market_book_uuid, email_template_id, sent, member_uuid) VALUES (2, 'a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4', 1, 1, '6eca21ce-861b-4dd7-975d-20a969e3183a');
 
--- INSERT INTO members values ('90b52881-7897-467f-87eb-e1e9202110e2', 'testingUser', 0, 'testing@gmail.com');
--- INSERT INTO authors values ('8dda2ec-90c1-4fb1-9e58-4d19f582e1a8', 'testauthor', 'testy');
--- INSERT INTO books values ('1234', 'title test', '8dda2ec-90c1-4fb1-9e58-4d19f582e1a8', 'desc test', 1);
--- INSERT INTO book_market values ('b9861c66-fb3f-416f-b00a-59cbc521314d', '90b52881-7897-467f-87eb-e1e9202110e2', '1234', 'USED', false, 0, true, 10, 'RENTED');

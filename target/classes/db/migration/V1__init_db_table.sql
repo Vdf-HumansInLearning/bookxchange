@@ -36,20 +36,8 @@ CREATE TABLE roles (
                        primary key (role_id)
 );
 
-CREATE TABLE privilages (
-                            privilage_id int auto_increment not null ,
-                            privilage_name varchar(25),
-                            primary key (privilage_id)
-);
 
-CREATE TABLE roles_privilages_mtm (
-                                      id int auto_increment not null,
-                                      role_id int,
-                                      privilage_id int,
-                                      primary key (id),
-                                      FOREIGN KEY (role_id) REFERENCES roles(role_id),
-                                      FOREIGN KEY (privilage_id) REFERENCES privilages(privilage_id)
-);
+
 
 
 CREATE TABLE members (
