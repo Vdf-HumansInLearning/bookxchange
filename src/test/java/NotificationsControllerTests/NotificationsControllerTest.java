@@ -1,107 +1,123 @@
 package NotificationsControllerTests;
 
 import com.bookxchange.BookExchangeApplication;
-import com.bookxchange.controller.NotificationController;
-import com.bookxchange.exception.NotificationException;
-import com.bookxchange.dto.NotificationDTO;
-import com.bookxchange.model.NotificationEntity;
-import com.bookxchange.service.NotificationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import com.bookxchange.model.*;
+import com.bookxchange.repository.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.when;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BookExchangeApplication.class)
 @AutoConfigureMockMvc(addFilters = false)
-@AutoConfigureTestDatabase
 @ActiveProfiles("test")
-@PropertySource("classpath:application-test.properties")
-
-public class NotificationsControllerTest {
-
+@AutoConfigureTestDatabase
+@TestPropertySource(locations = "classpath:application-test.properties")
+class NotificationsControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private NotificationController notificationController;
+    BookMarketRepository bookMarketRepository;
 
-    @MockBean
-    private NotificationService notificationService;
+    @Autowired
+    MemberRepository memberRepository;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private NotificationDTO notificationsDTO = new NotificationDTO();
-    private NotificationEntity notificationsEntity = new NotificationEntity();
+    @Autowired
+    AuthorsRepository authorsRepository;
+
+    @Autowired
+    BooksRepository booksRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+
+    private String marketBookIdTest;
+    private String memberIdTest;
 
     @BeforeEach
-    public void setUp() {
+    public void createNewBookMarket() {
 
-        notificationsDTO.setMarketBookUuid("1223-34534-6343-3222");
-        notificationsDTO.setMemberUuid("1234-1244");
-        Byte b = 1;
+        RoleEntity role = new RoleEntity();
+        role.setRoleId(1);
+        role.setRoleName("ADMIN");
+        roleRepository.save(role);
 
 
-        notificationsEntity.setSent(b);
-        notificationsEntity.setMemberUuid("1234-1244");
-        notificationsEntity.setMarketBookUuid("1223-34534-6343-3222");
-        notificationsEntity.setTemplateType(1);
-        mvc = MockMvcBuilders.standaloneSetup(notificationController).build();
+        MemberEntity membersEntity = new MemberEntity();
+        membersEntity.setMemberUserId(1);
+        membersEntity.setEmailAddress("test@gmail.com");
+        membersEntity.setMemberUserUuid("1234-1244");
+        membersEntity.setUsername("name");
+        membersEntity.setPoints(0);
+        membersEntity.setRole(role);
+        memberRepository.save(membersEntity);
+
+        memberIdTest = membersEntity.getMemberUserUuid();
+
+        AuthorEntity authors = new AuthorEntity();
+        authors.setAuthorsUuid("2124-24124-5332");
+        authors.setName("Test");
+        authors.setSurname("Testica");
+        authorsRepository.save(authors);
+
+        BookEntity booksEntity = new BookEntity();
+        booksEntity.setIsbn("1234567891");
+        booksEntity.setTitle("Test title");
+        booksEntity.setDescription("test descript");
+        booksEntity.setQuantity(1);
+        booksRepository.save(booksEntity);
+
+
+        BookMarketEntity bookMarketEntity = new BookMarketEntity();
+        bookMarketEntity.setUserUuid(membersEntity.getMemberUserUuid());
+        bookMarketEntity.setBookIsbn(booksEntity.getIsbn());
+        bookMarketEntity.setBookMarketUuid("1223-34534-6343-3222");
+        bookMarketEntity.setBookState("ORIGINALBOX");
+        bookMarketEntity.setForSell(Integer.valueOf(0).byteValue());
+        bookMarketEntity.setSellPrice(0d);
+        bookMarketEntity.setForRent(Integer.valueOf(1).byteValue());
+        bookMarketEntity.setRentPrice(200d);
+        bookMarketEntity.setBookStatus("RENTED");
+        bookMarketRepository.save(bookMarketEntity);
+
+        marketBookIdTest = bookMarketEntity.getBookMarketUuid();
     }
 
     @Test
-    public void testNotification() throws Exception {
-        notificationsDTO.setMarketBookUuid("1223-34534-6343-3222");
-        notificationsDTO.setMemberUuid("1234-1244");
-        Byte b = 1;
-
-        notificationsEntity.setSent(b);
-        notificationsEntity.setMemberUuid("1234-1244");
-        notificationsEntity.setMarketBookUuid("1223-34534-6343-3222");
-        notificationsEntity.setTemplateType(1);
-
-        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
-                .thenReturn(notificationsEntity);
+    public void addNotification() throws Exception {
 
         mvc.perform(post("/notifications")
-                        .content(objectMapper.writeValueAsBytes(notificationsDTO))
+                        .content("{\n" +
+                                "  \"marketBookUuid\": \"" + marketBookIdTest + "\",\n" +
+                                "  \"memberUuid\": \"" + memberIdTest + "\"\n" +
+                                "}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.marketBookUuid").value("1223-34534-6343-3222"))
-                .andExpect(jsonPath("$.memberUuid").value("1234-1244"))
-                .andExpect(jsonPath("$.sent").value("1"))
+                .andExpect(jsonPath("$.marketBookUuid").value(marketBookIdTest))
+                .andExpect(jsonPath("$.memberUuid").value(memberIdTest))
+                .andExpect(jsonPath("$.sent").value("0"))
                 .andExpect(jsonPath("$.templateType").value("1"));
 
-
-    }
-
-    @Test
-    public void testDuplicateNotifications() throws Exception {
-
-        when(notificationService.addNotification(notificationsDTO.getMarketBookUuid(), notificationsDTO.getMemberUuid()))
-                .thenThrow(new NotificationException("Duplicate Notification"));
-
-
         mvc.perform(post("/notifications")
-                        .content(objectMapper.writeValueAsBytes(notificationsDTO))
+                        .content("{\n" +
+                                "  \"marketBookUuid\": \"" + marketBookIdTest + "\",\n" +
+                                "  \"memberUuid\": \"" + memberIdTest + "\"\n" +
+                                "}")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.message").value("Duplicate Notification"));
     }
 
