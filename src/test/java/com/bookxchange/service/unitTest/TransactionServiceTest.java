@@ -33,7 +33,6 @@ class TransactionServiceTest {
     @InjectMocks
     private TransactionService transactionService;
 
-//    construiesc dto pentru fiecare rent, trade, sell, pointSell
 
     public TransactionDTO createTransactionDto(){
          TransactionDTO transactionDto= new TransactionDTO();
