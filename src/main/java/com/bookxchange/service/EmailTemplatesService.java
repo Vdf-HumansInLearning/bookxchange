@@ -5,6 +5,9 @@ import com.bookxchange.repository.EmailTemplatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Service
 public class EmailTemplatesService {
 
@@ -12,7 +15,12 @@ public class EmailTemplatesService {
     EmailTemplatesRepository emailTemplatesRepository;
 
     public EmailTemplatesEntity getById(Integer id) {
-
-        return emailTemplatesRepository.findEmailTemplatesEntityById(id);
+       Optional<EmailTemplatesEntity> emailTemplatesEntity=emailTemplatesRepository.findEmailTemplatesEntityById(id);
+         if(emailTemplatesEntity.isPresent()){
+          return emailTemplatesEntity.get();
+         }
+        else {
+            throw new NoSuchElementException("No template found by this id");
+         }
     }
 }

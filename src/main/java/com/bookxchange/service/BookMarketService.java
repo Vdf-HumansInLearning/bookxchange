@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class BookMarketService {
         Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
         if (bookMarket.isPresent())
             return bookMarket.get();
-        else throw new NoSuchElementException("Can't find the book by this id");
+        else throw new BookExceptions("Can't find the book by this id");
 
     }
 

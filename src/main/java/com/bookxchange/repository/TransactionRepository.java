@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
-    List<TransactionEntity> findAllByMemberuuIdFrom(String memberIdFrom);
+    List<TransactionEntity> findAllByMemberuuIdTo(String memberIdFrom);
 
     @Query(value = "SELECT * FROM transaction WHERE transaction.member_uuid_from =?1  AND transaction.transaction_type =?2", nativeQuery = true)
     List<TransactionEntity> findAllByMemberUuIDAndTransactionType(String memberUuid, String type);

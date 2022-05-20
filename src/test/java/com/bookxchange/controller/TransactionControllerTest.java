@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -75,13 +76,16 @@ public class TransactionControllerTest {
     public void setUp() {
 
         EmailTemplatesEntity emailTemplatesEntity = new EmailTemplatesEntity();
-        emailTemplatesEntity.setId(3);
+        emailTemplatesEntity.setId(2);
         emailTemplatesEntity.setTemplateName("TRANSACTION_SUCCES");
         emailTemplatesEntity.setSubject("You just made a purchase/rent");
         emailTemplatesEntity.setContentBody("Hey %s , You just made a purchase/rent. Thank you for this.");
         emailTemplatesRepository.save(emailTemplatesEntity);
+
+        System.out.println(emailTemplatesEntity.getId()+ "  TEMPLATE ID _____******");
         RoleEntity roleEntity = new RoleEntity(1, "ADMIN");
         roleRepository.save(roleEntity);
+
         MemberEntity supplier = new MemberEntity();
         supplier.setMemberUserId(1);
         supplier.setMemberUserUuid("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9");
@@ -93,6 +97,7 @@ public class TransactionControllerTest {
         memberRepository.save(supplier);
         client.setRole(roleEntity);
         memberRepository.save(client);
+
         token = jwtTokenUtil.generateToken(new MyUserDetails(client) {
         });
         BookMarketEntity bookMarketEntity = new BookMarketEntity();
@@ -143,6 +148,7 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.message").value("Book is not available at this time"));
 
     }
+
     @Test
     public void createRentTransactionBookMarketIsNotForRent() throws Exception {
 
@@ -198,6 +204,46 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.transactionStatus").value("SUCCESS"))
                 .andExpect(jsonPath("$.transactionType").value("POINTSELL"));
     }
+
+    @Test
+    public void createTradeTransaction() throws Exception {
+        transactionDTO.setMarketBookIdClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
+        transactionDTO.setTransactionType(TransactionType.TRADE);
+
+        mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .content(objectMapper.writeValueAsString(transactionDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.marketBookIdSupplier").value("42a48524-20fd-4708-9311-55bf1a247eaf"))
+                .andExpect(jsonPath("$.memberuuIdFrom").value("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"))
+                .andExpect(jsonPath("$.memberuuIdTo").value("bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
+                .andExpect(jsonPath("$.transactionType").value("TRADE"));
+
+    }
+
+    @Test
+    public void getTransactionsByUserId() throws Exception {
+        transactionDTO.setTransactionType(TransactionType.SELL);
+
+        mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .content(objectMapper.writeValueAsString(transactionDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(jsonPath("$.marketBookIdSupplier").value("42a48524-20fd-4708-9311-55bf1a247eaf"))
+                .andExpect(jsonPath("$.memberuuIdFrom").value("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"))
+                .andExpect(jsonPath("$.memberuuIdTo").value("bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
+                .andExpect(jsonPath("$.transactionStatus").value("SUCCESS"))
+                .andExpect(jsonPath("$.transactionType").value("SELL"));
+
+        mockMvc.perform(get("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userID", "bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transactionType").value("SELL"));
+
+    }
+
 
     @AfterEach
     public void delete() {
