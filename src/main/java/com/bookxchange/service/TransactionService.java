@@ -145,7 +145,7 @@ public class TransactionService {
             Double priceByMarketBookId = bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookIdSupplier());
             bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
-            memberService.updatePointsToClientById(priceByMarketBookId * 10 * -1, transactionDto.getClientId());
+            memberService.updatePointsToClientById(bookMarketService.moneyToPoints(priceByMarketBookId), transactionDto.getClientId());
         } else throw new InvalidTransactionException("Invalid Transaction");
     }
 

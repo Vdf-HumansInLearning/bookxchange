@@ -41,13 +41,13 @@ class TransactionServiceTest {
          return transactionDto;
     }
 
-    @Test
-    @Disabled
-    void updateBookMarketStatusAndMemberPoints() {
-        when(bookMarketService.isBookMarketForRent(any())).thenReturn(true);
-//        when(memberService.updatePointsToSupplierByID(any())).thenReturn()
-// s verify ca book
-    }
+//    @Test
+//    @Disabled
+//    void updateBookMarketStatusAndMemberPoints() {
+//        when(bookMarketService.isBookMarketForRent(any())).thenReturn(true);
+////        when(memberService.updatePointsToSupplierByID(any())).thenReturn()
+//// s verify ca book
+//    }
 
     @Test
     void createTransaction() {

@@ -61,18 +61,6 @@ public class BookMarketService {
 
     }
 
-    public String getBookMarketStatus(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getBookStatus();
-    }
-
-    public boolean isBookMarketForRent(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getForRent() == 1;
-    }
-
-    public boolean isBookMarketForSell(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
-    }
-
     public String getBookIsbn(String bookMarketUuId) {
 
         return getBookMarketFromOptional(bookMarketUuId).getBookIsbn();
@@ -86,7 +74,6 @@ public class BookMarketService {
         return (-1) * bookMarketPrice * 10;
     }
 
-    @Transactional
     public void deleteBookMarketEntry(String uuidToDelete) {
         bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
     }
