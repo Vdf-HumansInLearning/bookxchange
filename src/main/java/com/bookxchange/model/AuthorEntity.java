@@ -37,7 +37,7 @@ public class AuthorEntity {
     @Pattern(regexp = "^.{1,}$", message = "Author surname needs to be formed only out of letters, a minimum of 3 charters are required")
     private String surname;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Transient
     @JsonIgnore
     private List<BookEntity> books;

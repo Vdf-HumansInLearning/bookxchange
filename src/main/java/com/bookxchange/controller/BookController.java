@@ -54,6 +54,7 @@ public class BookController {
         logger.info("Entering {}", methodName);
 
         RetrievedBook retrievedBookData = workingBookService.checkDbOrAttemptToPopulateFromIsbn(isbn);
+        System.out.println(retrievedBookData + "DIN CONTROLLER");
         return new ResponseEntity<>(retrievedBookData , HttpStatus.OK);
     }
 

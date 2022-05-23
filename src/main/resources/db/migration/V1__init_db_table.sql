@@ -25,8 +25,8 @@ CREATE TABLE books (
 
 CREATE TABLE authors_books_mtm (
                                    id int NOT NULL unique auto_increment,
-                                   book_isbn varchar(36) NOT NULL,
-                                   authors_uuid varchar(36) NOT NULL,
+                                   book_id varchar(36) NOT NULL,
+                                   authors_id varchar(36) NOT NULL,
                                    PRIMARY KEY (id)
 );
 

@@ -38,6 +38,7 @@ public class BookMarketService {
                     workingBookService.addNewBookToDB(retrievedBookListing.getReceivedBook());
 //                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
                 }
+            System.out.println(retrievedBookListing.getReceivedBookMarket() + " asta e cu book market");
                 bookMarketRepository.save(retrievedBookListing.getReceivedBookMarket());
         } else throw new BookExceptions("Needs to sell, or rent");
         workingBookService.updateQuantityAtAdding(retrievedBookListing.getReceivedBookMarket().getBookIsbn());

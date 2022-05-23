@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -22,13 +21,15 @@ public class AuthorsService {
         this.workingAuthorsRepository = workingAuthorsRepository;
     }
 
-    public String returnAuthorUuidOrAddAndReturnUuid(AuthorEntity authorToCheck) {
+    public AuthorEntity attemptAuthorDatabaseRetrival(AuthorEntity authorToCheck) {
         AuthorEntity tempAuthor = workingAuthorsRepository.findAuthorsEntityByNameEqualsAndSurnameEquals(authorToCheck.getName(), authorToCheck.getSurname());
         logger.debug("Started adding author");
         if (tempAuthor == null) {
-           tempAuthor.setAuthorsUuid(UUID.randomUUID().toString());
+            tempAuthor = new AuthorEntity();
+//           tempAuthor.setAuthorsUuid(UUID.randomUUID().toString());
+            System.out.println("A Trecut de RAndom UUID AUTOR");
         }
-        return tempAuthor.getAuthorsUuid();
+        return tempAuthor;
     }
 
     public int getAuthorCountFromDataBaseFullName(String name, String surname) {

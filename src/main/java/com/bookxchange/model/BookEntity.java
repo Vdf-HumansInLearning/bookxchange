@@ -46,8 +46,8 @@ public class BookEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "authors_books_mtm",
-            joinColumns = @JoinColumn(name = "book_isbn"),
-            inverseJoinColumns = @JoinColumn(name = "authors_uuid")
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "authors_id")
     )
     private List<AuthorEntity> authors = new ArrayList<>();
 

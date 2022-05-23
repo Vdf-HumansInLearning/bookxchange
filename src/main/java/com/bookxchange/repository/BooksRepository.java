@@ -22,6 +22,7 @@ public interface BooksRepository extends JpaRepository<BookEntity, Integer> {
     @Query(value = "SELECT quantity FROM books WHERE isbn = ?1", nativeQuery = true)
     Integer getQuantityByIsbn(String isbn);
 
+    BookEntity getBookEntityByIsbn(String isbn);
 
     ArrayList<BookEntity> findAll();
 
