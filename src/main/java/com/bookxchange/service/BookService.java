@@ -1,26 +1,33 @@
 package com.bookxchange.service;
 
+import com.bookxchange.model.AuthorEntity;
 import com.bookxchange.model.BookEntity;
 import com.bookxchange.pojo.RetrievedBook;
+import com.bookxchange.repository.AuthorsRepository;
 import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 @Service
 public class BookService {
 
-    @Autowired
-    private final BooksRepository bookRepository;
-    @Autowired
-    private final IsbnService workingIsbnService;
 
-    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService) {
+    private final BooksRepository bookRepository;
+    private final IsbnService workingIsbnService;
+    private final AuthorsService workingAuthorsService;
+    private final AuthorsRepository workingAuthorsRepository;
+
+    @Autowired
+    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService, AuthorsService workingAuthorsService, AuthorsRepository workingAuthorsRepository) {
         this.bookRepository = bookRepository;
         this.workingIsbnService = workingIsbnService;
+        this.workingAuthorsService = workingAuthorsService;
+        this.workingAuthorsRepository = workingAuthorsRepository;
     }
 
     public BookEntity retrieveBookFromDB(String providedIsbn) {
@@ -31,10 +38,26 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    @Transactional
     public void addNewBookToDB(BookEntity providedBook) {
-        bookRepository.save(providedBook);
 
+        for(int i=0; i<providedBook.getAuthors().size(); i++){
+
+            AuthorEntity tempAuthor;
+               tempAuthor = workingAuthorsService.attemptAuthorDatabaseRetrival(
+                    providedBook.getAuthors().get(i));
+            if(tempAuthor.getName() != null) {
+                providedBook.getAuthors().get(i).setAuthorsUuid(tempAuthor.getAuthorsUuid());
+                providedBook.getAuthors().get(i).setId(tempAuthor.getId());
+            } else {
+                providedBook.getAuthors().get(i).setAuthorsUuid(UUID.randomUUID().toString());
+            workingAuthorsRepository.save(providedBook.getAuthors().get(i));
+            }
+
+        }
+        System.out.println(providedBook + " AUTORIIIIII");
+
+        bookRepository.save(providedBook);
+        System.out.println(bookRepository.getByIsbn(providedBook.getIsbn()) + "asta e ce da inapoi");
     }
 
     @Transactional
@@ -52,7 +75,7 @@ public class BookService {
     }
 
     public BookEntity getBookByIsbn(String isbn){
-        return bookRepository.getByIsbn(isbn);
+        return bookRepository.getBookEntityByIsbn(isbn);
     }
 
     @Transactional
@@ -69,7 +92,10 @@ public class BookService {
             if (bookToReturn != null) {
                 retrievedBookToReturn.setRetrievedInfo(true);
                 retrievedBookToReturn.setRetrievedBook(bookToReturn);
-                bookRepository.save(bookToReturn);
+                System.out.println(bookToReturn + "THE BOOK FROM ISBN API");
+                addNewBookToDB(bookToReturn);
+//                bookRepository.save(bookToReturn);
+                System.out.println("A TRECUT");
             }
         } else {
             retrievedBookToReturn.setRetrievedBook(bookToReturn);

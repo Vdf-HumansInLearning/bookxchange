@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "rating")
@@ -19,6 +20,7 @@ public class RatingEntity {
     @Basic
     @Column(name = "grade")
     @NotNull(message = "grade is mandatory")
+    @Pattern(regexp = "^[0-5]*$", message = "grades are available only in 0-5 range")
     private Integer grade;
     @Basic
     @Column(name = "description")

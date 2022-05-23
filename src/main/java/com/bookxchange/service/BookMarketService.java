@@ -4,7 +4,6 @@ import com.bookxchange.exception.BookExceptions;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.pojo.BookListing;
 import com.bookxchange.repository.BookMarketRepository;
-import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +16,12 @@ import java.util.Optional;
 @Service
 public class BookMarketService {
     private final BookMarketRepository bookMarketRepository;
-    private final BooksRepository workingBookRepository;
+    private final BookService workingBookService;
 
     @Autowired
-    public BookMarketService(BookMarketRepository bookMarketRepository, BooksRepository workingBookRepository) {
+    public BookMarketService(BookMarketRepository bookMarketRepository, BookService workingBookService) {
         this.bookMarketRepository = bookMarketRepository;
-        this.workingBookRepository = workingBookRepository;
+        this.workingBookService = workingBookService;
     }
 
     public void updateBookMarketStatus(String status, String bookMarketID) {
@@ -35,29 +34,43 @@ public class BookMarketService {
         if (retrievedBookListing.getReceivedBookMarket().getForRent() == 1 ||
                 retrievedBookListing.getReceivedBookMarket().getForSell() == 1) {
                 if(!retrievedBookListing.isDataIsRetrievedDb()) {
-                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
+                    System.out.println(retrievedBookListing.getReceivedBook().toString());
+                    workingBookService.addNewBookToDB(retrievedBookListing.getReceivedBook());
+//                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
                 }
+            System.out.println(retrievedBookListing.getReceivedBookMarket() + " asta e cu book market");
                 bookMarketRepository.save(retrievedBookListing.getReceivedBookMarket());
         } else throw new BookExceptions("Needs to sell, or rent");
-
+        workingBookService.updateQuantityAtAdding(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
+//        workingBookRepository.updateQuantityAdd(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
         return String.format("Your market entry for %s has been added successfully", retrievedBookListing.getReceivedBook().getTitle());
         }
 
     public List<BookMarketEntity> findAllByIsbn(String isbn) {
+        List<BookMarketEntity> bookMarketList = bookMarketRepository.findBookMarketEntityByBookIsbn(isbn);
+        if(!bookMarketList.isEmpty()){
+            return bookMarketList;
 
-        return bookMarketRepository.findAllByBookIsbn(isbn);
+        }else {
+            throw new BookExceptions("No entry for this isbn");
+        }
     }
 
     public List<BookMarketEntity> findAllByUserId(String userUuid) {
+        List<BookMarketEntity> bookMarketList = bookMarketRepository.findAllByUserUuid(userUuid);
+        if(!bookMarketList.isEmpty()){
+            return bookMarketList;
+        }else {
+            throw new BookExceptions("No entry for this userUuid");
+        }
 
-        return bookMarketRepository.findAllByUserUuid(userUuid);
     }
 
     public BookMarketEntity getBookMarketFromOptional(String bookMarketUuId) throws NoSuchElementException {
         Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
         if (bookMarket.isPresent())
             return bookMarket.get();
-        else throw new NoSuchElementException("Can't find the book by this id");
+        else throw new NoSuchElementException("Can't find the book by this uuId");
 
     }
 
@@ -88,7 +101,16 @@ public class BookMarketService {
 
     @Transactional
     public void deleteBookMarketEntry(String uuidToDelete) {
-        bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
+
+        Optional<BookMarketEntity> bookMarketCheck = bookMarketRepository.getBookMarketEntityByBookMarketUuid(uuidToDelete);
+
+        if (bookMarketCheck.isPresent()) {
+            workingBookService.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
+//            workingBookRepository.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
+            bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
+        } else {
+            throw new BookExceptions(String.format("The book market entry with this UUID %s is not present", uuidToDelete));
+        }
     }
 
 }

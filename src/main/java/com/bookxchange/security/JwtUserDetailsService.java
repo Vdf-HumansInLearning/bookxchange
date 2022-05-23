@@ -82,13 +82,17 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
-        MemberEntity memberEntity = new MemberEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
+        MemberEntity membersEntity = new MemberEntity(String.valueOf(UUID.randomUUID()), registerDto.getUserName(), 0, registerDto.getEmailAddress(), passwordCrypted);
 //        RoleEntity role = new RoleEntity(UserRoles.valueOf(registerDto.getRole()).getCode(), registerDto.getRole());
-//        memberEntity.setRole(role);
-        memberService.saveMember(memberEntity);
+//        membersEntity.setRole(role);
+        memberService.saveMember(membersEntity);
 
-        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + memberEntity.getMemberUserUuid());
-        // emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid()));
+        System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid());
+        String myLink = "<a href=\"" + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid() + "\">Account Activation</a>";
+        emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), myLink));
+
+
+
     }
 
 }

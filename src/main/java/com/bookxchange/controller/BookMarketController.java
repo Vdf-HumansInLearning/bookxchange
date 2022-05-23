@@ -22,7 +22,7 @@ public class BookMarketController {
     }
 
 
-    @GetMapping("/getByIsbn")
+    @GetMapping("")
     public ResponseEntity<List<BookMarketEntity>> getAllByIsbn(@RequestParam String isbn) {
 
         List<BookMarketEntity> bookMarketEntities = bookMarketService.findAllByIsbn(isbn);
@@ -31,7 +31,7 @@ public class BookMarketController {
     }
 
 
-    @GetMapping("/getByUserId")
+    @GetMapping("/")
     public ResponseEntity<List<BookMarketEntity>> getAllByUserId(@RequestParam String userUuid) {
 
         List<BookMarketEntity> bookMarketEntities = bookMarketService.findAllByUserId(userUuid);
@@ -39,7 +39,7 @@ public class BookMarketController {
         return new ResponseEntity<>(bookMarketEntities, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteMarketEntry/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteMarketEntityById(@PathVariable String id){
         bookMarketService.deleteBookMarketEntry(id);
         return new ResponseEntity<>("Book market entry was deleted", HttpStatus.OK);
