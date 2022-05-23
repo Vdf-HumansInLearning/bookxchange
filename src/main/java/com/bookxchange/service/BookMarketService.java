@@ -47,20 +47,30 @@ public class BookMarketService {
         }
 
     public List<BookMarketEntity> findAllByIsbn(String isbn) {
+        List<BookMarketEntity> bookMarketList = bookMarketRepository.findBookMarketEntityByBookIsbn(isbn);
+        if(!bookMarketList.isEmpty()){
+            return bookMarketList;
 
-        return bookMarketRepository.findAllByBookIsbn(isbn);
+        }else {
+            throw new BookExceptions("No entry for this isbn");
+        }
     }
 
     public List<BookMarketEntity> findAllByUserId(String userUuid) {
+        List<BookMarketEntity> bookMarketList = bookMarketRepository.findAllByUserUuid(userUuid);
+        if(!bookMarketList.isEmpty()){
+            return bookMarketList;
+        }else {
+            throw new BookExceptions("No entry for this userUuid");
+        }
 
-        return bookMarketRepository.findAllByUserUuid(userUuid);
     }
 
     public BookMarketEntity getBookMarketFromOptional(String bookMarketUuId) throws NoSuchElementException {
         Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
         if (bookMarket.isPresent())
             return bookMarket.get();
-        else throw new NoSuchElementException("Can't find the book by this id");
+        else throw new NoSuchElementException("Can't find the book by this uuId");
 
     }
 

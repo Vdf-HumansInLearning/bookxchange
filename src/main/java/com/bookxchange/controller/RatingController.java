@@ -3,10 +3,12 @@ package com.bookxchange.controller;
 import com.bookxchange.dto.RatingDTO;
 import com.bookxchange.mapper.Mapper;
 import com.bookxchange.model.RatingEntity;
+import com.bookxchange.service.ApplicationUtils;
 import com.bookxchange.service.RatingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +23,18 @@ public class RatingController {
     RatingService ratingService;
     Mapper mapper = new Mapper();
     Logger logger = LoggerFactory.getLogger(RatingController.class);
+
     @Autowired
     public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
     }
 
-    //    books/{bookId}/rating
-    @PostMapping("/createBookRating")
-    public ResponseEntity<RatingEntity> createBookRating(@Valid @RequestBody RatingDTO ratingDto) {
+
+    @PostMapping("/book")
+    public ResponseEntity<RatingEntity> createBookRating(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @Valid @RequestBody RatingDTO ratingDto) {
 
         logger.debug("createBookRating start ");
-
+        ratingDto.setLeftBy(ApplicationUtils.getUserFromToken(token));
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
         logger.debug("ratingEntity : ", ratingEntity);
 
@@ -42,10 +45,11 @@ public class RatingController {
     }
 
 
-    @PostMapping("/createMemberRating")
-    public ResponseEntity<RatingEntity> createMemberRating(@Valid @RequestBody RatingDTO ratingDto) {
+    @PostMapping("/member")
+    public ResponseEntity<RatingEntity> createMemberRating(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @Valid @RequestBody RatingDTO ratingDto) {
 
         logger.debug("createMemberRating start ");
+        ratingDto.setLeftBy(ApplicationUtils.getUserFromToken(token));
         RatingEntity ratingEntity = mapper.toRatingEntity(ratingDto);
         logger.debug("ratingEntity : ", ratingEntity);
 
