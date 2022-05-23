@@ -120,6 +120,7 @@ public class TransactionControllerTest {
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
                         .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.marketBookIdSupplier").value("42a48524-20fd-4708-9311-55bf1a247eaf"))
                 .andExpect(jsonPath("$.memberuuIdFrom").value("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"))
