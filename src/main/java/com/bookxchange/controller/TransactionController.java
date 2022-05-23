@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @PostMapping("")
     public ResponseEntity<TransactionEntity> createTransaction(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody TransactionDTO transactionDto) {
 
         TransactionEntity transactionEntity = transactionService.createTransaction(transactionDto, token);
         return new ResponseEntity<>(transactionEntity, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @GetMapping("")
     public ResponseEntity<List<TransactionEntity>> getTransactionsByMemberUuIDAndType(@RequestParam String userID,
                                                                                       @RequestParam(required = false) TransactionType type) {
@@ -39,7 +40,7 @@ public class TransactionController {
         }
         return new ResponseEntity<>(transactionService.getTransactionsByMemberUuIDAndType(userID, type), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @GetMapping("/trade/decision")
 //    TODO: sa cosmetizam url astfel incat userul sa nu vada id-urile in link-ul de email. Am gasit o metoda dar nu am avut timp de implementare
     public void approveTradingTransaction(@RequestParam String answerToTrade, @RequestParam String transactionId) {

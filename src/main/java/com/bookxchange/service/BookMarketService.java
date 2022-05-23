@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,13 +37,13 @@ public class BookMarketService {
                 if(!retrievedBookListing.isDataIsRetrievedDb()) {
                     System.out.println(retrievedBookListing.getReceivedBook().toString());
                     workingBookService.addNewBookToDB(retrievedBookListing.getReceivedBook());
-//                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
+
                 }
             System.out.println(retrievedBookListing.getReceivedBookMarket() + " asta e cu book market");
                 bookMarketRepository.save(retrievedBookListing.getReceivedBookMarket());
         } else throw new BookExceptions("Needs to sell, or rent");
         workingBookService.updateQuantityAtAdding(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
-//        workingBookRepository.updateQuantityAdd(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
+
         return String.format("Your market entry for %s has been added successfully", retrievedBookListing.getReceivedBook().getTitle());
         }
 
@@ -70,20 +71,10 @@ public class BookMarketService {
         Optional<BookMarketEntity> bookMarket = bookMarketRepository.findByBookMarketUuid(bookMarketUuId);
         if (bookMarket.isPresent())
             return bookMarket.get();
-        else throw new NoSuchElementException("Can't find the book by this uuId");
 
-    }
+        else throw new BookExceptions("Can't find the book by this uuId");
 
-    public String getBookMarketStatus(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getBookStatus();
-    }
 
-    public boolean isBookMarketForRent(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getForRent() == 1;
-    }
-
-    public boolean isBookMarketForSell(String bookMarketUuId) {
-        return getBookMarketFromOptional(bookMarketUuId).getForSell() == 1;
     }
 
     public String getBookIsbn(String bookMarketUuId) {
@@ -99,7 +90,6 @@ public class BookMarketService {
         return (-1) * bookMarketPrice * 10;
     }
 
-    @Transactional
     public void deleteBookMarketEntry(String uuidToDelete) {
 
         Optional<BookMarketEntity> bookMarketCheck = bookMarketRepository.getBookMarketEntityByBookMarketUuid(uuidToDelete);

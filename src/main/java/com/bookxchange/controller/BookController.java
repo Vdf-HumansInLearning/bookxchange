@@ -58,7 +58,6 @@ public class BookController {
         return new ResponseEntity<>(retrievedBookData , HttpStatus.OK);
     }
 
-
     @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<String> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
