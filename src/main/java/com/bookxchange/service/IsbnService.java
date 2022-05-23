@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,14 +55,15 @@ public class IsbnService {
             bookToReturn.setTitle(isbnDTO.getItems().get(0).getVolumeInfo().getTitle());
 
             List<String> author = isbnDTO.getItems().get(0).getVolumeInfo().getAuthors();
-            Set<AuthorEntity> authorsToAdd = new HashSet<>();
+            ArrayList<AuthorEntity> authorsToAdd = new ArrayList<>();
 
             for (int i = 0; i < author.size(); i++) {
-                Pattern patternAuthorName = Pattern.compile("^(.*)\\s([a-zA-Z.]{1,})$");
+                Pattern patternAuthorName = Pattern.compile("^(.*)\\s(.{1,})$");
                 Matcher matcher = patternAuthorName.matcher(author.get(i));
 
                 if (matcher.find()) {
                     AuthorEntity selectedAuthor=new AuthorEntity(matcher.group(2), matcher.group(1));
+                    System.out.println(selectedAuthor);
                     authorsToAdd.add(selectedAuthor);
                 }
             }

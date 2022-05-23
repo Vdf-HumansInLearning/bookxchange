@@ -2,6 +2,7 @@ package com.bookxchange.service;
 
 import com.bookxchange.model.BookEntity;
 import com.bookxchange.pojo.RetrievedBook;
+import com.bookxchange.repository.AuthorsRepository;
 import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,16 @@ import java.util.ArrayList;
 @Service
 public class BookService {
 
-    @Autowired
-    private final BooksRepository bookRepository;
-    @Autowired
-    private final IsbnService workingIsbnService;
 
-    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService) {
+    private final BooksRepository bookRepository;
+    private final IsbnService workingIsbnService;
+    private final AuthorsService workingAuthorsService;
+
+    @Autowired
+    public BookService(BooksRepository bookRepository, IsbnService workingIsbnService, AuthorsService workingAuthorsService) {
         this.bookRepository = bookRepository;
         this.workingIsbnService = workingIsbnService;
+        this.workingAuthorsService = workingAuthorsService;
     }
 
     public BookEntity retrieveBookFromDB(String providedIsbn) {
@@ -33,8 +36,14 @@ public class BookService {
 
     @Transactional
     public void addNewBookToDB(BookEntity providedBook) {
-        bookRepository.save(providedBook);
+        for(int i=0; i<providedBook.getAuthors().size(); i++){
 
+            providedBook.getAuthors().get(i).setAuthorsUuid(
+                    workingAuthorsService.returnAuthorUuidOrAddAndReturnUuid(
+                            providedBook.getAuthors().get(i)));
+
+        }
+        bookRepository.save(providedBook);
     }
 
     @Transactional

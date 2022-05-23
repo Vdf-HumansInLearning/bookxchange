@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import static org.junit.Assert.assertNotNull;
@@ -47,13 +48,13 @@ public class BookServiceDataBaseRetrieveingTests {
        AuthorEntity authorThree = new AuthorEntity("NameThree", "Surname Three");
        AuthorEntity authorFour = new AuthorEntity("NameFour", "Surname Four");
 
-       Set<AuthorEntity> authorsSetOne = new HashSet<AuthorEntity>();
+       ArrayList<AuthorEntity> authorsSetOne = new ArrayList<>();
        authorsSetOne.add(authorOne);
 
-       Set<AuthorEntity> authorsSetTwo = new HashSet<AuthorEntity>();
+       ArrayList<AuthorEntity> authorsSetTwo = new ArrayList<>();
        authorsSetTwo.add(authorTwo);
 
-       Set<AuthorEntity> authorsSetThree = new HashSet<AuthorEntity>();
+       ArrayList<AuthorEntity> authorsSetThree = new ArrayList<>();
        authorsSetThree.add(authorThree);
        authorsSetThree.add(authorFour);
 
@@ -69,7 +70,7 @@ public class BookServiceDataBaseRetrieveingTests {
    @Test
    public void addABookToTheDataBaseWithNewAuthor() {
        AuthorEntity authorFive = new AuthorEntity("NameFive", "Surname Five");
-       Set<AuthorEntity> authorsSetFour = new HashSet<AuthorEntity>();
+       ArrayList<AuthorEntity> authorsSetFour = new ArrayList<>();
        authorsSetFour.add(authorFive);
 
        BookEntity bookFour = new BookEntity("9879879871", "Book Four Title", "This is book four description 1234567890987654321", 0,authorsSetFour);
@@ -85,7 +86,7 @@ public class BookServiceDataBaseRetrieveingTests {
    @Test
    public void CheckThatOnlyOneAuthorIsPressentInTheDataBaseIfABookWithExistingAuthorIsAdded() {
        AuthorEntity authorFive = new AuthorEntity("NameFive", "Surname Five");
-       Set<AuthorEntity> authorsSetFive = new HashSet<AuthorEntity>();
+       ArrayList<AuthorEntity> authorsSetFive = new ArrayList<>();
        authorsSetFive.add(authorFive);
 
        BookEntity bookFive = new BookEntity("4564564561", "Book Five Title", "This is book five description 1234567890987654321", 0,authorsSetFive);
@@ -107,7 +108,7 @@ public class BookServiceDataBaseRetrieveingTests {
     @Test
     public void userAddsABook() {
         AuthorEntity authorSix = new AuthorEntity("NameSix", "Surname Six");
-        Set<AuthorEntity> authorsSetSix = new HashSet<AuthorEntity>();
+        ArrayList<AuthorEntity> authorsSetSix = new ArrayList<>();
         authorsSetSix.add(authorSix);
 
         BookEntity bookSix = new BookEntity("4564564561", "Book Five Title", "This is book five description 1234567890987654321", 0,authorsSetSix);

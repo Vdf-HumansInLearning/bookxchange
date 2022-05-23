@@ -58,7 +58,7 @@ public class BookController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<String> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
 

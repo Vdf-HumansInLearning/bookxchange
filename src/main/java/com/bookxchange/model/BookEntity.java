@@ -13,9 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "books")
@@ -45,18 +43,18 @@ public class BookEntity {
     @NotNull
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "authors_books_mtm",
             joinColumns = @JoinColumn(name = "book_isbn"),
             inverseJoinColumns = @JoinColumn(name = "authors_uuid")
     )
-    private Set<AuthorEntity> authors = new HashSet<AuthorEntity>();
+    private List<AuthorEntity> authors = new ArrayList<>();
 
     public BookEntity() {
     }
 
-    public BookEntity(String isbn, String title, String description, Integer quantity, Set<AuthorEntity> authors) {
+    public BookEntity(String isbn, String title, String description, Integer quantity, ArrayList<AuthorEntity> authors) {
         this.isbn = isbn;
         this.title = title;
         this.description = description;

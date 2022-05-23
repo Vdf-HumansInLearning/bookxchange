@@ -4,7 +4,6 @@ import com.bookxchange.exception.BookExceptions;
 import com.bookxchange.model.BookMarketEntity;
 import com.bookxchange.pojo.BookListing;
 import com.bookxchange.repository.BookMarketRepository;
-import com.bookxchange.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +16,12 @@ import java.util.Optional;
 @Service
 public class BookMarketService {
     private final BookMarketRepository bookMarketRepository;
-    private final BooksRepository workingBookRepository;
+    private final BookService workingBookService;
 
     @Autowired
-    public BookMarketService(BookMarketRepository bookMarketRepository, BooksRepository workingBookRepository) {
+    public BookMarketService(BookMarketRepository bookMarketRepository, BookService workingBookService) {
         this.bookMarketRepository = bookMarketRepository;
-        this.workingBookRepository = workingBookRepository;
+        this.workingBookService = workingBookService;
     }
 
     public void updateBookMarketStatus(String status, String bookMarketID) {
@@ -35,11 +34,14 @@ public class BookMarketService {
         if (retrievedBookListing.getReceivedBookMarket().getForRent() == 1 ||
                 retrievedBookListing.getReceivedBookMarket().getForSell() == 1) {
                 if(!retrievedBookListing.isDataIsRetrievedDb()) {
-                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
+                    System.out.println(retrievedBookListing.getReceivedBook().toString());
+                    workingBookService.addNewBookToDB(retrievedBookListing.getReceivedBook());
+//                    workingBookRepository.save(retrievedBookListing.getReceivedBook());
                 }
                 bookMarketRepository.save(retrievedBookListing.getReceivedBookMarket());
         } else throw new BookExceptions("Needs to sell, or rent");
-
+        workingBookService.updateQuantityAtAdding(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
+//        workingBookRepository.updateQuantityAdd(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
         return String.format("Your market entry for %s has been added successfully", retrievedBookListing.getReceivedBook().getTitle());
         }
 
@@ -88,7 +90,16 @@ public class BookMarketService {
 
     @Transactional
     public void deleteBookMarketEntry(String uuidToDelete) {
-        bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
+
+        Optional<BookMarketEntity> bookMarketCheck = bookMarketRepository.getBookMarketEntityByBookMarketUuid(uuidToDelete);
+
+        if (bookMarketCheck.isPresent()) {
+            workingBookService.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
+//            workingBookRepository.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
+            bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
+        } else {
+            throw new BookExceptions(String.format("The book market entry with this UUID %s is not present", uuidToDelete));
+        }
     }
 
 }

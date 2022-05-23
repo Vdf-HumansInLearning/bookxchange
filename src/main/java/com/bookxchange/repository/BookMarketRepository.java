@@ -18,7 +18,7 @@ public interface BookMarketRepository extends PagingAndSortingRepository<BookMar
     @Query(value = "SELECT * FROM book_market WHERE book_isbn =?1", nativeQuery = true)
     BookMarketEntity getBookMarketEntityByBookId(String bookID);
 
-    BookMarketEntity getBookMarketEntityByBookMarketUuid(String bookMarketID);
+    Optional<BookMarketEntity> getBookMarketEntityByBookMarketUuid(String bookMarketID);
 
     Optional<BookMarketEntity> findByBookMarketUuid(String uuid);
 

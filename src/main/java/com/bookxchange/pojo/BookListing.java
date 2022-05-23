@@ -20,7 +20,7 @@ public class BookListing {
 
 
     @Valid
-    @NotNull
+    @NotNull(message = "receivedBookMarket nulll")
     private BookMarketEntity receivedBookMarket;
 
 }

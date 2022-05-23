@@ -10,9 +10,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "authors")
@@ -31,17 +29,18 @@ public class AuthorEntity {
     @Basic
     @Column(name = "name")
     @NotNull
-    @Pattern(regexp = "^[A-Za-z]{1,}$", message = "Author name needs to be formed only out of letters, a minimum of 3 charters are required")
+    @Pattern(regexp = "^.{1,}$", message = "Author name needs to be formed only out of letters, a minimum of 3 charters are required")
     private String name;
     @Basic
     @Column(name = "surname")
     @NotNull
-    @Pattern(regexp = "^[A-Za-z\\s\\.]{1,}$", message = "Author surname needs to be formed only out of letters, a minimum of 3 charters are required")
+    @Pattern(regexp = "^.{1,}$", message = "Author surname needs to be formed only out of letters, a minimum of 3 charters are required")
     private String surname;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @Transient
     @JsonIgnore
-    private Set<BookEntity> books;
+    private List<BookEntity> books;
 
     public AuthorEntity(String name, String surname) {
         this.authorsUuid = UUID.randomUUID().toString();
