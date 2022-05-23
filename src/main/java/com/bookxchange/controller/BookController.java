@@ -54,11 +54,11 @@ public class BookController {
         logger.info("Entering {}", methodName);
 
         RetrievedBook retrievedBookData = workingBookService.checkDbOrAttemptToPopulateFromIsbn(isbn);
+        System.out.println(retrievedBookData + "DIN CONTROLLER");
         return new ResponseEntity<>(retrievedBookData , HttpStatus.OK);
     }
 
-
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<String> creatBookEntry(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody BookListing receivedBookInfo) {
 

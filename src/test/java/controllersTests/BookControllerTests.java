@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -52,13 +53,13 @@ public class BookControllerTests {
         AuthorEntity authorThree = new AuthorEntity("NameThree", "Surname Three");
         AuthorEntity authorFour = new AuthorEntity("NameFour", "Surname Four");
 
-        Set<AuthorEntity> authorsSetOne = new HashSet<AuthorEntity>();
+        ArrayList<AuthorEntity> authorsSetOne = new ArrayList<>();
         authorsSetOne.add(authorOne);
 
-        Set<AuthorEntity> authorsSetTwo = new HashSet<AuthorEntity>();
+        ArrayList<AuthorEntity> authorsSetTwo = new ArrayList<>();
         authorsSetTwo.add(authorTwo);
 
-        Set<AuthorEntity> authorsSetThree = new HashSet<AuthorEntity>();
+        ArrayList<AuthorEntity> authorsSetThree = new ArrayList<>();
         authorsSetThree.add(authorThree);
         authorsSetThree.add(authorFour);
 
@@ -125,8 +126,8 @@ public class BookControllerTests {
 
     }
 
-    @Test
-    public void checkForABookBasedPresnetInTheDataBaseByIsbnAndReturnDetails() {
+//    @Test
+//    public void checkForABookBasedPresnetInTheDataBaseByIsbnAndReturnDetails() {
 //
 //        mvc.perform(get("/books//getBookDetailsISBN"))
 //                .content("{\n" +
@@ -135,7 +136,7 @@ public class BookControllerTests {
 //        .andExpect(status().isOK))
 //        .andExpect(jsonPath("$.retrievedInfo").value(true));
 //
-    }
+//    }
 
 
 

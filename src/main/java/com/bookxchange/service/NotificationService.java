@@ -85,6 +85,7 @@ public class NotificationService {
             emailsEntity.setContent(body);
             emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
             emailsEntity.setMemberId(userToBeNotifiedInfo.getMember_User_Id());
+            emailsEntity.setStatus("SENT");
             LOG.debug("emailEntity created : " + emailsEntity);
         } catch (Exception e) {
             emailsEntity.setStatus("ERROR");

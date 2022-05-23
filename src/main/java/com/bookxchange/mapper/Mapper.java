@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class Mapper {
 
     public TransactionEntity toTransactionEntity(TransactionDTO transactionDto) {
-        return new TransactionEntity(transactionDto.getMarketBookIdSupplier(), transactionDto.getMarketBookIdClient(), transactionDto.getSupplierId(),
+        return new TransactionEntity(transactionDto.getMarketBookUuidSupplier(), transactionDto.getMarketBookUuidClient(), transactionDto.getSupplierId(),
                 transactionDto.getClientId(), transactionDto.getTransactionType().toString());
     }
 
