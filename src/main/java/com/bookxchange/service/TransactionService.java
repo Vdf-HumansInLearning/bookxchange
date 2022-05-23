@@ -144,10 +144,10 @@ public class TransactionService {
     public void updateBookMarketStatusAndMemberPoints(TransactionDTO transactionDto, BookMarketEntity bookMarketEntity) {
         if (transactionDto.getTransactionType().equals(TransactionType.RENT) && bookMarketEntity.getForRent()==1) {
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
-            bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookIdSupplier());
+            bookMarketService.updateBookMarketStatus(BookStatus.RENTED.toString(), transactionDto.getMarketBookUuidSupplier());
          
         } else if (transactionDto.getTransactionType().equals(TransactionType.SELL)&& bookMarketEntity.getForSell()==1) {
-            bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookIdSupplier());
+            bookMarketService.updateBookMarketStatus(BookStatus.SOLD.toString(), transactionDto.getMarketBookUuidSupplier());
             memberService.updatePointsToSupplierByID(transactionDto.getSupplierId());
           
         } else if (transactionDto.getTransactionType().equals(TransactionType.POINTSELL) && isEligibleForBuy(transactionDto)) {

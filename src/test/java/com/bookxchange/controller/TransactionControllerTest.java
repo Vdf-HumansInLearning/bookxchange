@@ -142,7 +142,7 @@ public class TransactionControllerTest {
         bookMarketEntityRented.setSellPrice(100.0);
         bookMarketEntityRented.setBookStatus("RENTED");
         bookMarketRepository.save(bookMarketEntityRented);
-        transactionDTO.setMarketBookIdSupplier("495c9b8d-5a71-4215-abe0-71a46e79a02c");
+        transactionDTO.setMarketBookUuidSupplier("495c9b8d-5a71-4215-abe0-71a46e79a02c");
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
@@ -164,7 +164,7 @@ public class TransactionControllerTest {
         bookMarketEntityRented.setSellPrice(100.0);
         bookMarketEntityRented.setBookStatus("AVAILABLE");
         bookMarketRepository.save(bookMarketEntityRented);
-        transactionDTO.setMarketBookIdSupplier("495c9b8d-5a71-4215-abe0-71a46e79a02c");
+        transactionDTO.setMarketBookUuidSupplier("495c9b8d-5a71-4215-abe0-71a46e79a02c");
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
@@ -210,7 +210,7 @@ public class TransactionControllerTest {
 
     @Test
     public void createTradeTransaction() throws Exception {
-        transactionDTO.setMarketBookIdClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
+        transactionDTO.setMarketBookUuidClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
         transactionDTO.setTransactionType(TransactionType.TRADE);
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
@@ -261,7 +261,7 @@ public class TransactionControllerTest {
         bookMarketEntity1.setSellPrice(100.0);
         bookMarketEntity1.setBookStatus("AVAILABLE");
         bookMarketRepository.save(bookMarketEntity1);
-        transactionDTO.setMarketBookIdSupplier("1c821fb0-1024-4cd0-8f23-2d763fb2c13b");
+        transactionDTO.setMarketBookUuidSupplier("1c821fb0-1024-4cd0-8f23-2d763fb2c13b");
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
