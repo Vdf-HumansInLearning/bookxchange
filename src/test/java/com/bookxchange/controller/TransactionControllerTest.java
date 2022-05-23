@@ -26,6 +26,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.awt.print.Book;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -76,13 +78,13 @@ public class TransactionControllerTest {
     public void setUp() {
 
         EmailTemplatesEntity emailTemplatesEntity = new EmailTemplatesEntity();
-        emailTemplatesEntity.setId(2);
+        emailTemplatesEntity.setId(3);
         emailTemplatesEntity.setTemplateName("TRANSACTION_SUCCES");
         emailTemplatesEntity.setSubject("You just made a purchase/rent");
         emailTemplatesEntity.setContentBody("Hey %s , You just made a purchase/rent. Thank you for this.");
         emailTemplatesRepository.save(emailTemplatesEntity);
 
-        System.out.println(emailTemplatesEntity.getId()+ "  TEMPLATE ID _____******");
+        System.out.println(emailTemplatesEntity.getId() + "  TEMPLATE ID _____******");
         RoleEntity roleEntity = new RoleEntity(1, "ADMIN");
         roleRepository.save(roleEntity);
 
@@ -229,21 +231,53 @@ public class TransactionControllerTest {
                         .content(objectMapper.writeValueAsString(transactionDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andDo(print())
-                .andExpect(jsonPath("$.marketBookIdSupplier").value("42a48524-20fd-4708-9311-55bf1a247eaf"))
-                .andExpect(jsonPath("$.memberuuIdFrom").value("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9"))
-                .andExpect(jsonPath("$.memberuuIdTo").value("bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
-                .andExpect(jsonPath("$.transactionStatus").value("SUCCESS"))
-                .andExpect(jsonPath("$.transactionType").value("SELL"));
+                .andDo(print());
 
-        mockMvc.perform(get("/transactions").header("AUTHORIZATION", "Bearer " + token)
+        mockMvc.perform(get("/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userID", "bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.transactionType").value("SELL"));
+                .andExpect(jsonPath("$[0].transactionType").value("SELL"));
 
     }
 
+    @Test
+    public void getTransactionsByUserIdAndType() throws Exception {
+
+        mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .content(objectMapper.writeValueAsString(transactionDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        BookMarketEntity bookMarketEntity1 = new BookMarketEntity();
+        bookMarketEntity1.setBookMarketUuid("1c821fb0-1024-4cd0-8f23-2d763fb2c13b");
+        bookMarketEntity1.setBookIsbn("0747581088");
+        bookMarketEntity1.setUserUuid("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9");
+        bookMarketEntity1.setForRent((byte) 1);
+        bookMarketEntity1.setForSell((byte) 1);
+        bookMarketEntity1.setSellPrice(100.0);
+        bookMarketEntity1.setBookStatus("AVAILABLE");
+        bookMarketRepository.save(bookMarketEntity1);
+        transactionDTO.setMarketBookIdSupplier("1c821fb0-1024-4cd0-8f23-2d763fb2c13b");
+
+        mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .content(objectMapper.writeValueAsString(transactionDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+
+        mockMvc.perform(get("/transactions").header("AUTHORIZATION", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userID", "bd15d9b6-abff-4535-96cf-e1e1cffefa24")
+                        .param("type)", "RENT"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].transactionType").value("RENT"));
+
+    }
 
     @AfterEach
     public void delete() {
