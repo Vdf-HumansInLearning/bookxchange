@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -34,7 +35,7 @@ public class BookService {
         return bookRepository.getByIsbn(providedIsbn);
     }
 
-    public ArrayList<BookEntity> userRetrievesBookList(){
+    public List<BookEntity> userRetrievesBookList(){
         return bookRepository.findAll();
     }
 
@@ -54,10 +55,8 @@ public class BookService {
             }
 
         }
-        System.out.println(providedBook + " AUTORIIIIII");
 
         bookRepository.save(providedBook);
-        System.out.println(bookRepository.getByIsbn(providedBook.getIsbn()) + "asta e ce da inapoi");
     }
 
     @Transactional
@@ -92,10 +91,7 @@ public class BookService {
             if (bookToReturn != null) {
                 retrievedBookToReturn.setRetrievedInfo(true);
                 retrievedBookToReturn.setRetrievedBook(bookToReturn);
-                System.out.println(bookToReturn + "THE BOOK FROM ISBN API");
                 addNewBookToDB(bookToReturn);
-//                bookRepository.save(bookToReturn);
-                System.out.println("A TRECUT");
             }
         } else {
             retrievedBookToReturn.setRetrievedBook(bookToReturn);

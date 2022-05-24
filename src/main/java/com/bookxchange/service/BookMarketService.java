@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -35,11 +34,9 @@ public class BookMarketService {
         if (retrievedBookListing.getReceivedBookMarket().getForRent() == 1 ||
                 retrievedBookListing.getReceivedBookMarket().getForSell() == 1) {
                 if(!retrievedBookListing.isDataIsRetrievedDb()) {
-                    System.out.println(retrievedBookListing.getReceivedBook().toString());
                     workingBookService.addNewBookToDB(retrievedBookListing.getReceivedBook());
 
                 }
-            System.out.println(retrievedBookListing.getReceivedBookMarket() + " asta e cu book market");
                 bookMarketRepository.save(retrievedBookListing.getReceivedBookMarket());
         } else throw new BookExceptions("Needs to sell, or rent");
         workingBookService.updateQuantityAtAdding(retrievedBookListing.getReceivedBookMarket().getBookIsbn());
@@ -96,7 +93,6 @@ public class BookMarketService {
 
         if (bookMarketCheck.isPresent()) {
             workingBookService.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
-//            workingBookRepository.downgradeQuantityForTransaction(bookMarketCheck.get().getBookIsbn());
             bookMarketRepository.deleteByBookMarketUuid(uuidToDelete);
         } else {
             throw new BookExceptions(String.format("The book market entry with this UUID %s is not present", uuidToDelete));

@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class AuthorsService {
 
@@ -26,8 +24,6 @@ public class AuthorsService {
         logger.debug("Started adding author");
         if (tempAuthor == null) {
             tempAuthor = new AuthorEntity();
-//           tempAuthor.setAuthorsUuid(UUID.randomUUID().toString());
-            System.out.println("A Trecut de RAndom UUID AUTOR");
         }
         return tempAuthor;
     }

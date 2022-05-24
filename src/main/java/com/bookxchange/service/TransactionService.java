@@ -67,8 +67,7 @@ public class TransactionService {
         try{
             sendEmail(transactionDto);
         }catch(Exception e){
-            System.out.println(e.getMessage());
-            throw  new RuntimeException(" SEasdasdasdasdadasdswadasdsadsa");
+            throw  new RuntimeException(e.getMessage());
         }
 
         transactionRepository.save(transactionEntity);
@@ -96,7 +95,7 @@ public class TransactionService {
 
                     List<TransactionEntity> transactionEntities = transactionRepository.findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus(transactionDto.getMarketBookUuidClient(), transactionDto.getMarketBookUuidSupplier(), TransactionType.TRADE.toString(), TransactionStatus.PENDING.toString());
                     if (transactionEntities.size() > 1) {
-                        throw new InvalidTransactionException("Mai aveti deja o tranzactie in curs intre aceste doua carti");
+                        throw new InvalidTransactionException("You already have an ongoing transaction between these two books");
                     }
                     TransactionEntity transaction = transactionEntities.get(0);
                     String approveUrl = String.format(applicationTradeUrl, applicationPort, approveResponse, transaction.getId());
@@ -159,10 +158,7 @@ public class TransactionService {
     }
 
     private boolean isEligibleForBuy(TransactionDTO transactionDto) {
-        if ((memberService.getPointsByMemberId(transactionDto.getClientId()) / 10) >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookUuidSupplier())) {
-            return true;
-        }
-        throw new InvalidTransactionException("Member is not eligible for buying");
+        return (memberService.getPointsByMemberId(transactionDto.getClientId()) / 10) >= bookMarketService.getPriceByMarketBookId(transactionDto.getMarketBookUuidSupplier());
     }
 
 

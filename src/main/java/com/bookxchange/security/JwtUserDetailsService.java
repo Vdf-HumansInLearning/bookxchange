@@ -1,10 +1,8 @@
 package com.bookxchange.security;
 
 import com.bookxchange.dto.RegisterDTO;
-import com.bookxchange.enums.UserRoles;
 import com.bookxchange.exception.BadAuthentificationException;
 import com.bookxchange.model.MemberEntity;
-import com.bookxchange.model.RoleEntity;
 import com.bookxchange.service.EmailService;
 import com.bookxchange.service.EmailTemplatesService;
 import com.bookxchange.service.MemberService;
@@ -69,7 +67,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (usr != null) {
             return new MyUserDetails(usr);
         } else {
-            throw new BadAuthentificationException("Acest utilizator nu a fost gasit");
+            throw new BadAuthentificationException("User not found");
         }
     }
 
@@ -78,7 +76,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (registerDto.getPassword().equals(registerDto.getConfirmedPassword()) && isValidPassword(registerDto.getPassword())) {
             logger.debug("it's a match");
         } else {
-            throw new BadAuthentificationException("Parolele nu sunt identice, te rugam sa incerci din nou");
+            throw new BadAuthentificationException("Passwords are not identical, please try again");
         }
 
         String passwordCrypted = BCrypt.hashpw(registerDto.getPassword(), BCrypt.gensalt(12));
