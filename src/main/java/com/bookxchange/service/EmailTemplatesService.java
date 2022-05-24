@@ -23,4 +23,13 @@ public class EmailTemplatesService {
             throw new NoSuchElementException("No template found by this id");
          }
     }
+    public EmailTemplatesEntity getByTemplateName(String templateName) {
+        Optional<EmailTemplatesEntity> emailTemplatesEntity=emailTemplatesRepository.findEmailTemplatesEntityByTemplateName(templateName);
+        if(emailTemplatesEntity.isPresent()){
+            return emailTemplatesEntity.get();
+        }
+        else {
+            throw new NoSuchElementException("No template found by this templateName");
+        }
+    }
 }
