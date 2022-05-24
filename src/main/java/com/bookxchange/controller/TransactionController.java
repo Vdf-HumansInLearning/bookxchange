@@ -40,9 +40,8 @@ public class TransactionController {
         }
         return new ResponseEntity<>(transactionService.getTransactionsByMemberUuIDAndType(userID, type), HttpStatus.OK);
     }
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+
     @GetMapping("/trade/decision")
-//    TODO: sa cosmetizam url astfel incat userul sa nu vada id-urile in link-ul de email. Am gasit o metoda dar nu am avut timp de implementare
     public void approveTradingTransaction(@RequestParam String answerToTrade, @RequestParam String transactionId) {
         transactionService.updateTransactionByUserTradeDecision(answerToTrade, transactionId);
     }

@@ -20,9 +20,9 @@ import java.util.List;
 @RequestMapping("/ratings")
 public class RatingController {
 
-    RatingService ratingService;
-    Mapper mapper = new Mapper();
-    Logger logger = LoggerFactory.getLogger(RatingController.class);
+    private final RatingService ratingService;
+    private Mapper mapper = new Mapper();
+    private static final Logger logger = LoggerFactory.getLogger(RatingController.class);
 
     @Autowired
     public RatingController(RatingService ratingService) {

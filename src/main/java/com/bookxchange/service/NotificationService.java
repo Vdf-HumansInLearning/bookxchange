@@ -80,7 +80,7 @@ public class NotificationService {
         EmailEntity emailsEntity = new EmailEntity();
         try {
             String body = String.format(userToBeNotifiedInfo.getContent_Body(), userToBeNotifiedInfo.getUsername(), userToBeNotifiedInfo.getTitle());
-            emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body);
+            emailService.sendMail(userToBeNotifiedInfo.getEmail_Address(), userToBeNotifiedInfo.getSubject(), body, userToBeNotifiedInfo.getMember_User_Id());
             notificationRepository.updateToSent(userToBeNotifiedInfo.getNotid());
             emailsEntity.setContent(body);
             emailsEntity.setSentDate(Date.valueOf(LocalDate.now()));
@@ -91,6 +91,5 @@ public class NotificationService {
             emailsEntity.setStatus("ERROR");
             LOG.info("Error in sending e-mail.");
         }
-        emailsRepository.save(emailsEntity);
     }
 }

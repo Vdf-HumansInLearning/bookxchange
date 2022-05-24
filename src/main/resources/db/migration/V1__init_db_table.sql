@@ -104,7 +104,7 @@ CREATE TABLE rating (
 
 CREATE TABLE emails (
                         id int AUTO_INCREMENT,
-                        content varchar(150),
+                        content TEXT,
                         sent_date DATE,
                         status varchar(20),
                         member_id int NOT NULL,

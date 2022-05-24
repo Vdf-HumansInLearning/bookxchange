@@ -40,7 +40,9 @@ public class RatingService {
             throw new InvalidRatingException("Users can not let reviews to themselves");
         }
 
-        List<TransactionEntity> transaction = transactionRepository.getTransactionByWhoSelleddAndWhoBuys(ratingEntity.getLeftByUuid(), ratingEntity.getUserIdUuid());
+        System.out.println(ratingEntity + " Totul TOTT");
+
+        List<TransactionEntity> transaction = transactionRepository.findTransactionEntitiesByMemberuuIdToAndMemberuuIdFrom(ratingEntity.getLeftByUuid(), ratingEntity.getUserIdUuid());
 
         if (transaction.isEmpty()) {
             throw new InvalidRatingException("These two users never interact");
@@ -50,6 +52,11 @@ public class RatingService {
     }
 
     public void ratingABook(RatingEntity ratingEntity) {
+
+       if(!ApplicationUtils.checkGrade(ratingEntity.getGrade())) {
+           throw new InvalidRatingException("Grade should be digits between 0 and 5");
+       }
+
 
         if (ratingEntity.getBookIsbn() == null) {
             throw new InvalidRatingException("Book id can not be null when you rate a book");

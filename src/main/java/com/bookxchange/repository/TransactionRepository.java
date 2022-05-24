@@ -23,6 +23,8 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     @Query(value = "SELECT * FROM transaction WHERE transaction.member_uuid_from =?1 AND transaction.member_uuid_to =?2", nativeQuery = true)
     List<TransactionEntity> getTransactionByWhoSelleddAndWhoBuys(String memberIdFrom, String memberIdTo);
 
+    List<TransactionEntity> findTransactionEntitiesByMemberuuIdToAndMemberuuIdFrom(String memberIdFrom, String memberIdTo);
+
     List<TransactionEntity> findAllByTransactionDate(LocalDate transactionDate);
 
     List<TransactionEntity> findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus(String MarketBookUuidClient, String MarketBookUuidSupplier, String transactionType, String transactionStatus);

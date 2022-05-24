@@ -47,6 +47,8 @@ public class TransactionService {
 
     @Transactional
     public TransactionEntity createTransaction(TransactionDTO transactionDto, String token) {
+
+
         transactionDto.setClientId(ApplicationUtils.getUserFromToken(token));
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transactionDto);
         BookMarketEntity bookMarketEntity = bookMarketService.getBookMarketFromOptional(transactionDto.getMarketBookUuidSupplier());
@@ -64,51 +66,53 @@ public class TransactionService {
             transactionEntity.setTransactionStatus(TransactionStatus.PENDING.toString());
 
         }
-        try{
-            sendEmail(transactionDto);
-        }catch(Exception e){
-            throw  new RuntimeException(e.getMessage());
+        List<TransactionEntity> transactionEntities = transactionRepository.findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus(transactionDto.getMarketBookUuidClient(), transactionDto.getMarketBookUuidSupplier(), TransactionType.TRADE.toString(), TransactionStatus.PENDING.toString());
+        if (transactionEntities.size() > 1) {
+            throw new InvalidTransactionException("You already have an ongoing transaction between these two books");
         }
-
         transactionRepository.save(transactionEntity);
+        sendEmail(transactionDto,transactionEntity);
         return transactionEntity;
+
     }
 
-    public void sendEmail(TransactionDTO transactionDto) {
+    @Transactional
+    public void sendEmail(TransactionDTO transactionDto, TransactionEntity transaction) {
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
         Runnable runnableTask = () -> {
             try {
                 MemberEntity client;
+                MemberEntity supplier;
                 EmailTemplatesEntity emailTemplate;
                 String body;
+
                 if (transactionDto.getTransactionType() == TransactionType.TRADE) {
 
                     emailTemplate = emailTemplatesService.getByTemplateName("TRADE");
 //                            getById(3);
                     client = memberService.findByUuid(transactionDto.getClientId());
-                    MemberEntity supplier = memberService.findByUuid(transactionDto.getSupplierId());
+                    supplier = memberService.findByUuid(transactionDto.getSupplierId());
                     String clientBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookUuidClient());
                     String supplierBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookUuidSupplier());
                     BookEntity clientBook = bookService.getBookByIsbn(clientBookIsbn);
                     BookEntity supplierBook = bookService.getBookByIsbn(supplierBookIsbn);
 
-                    List<TransactionEntity> transactionEntities = transactionRepository.findTransactionEntityByMarketBookIdClientAndMarketBookIdSupplierAndTransactionTypeAndTransactionStatus(transactionDto.getMarketBookUuidClient(), transactionDto.getMarketBookUuidSupplier(), TransactionType.TRADE.toString(), TransactionStatus.PENDING.toString());
-                    if (transactionEntities.size() > 1) {
-                        throw new InvalidTransactionException("You already have an ongoing transaction between these two books");
-                    }
-                    TransactionEntity transaction = transactionEntities.get(0);
+
                     String approveUrl = String.format(applicationTradeUrl, applicationPort, approveResponse, transaction.getId());
                     String denyUrl = String.format(applicationTradeUrl, applicationPort, "deny", transaction.getId());
-                    body = String.format(emailTemplate.getContentBody(), client.getUsername(), clientBook.getTitle(), supplier.getUsername(), supplierBook.getTitle(), approveUrl, denyUrl);
+                    body = String.format(emailTemplate.getContentBody(), supplier.getUsername(), supplierBook.getTitle(), client.getUsername(), clientBook.getTitle(), approveUrl, denyUrl);
+                    emailService.sendMail(supplier.getEmailAddress(), emailTemplate.getSubject(), body, supplier.getMemberUserId());
                 } else {
                     emailTemplate = emailTemplatesService.getByTemplateName("TRANSACTION_SUCCESS");
 //                            getById(4);
                     client = memberService.findByUuid(transactionDto.getClientId());
-                    body =client.getUsername();
+                    supplier = memberService.findByUuid(transactionDto.getSupplierId());
+                    body = String.format(emailTemplate.getContentBody(), client.getUsername());
+                    emailService.sendMail(client.getEmailAddress(), emailTemplate.getSubject(), body, client.getMemberUserId());
                 }
-                emailService.sendMail(client.getEmailAddress(), emailTemplate.getSubject(), body);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,6 +128,17 @@ public class TransactionService {
         long transIdLong = Long.parseLong(transactionId);
         TransactionEntity transaction = transactionRepository.findById(transIdLong).get();
         if (userTradeAnswer.equals(approveResponse)) {
+
+            bookMarketService.updateBookMarketStatus("SOLD", transaction.getMarketBookIdSupplier());
+            bookService.downgradeQuantityForTransaction(bookMarketService
+                    .getBookMarketFromOptional(transaction.getMarketBookIdSupplier())
+                    .getBookIsbn());
+
+            bookMarketService.updateBookMarketStatus("SOLD", transaction.getMarketBookIdClient());
+            bookService.downgradeQuantityForTransaction(bookMarketService
+                    .getBookMarketFromOptional(transaction.getMarketBookIdClient())
+                    .getBookIsbn());
+
             transaction.setTransactionStatus(TransactionStatus.SUCCESS.toString());
         } else {
             transaction.setTransactionStatus(TransactionStatus.FAILURE.toString());

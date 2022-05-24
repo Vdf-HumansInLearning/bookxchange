@@ -22,6 +22,16 @@ values
     ('9780230757004', "The Air War ", "Something something War, kitty ipsom atack", 1)
 ;
 
+INSERT INTO authors_books_mtm (id, book_id, authors_id) VALUE
+(1, 1, 1),
+    (2,2,1),
+    (3,3,1),
+    (4,4,2),
+    (5,5,3),
+    (6,6,4),
+    (7,7,5),
+    (8,8,5);
+
 INSERT INTO roles(role_id, role_name)
 values
     (1, "ADMIN"),
@@ -41,16 +51,16 @@ values
 
 INSERT INTO book_market (book_market_uuid, user_uuid, book_isbn, book_state, for_sell, sell_price, for_rent, rent_price, book_status)
 values
-    ("42a48524-20fd-4708-9311-55bf1a247eaf", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0747532699', "ASNEW", false, 0, true, 50, "AVAILABLE"),
-    ("495c9b8d-5a71-4215-abe0-71a46e79a02c", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0747538492', "ASNEW", true, 200, false, 0, "AVAILABLE"),
+    ("42a48524-20fd-4708-9311-55bf1a247eaf", "5f239bfd-52fe-4028-891a-289cc1a6fa71", '0747532699', "ASNEW", true, 12, true, 50, "AVAILABLE"),
+    ("495c9b8d-5a71-4215-abe0-71a46e79a02c", "5f239bfd-52fe-4028-891a-289cc1a6fa71", '0747538492', "ASNEW", true, 200, true, 3, "AVAILABLE"),
     ("1c821fb0-1024-4cd0-8f23-2d763fb2c13b", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '0747581088', "USED", false, 0, true, 25, "AVAILABLE"),
     ("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb", "6eca21ce-861b-4dd7-975d-20a969e3183a", '9780007488353', "USED", true, 100, false, 9, "AVAILABLE" ),
     ("b28cfca2-0ff9-4868-b881-a5331383339c", "ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", '9780330511445', "PARTIAL_DAMAGED", false, 0, false, 0, "SOLD"),
     ("17354736-146c-4544-90a9-3d83700e7b59", "6eca21ce-861b-4dd7-975d-20a969e3183a", '9780007488353', "ORIGINALBOX", true, 230, false, 0, "AVAILABLE"),
     ("eb1ab8b2-a2a4-4057-bba2-2d2caf65ce47", "13177e99-14b5-43c5-a446-e0dc751c3153", '9781612130286', "PARTIAL_DAMAGED",true, 110, false, 0, "AVAILABLE"),
     ("102126b8-49a9-4eb3-bc4f-424d89a56f8b", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780521792608', "ORIGINALBOX", true, 400, false, 0, "AVAILABLE"),
-    ("103cfb11-e1be-4486-ac18-3d0722017da7", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", false, 0 , false, 0, "RENTED"),
-    ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", true, 20 , true, 3, "AVAILABLE")
+    ("103cfb11-e1be-4486-ac18-3d0722017da7", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", false, 0 , true, 2.99, "RENTED"),
+    ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", true, 20 , true, 3, "SOLD")
 ;
 INSERT INTO email_templates values (default, 'AVAILABILITY', 'Book availability notification', 'Hey %s , your book entitled %s is available');
 INSERT INTO email_templates values (default, 'EMAIL_CONFIRMATION', 'New user confirmation', 'Hey %s , please confirm your account by clicking %s .');

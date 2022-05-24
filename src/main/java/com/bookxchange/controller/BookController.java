@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.google.gson.Gson;
 
 import javax.validation.Valid;
 
@@ -25,10 +26,11 @@ public class BookController {
 
     private final BookService workingBookService;
     private final BookMarketService workingBookMarketService;
+    private static final Gson gson = new Gson();
 
 
 
-    Logger logger = LoggerFactory.getLogger(BookController.class);
+    private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
     public BookController(BookService workingBookService, BookMarketService workingBookMarketService) {
@@ -57,7 +59,7 @@ public class BookController {
         receivedBookInfo.getReceivedBookMarket().setUserUuid(ApplicationUtils.getUserFromToken(token));
         String responseMessage = workingBookMarketService.addBookMarketEntityAndBookIfCustom(receivedBookInfo);
 
-        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
+        return ResponseEntity.ok(gson.toJson(responseMessage));
     }
 
 

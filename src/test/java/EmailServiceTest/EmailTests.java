@@ -1,5 +1,6 @@
 package EmailServiceTest;
 
+import com.bookxchange.repository.EmailsRepository;
 import com.bookxchange.service.EmailService;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
@@ -8,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -32,6 +34,11 @@ public class EmailTests {
 
     private GreenMail testSmtp;
 
+    private EmailsRepository emailsRepository;
+
+
+
+
     @Before
     public void testSmtpInit(){
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
@@ -40,7 +47,7 @@ public class EmailTests {
         JavaMailSenderImpl impl = new JavaMailSenderImpl();
         impl.setPort(3025);
         impl.setHost("localhost");
-        emailSender = new EmailService(impl);
+        emailSender = new EmailService(impl, emailsRepository);
     }
 
     @Test
@@ -51,7 +58,7 @@ public class EmailTests {
         message.setTo("test@receiver.com");
         message.setSubject("test subject");
         message.setText("test message");
-        emailSender.sendMail(message.getTo()[0],message.getSubject(),message.getText());
+        emailSender.sendMail(message.getTo()[0],message.getSubject(),message.getText(), 1);
 
         Message[] messages = testSmtp.getReceivedMessages();
         assertEquals(1, messages.length);

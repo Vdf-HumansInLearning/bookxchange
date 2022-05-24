@@ -85,7 +85,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         System.out.println("sending " + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid());
         String myLink = "<a href=\"" + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid() + "\">Account Activation</a>";
-        emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), myLink));
+        emailService.sendMail(membersEntity.getEmailAddress(), emailTemplatesService.getById(2).getSubject(), String.format(emailTemplatesService.getById(2).getContentBody(), membersEntity.getUsername(), myLink), membersEntity.getMemberUserId());
 
         logger.debug("sending " + confirmationGetUrl + "/confirm?memberUUID=" + membersEntity.getMemberUserUuid());
         
