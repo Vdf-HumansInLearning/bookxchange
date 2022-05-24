@@ -20,13 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.awt.print.Book;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,11 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ContextConfiguration
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@PropertySource("classpath:application-test.properties")
 public class TransactionControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -115,6 +110,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createRentTransaction() throws Exception {
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
@@ -131,6 +127,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createRentTransactionWithBookStatusRented() throws Exception {
 
         BookMarketEntity bookMarketEntityRented = new BookMarketEntity();
@@ -153,6 +150,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createRentTransactionBookMarketIsNotForRent() throws Exception {
 
         BookMarketEntity bookMarketEntityRented = new BookMarketEntity();
@@ -170,11 +168,12 @@ public class TransactionControllerTest {
                         .content(objectMapper.writeValueAsString(transactionDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Invalid Transaction"));
+                .andExpect(jsonPath("$.message").value("Invalid Transaction conditions"));
 
     }
 
     @Test
+    @WithMockUser
     public void createSellTransaction() throws Exception {
 
         transactionDTO.setTransactionType(TransactionType.SELL);
@@ -192,6 +191,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createPointSellTransaction() throws Exception {
 
         transactionDTO.setTransactionType(TransactionType.POINTSELL);
@@ -209,6 +209,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createTradeTransaction() throws Exception {
         transactionDTO.setMarketBookUuidClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
         transactionDTO.setTransactionType(TransactionType.TRADE);
@@ -225,6 +226,7 @@ public class TransactionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void getTransactionsByUserId() throws Exception {
         transactionDTO.setTransactionType(TransactionType.SELL);
 
@@ -239,11 +241,12 @@ public class TransactionControllerTest {
                         .param("userID", "bd15d9b6-abff-4535-96cf-e1e1cffefa24"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].transactionType").value("SELL"));
+                .andExpect(jsonPath("$[0].transactionType").value("RENT"));
 
     }
 
     @Test
+    @WithMockUser
     public void getTransactionsByUserIdAndType() throws Exception {
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
