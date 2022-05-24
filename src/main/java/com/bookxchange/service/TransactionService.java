@@ -85,7 +85,8 @@ public class TransactionService {
                 String body;
                 if (transactionDto.getTransactionType() == TransactionType.TRADE) {
 
-                    emailTemplate = emailTemplatesService.getById(3);
+                    emailTemplate = emailTemplatesService.getByTemplateName("TRADE");
+//                            getById(3);
                     client = memberService.findByUuid(transactionDto.getClientId());
                     MemberEntity supplier = memberService.findByUuid(transactionDto.getSupplierId());
                     String clientBookIsbn = bookMarketService.getBookIsbn(transactionDto.getMarketBookUuidClient());
@@ -102,7 +103,8 @@ public class TransactionService {
                     String denyUrl = String.format(applicationTradeUrl, applicationPort, "deny", transaction.getId());
                     body = String.format(emailTemplate.getContentBody(), client.getUsername(), clientBook.getTitle(), supplier.getUsername(), supplierBook.getTitle(), approveUrl, denyUrl);
                 } else {
-                    emailTemplate = emailTemplatesService.getById(4);
+                    emailTemplate = emailTemplatesService.getByTemplateName("TRANSACTION_SUCCESS");
+//                            getById(4);
                     client = memberService.findByUuid(transactionDto.getClientId());
                     body =client.getUsername();
                 }

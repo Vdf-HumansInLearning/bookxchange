@@ -74,7 +74,7 @@ public class TransactionControllerTest {
 
         EmailTemplatesEntity emailTemplatesEntity = new EmailTemplatesEntity();
         emailTemplatesEntity.setId(3);
-        emailTemplatesEntity.setTemplateName("TRANSACTION_SUCCES");
+        emailTemplatesEntity.setTemplateName("TRANSACTION_SUCCESS");
         emailTemplatesEntity.setSubject("You just made a purchase/rent");
         emailTemplatesEntity.setContentBody("Hey %s , You just made a purchase/rent. Thank you for this.");
         emailTemplatesRepository.save(emailTemplatesEntity);
@@ -211,8 +211,27 @@ public class TransactionControllerTest {
     @Test
     @WithMockUser
     public void createTradeTransaction() throws Exception {
+
         transactionDTO.setMarketBookUuidClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
         transactionDTO.setTransactionType(TransactionType.TRADE);
+
+        EmailTemplatesEntity emailTemplatesEntity1 = new EmailTemplatesEntity();
+        emailTemplatesEntity1.setId(1);
+        emailTemplatesEntity1.setTemplateName("TRADE");
+        emailTemplatesEntity1.setSubject("Book trade needs accept");
+        emailTemplatesEntity1.setContentBody("Hey %s , your book entitled %s has been requested to be exchanged for the %s's book named %s . If you agree, please click on <a href=\"%s\">Accept</a>. If you dont agree or you don't know anything about this trade, click on <a href=\"%s\">Refuse</a>");
+        emailTemplatesRepository.save(emailTemplatesEntity1);
+
+        BookMarketEntity bookMarketEntity1 = new BookMarketEntity();
+        bookMarketEntity1.setBookMarketUuid("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
+        bookMarketEntity1.setBookIsbn("9780007488353");
+        bookMarketEntity1.setUserUuid("bd15d9b6-abff-4535-96cf-e1e1cffefa24");
+        bookMarketEntity1.setForRent((byte) 1);
+        bookMarketEntity1.setForSell((byte) 1);
+        bookMarketEntity1.setSellPrice(100.0);
+        bookMarketEntity1.setBookStatus("AVAILABLE");
+        bookMarketRepository.save(bookMarketEntity1);
+        
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
@@ -287,6 +306,7 @@ public class TransactionControllerTest {
     public void delete() {
         memberRepository.deleteAll();
         bookMarketRepository.deleteAll();
+        emailTemplatesRepository.deleteAll();
 
     }
 

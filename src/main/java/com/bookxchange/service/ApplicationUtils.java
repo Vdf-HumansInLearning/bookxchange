@@ -12,7 +12,7 @@ public class ApplicationUtils {
 
     @Autowired
     public ApplicationUtils(JwtTokenUtil jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
+        ApplicationUtils.jwtTokenUtil = jwtTokenUtil;
     }
 
 

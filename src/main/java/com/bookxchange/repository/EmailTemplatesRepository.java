@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface EmailTemplatesRepository extends JpaRepository<EmailTemplatesEntity, Integer> {
 
     Optional<EmailTemplatesEntity> findEmailTemplatesEntityById(Integer id);
+    Optional<EmailTemplatesEntity> findEmailTemplatesEntityByTemplateName(String templateName);
 
 }

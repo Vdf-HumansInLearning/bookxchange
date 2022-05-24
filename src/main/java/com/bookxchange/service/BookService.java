@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,23 +34,23 @@ public class BookService {
         return bookRepository.getByIsbn(providedIsbn);
     }
 
-    public List<BookEntity> userRetrievesBookList(){
+    public List<BookEntity> userRetrievesBookList() {
         return bookRepository.findAll();
     }
 
     public void addNewBookToDB(BookEntity providedBook) {
 
-        for(int i=0; i<providedBook.getAuthors().size(); i++){
+        for (int i = 0; i < providedBook.getAuthors().size(); i++) {
 
             AuthorEntity tempAuthor;
-               tempAuthor = workingAuthorsService.attemptAuthorDatabaseRetrival(
+            tempAuthor = workingAuthorsService.attemptAuthorDatabaseRetrival(
                     providedBook.getAuthors().get(i));
-            if(tempAuthor.getName() != null) {
+            if (tempAuthor.getName() != null) {
                 providedBook.getAuthors().get(i).setAuthorsUuid(tempAuthor.getAuthorsUuid());
                 providedBook.getAuthors().get(i).setId(tempAuthor.getId());
             } else {
                 providedBook.getAuthors().get(i).setAuthorsUuid(UUID.randomUUID().toString());
-            workingAuthorsRepository.save(providedBook.getAuthors().get(i));
+                workingAuthorsRepository.save(providedBook.getAuthors().get(i));
             }
 
         }
@@ -69,11 +68,8 @@ public class BookService {
         bookRepository.downgradeQuantityForTransaction(providedIsbn);
     }
 
-    public int getQuantityByIsbn(String isbn){
-       return bookRepository.getQuantityByIsbn(isbn);
-    }
 
-    public BookEntity getBookByIsbn(String isbn){
+    public BookEntity getBookByIsbn(String isbn) {
         return bookRepository.getBookEntityByIsbn(isbn);
     }
 
@@ -87,7 +83,7 @@ public class BookService {
         BookEntity bookToReturn = getBookByIsbn(providedIsbn);
 
         if (bookToReturn == null) {
-            bookToReturn=workingIsbnService.hitIsbnBookRequest(providedIsbn);
+            bookToReturn = workingIsbnService.hitIsbnBookRequest(providedIsbn);
             if (bookToReturn != null) {
                 retrievedBookToReturn.setRetrievedInfo(true);
                 retrievedBookToReturn.setRetrievedBook(bookToReturn);
