@@ -40,7 +40,6 @@ public class RatingService {
             throw new InvalidRatingException("Users can not let reviews to themselves");
         }
 
-        System.out.println(ratingEntity + " Totul TOTT");
 
         List<TransactionEntity> transaction = transactionRepository.findTransactionEntitiesByMemberuuIdToAndMemberuuIdFrom(ratingEntity.getLeftByUuid(), ratingEntity.getUserIdUuid());
 

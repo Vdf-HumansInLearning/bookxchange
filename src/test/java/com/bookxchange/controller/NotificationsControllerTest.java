@@ -1,4 +1,4 @@
-package NotificationsControllerTests;
+package com.bookxchange.controller;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.model.*;
@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,27 +23,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase
-@TestPropertySource(locations = "classpath:application-test.properties")
-class NotificationsControllerTest {
-    @Autowired
-    private MockMvc mvc;
-
+public class NotificationsControllerTest {
     @Autowired
     BookMarketRepository bookMarketRepository;
-
     @Autowired
     MemberRepository memberRepository;
-
     @Autowired
     AuthorsRepository authorsRepository;
-
     @Autowired
     BooksRepository booksRepository;
-
     @Autowired
     RoleRepository roleRepository;
-
-
+    @Autowired
+    private MockMvc mvc;
     private String marketBookIdTest;
     private String memberIdTest;
 

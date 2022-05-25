@@ -33,7 +33,7 @@ public class TransactionService {
     private String applicationPort;
     @Value("${application.url}")
     private String applicationTradeUrl;
-//
+
     @Autowired
     public TransactionService(Mapper mapper, TransactionRepository transactionRepository, MemberService memberService, BookMarketService bookMarketService, BookService bookService, EmailService emailService, EmailTemplatesService emailTemplatesService) {
         this.mapper = mapper;
