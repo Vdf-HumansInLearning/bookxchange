@@ -39,12 +39,12 @@ values
 ;
 
 
-INSERT INTO members (member_uuid, username, password ,points, email_address)
+INSERT INTO members (member_uuid, username, password ,points, email_address, role_id, is_email_confirmed)
 values
-    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 5000,"dani@gmail.com"),
-    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay",4000,"robot@gmail.com"),
-    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 3000,"melcuul@gmail.com"),
-    ("5f239bfd-52fe-4028-891a-289cc1a6fa71", "gabri", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 5000,"gabriel.vlad@vodafone.com")
+    ("ae677979-ffec-4a90-a3e5-a5d1d31c0ee9", "DanVerde", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 5000,"dani@gmail.com",2,1),
+    ("6eca21ce-861b-4dd7-975d-20a969e3183a", "RoboAlin", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay",4000,"robot@gmail.com",2,0),
+    ("13177e99-14b5-43c5-a446-e0dc751c3153", "RozzzAlina", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 3000,"melcuul@gmail.com",1,1),
+    ("5f239bfd-52fe-4028-891a-289cc1a6fa71", "gabri", "$2a$12$mwrRI6lIUIpHK/aZImUm8u3UZknQds3vuUHgQCyxnUtTeqOc9ruay", 5000,"gabriel.vlad@vodafone.com",1,1)
 ;
 
 
@@ -59,7 +59,7 @@ values
     ("17354736-146c-4544-90a9-3d83700e7b59", "6eca21ce-861b-4dd7-975d-20a969e3183a", '9780007488353', "ORIGINALBOX", true, 230, false, 0, "AVAILABLE"),
     ("eb1ab8b2-a2a4-4057-bba2-2d2caf65ce47", "13177e99-14b5-43c5-a446-e0dc751c3153", '9781612130286', "PARTIAL_DAMAGED",true, 110, false, 0, "AVAILABLE"),
     ("102126b8-49a9-4eb3-bc4f-424d89a56f8b", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780521792608', "ORIGINALBOX", true, 400, false, 0, "AVAILABLE"),
-    ("103cfb11-e1be-4486-ac18-3d0722017da7", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", false, 0 , true, 2.99, "RENTED"),
+    ("103cfb11-e1be-4486-ac18-3d0722017da7", "5f239bfd-52fe-4028-891a-289cc1a6fa71", '9780230757004', "USED", false, 0 , true, 2.99, "RENTED"),
     ("a4876a1d-a05f-4ce1-ac2f-3a988eb7ded4", "13177e99-14b5-43c5-a446-e0dc751c3153", '9780230757004', "USED", true, 20 , true, 3, "SOLD")
 ;
 INSERT INTO email_templates values (default, 'AVAILABILITY', 'Book availability notification', 'Hey %s , your book entitled %s is available');

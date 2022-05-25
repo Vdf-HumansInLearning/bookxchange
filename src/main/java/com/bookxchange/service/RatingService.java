@@ -32,6 +32,10 @@ public class RatingService {
 
     public void ratingAMember(RatingEntity ratingEntity) {
 
+        if(!ApplicationUtils.checkGrade(ratingEntity.getGrade())) {
+            throw new InvalidRatingException("Grade should be digits between 0 and 5");
+        }
+
         if (ratingEntity.getUserIdUuid() == null || ratingEntity.getLeftByUuid() == null) {
             throw new InvalidRatingException("User id can not be null when you rate a member");
         }
