@@ -1,4 +1,4 @@
-package Services;
+package com.bookxchange.service.it;
 
 import com.bookxchange.BookExchangeApplication;
 import com.bookxchange.model.AuthorEntity;
@@ -83,17 +83,6 @@ public class BookServiceDataBaseRetrieveingTests {
        Assert.assertTrue(savedBook.getAuthors().contains(authorFive));
    }
 
-   @Test
-   public void CheckThatOnlyOneAuthorIsPressentInTheDataBaseIfABookWithExistingAuthorIsAdded() {
-       AuthorEntity authorFive = new AuthorEntity("NameFive", "Surname Five");
-       ArrayList<AuthorEntity> authorsSetFive = new ArrayList<>();
-       authorsSetFive.add(authorFive);
-
-       BookEntity bookFive = new BookEntity("4564564561", "Book Five Title", "This is book five description 1234567890987654321", 0,authorsSetFive);
-       bookRepo.save(bookFive);
-
-       Assert.assertEquals(1, workingAuthorService.getAuthorCountFromDataBaseFullName("NameFive", "Surname Five"));
-   }
 
    @Test
    public void userGetsABookBasedOnISBN() {

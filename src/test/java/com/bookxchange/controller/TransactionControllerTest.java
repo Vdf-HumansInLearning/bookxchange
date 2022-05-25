@@ -79,7 +79,6 @@ public class TransactionControllerTest {
         emailTemplatesEntity.setContentBody("Hey %s , You just made a purchase/rent. Thank you for this.");
         emailTemplatesRepository.save(emailTemplatesEntity);
 
-        System.out.println(emailTemplatesEntity.getId() + "  TEMPLATE ID _____******");
         RoleEntity roleEntity = new RoleEntity(1, "ADMIN");
         roleRepository.save(roleEntity);
 
@@ -212,8 +211,6 @@ public class TransactionControllerTest {
     @WithMockUser
     public void createTradeTransaction() throws Exception {
 
-        transactionDTO.setMarketBookUuidClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
-        transactionDTO.setTransactionType(TransactionType.TRADE);
 
         EmailTemplatesEntity emailTemplatesEntity1 = new EmailTemplatesEntity();
         emailTemplatesEntity1.setId(1);
@@ -231,7 +228,9 @@ public class TransactionControllerTest {
         bookMarketEntity1.setSellPrice(100.0);
         bookMarketEntity1.setBookStatus("AVAILABLE");
         bookMarketRepository.save(bookMarketEntity1);
-        
+
+        transactionDTO.setMarketBookUuidClient("1ec3d489-9aa0-4cad-8ab3-0ce21a669ddb");
+        transactionDTO.setTransactionType(TransactionType.TRADE);
 
         mockMvc.perform(post("/transactions").header("AUTHORIZATION", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(transactionDTO))
