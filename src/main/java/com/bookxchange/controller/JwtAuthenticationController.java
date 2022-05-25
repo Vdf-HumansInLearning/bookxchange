@@ -9,6 +9,7 @@ import com.bookxchange.security.JwtTokenUtil;
 import com.bookxchange.security.JwtUserDetailsService;
 import com.bookxchange.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -53,9 +54,11 @@ public class JwtAuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public void register(@RequestBody RegisterDTO registerDto, HttpServletRequest request) {
+    public ResponseEntity register(@RequestBody RegisterDTO registerDto, HttpServletRequest request) {
 
         userDetailsService.register(registerDto, request.getRequestURL().toString());
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     private void authenticate(String username, String password) {
